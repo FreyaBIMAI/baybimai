@@ -3,22 +3,22 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://baybimai.org"),
-  title: "BAYBIMAI — Building AI That Moves Ideas Forward",
+  title: "BAYBIMAI — 把 BIM 学到真正能用",
   description:
-    "BAYBIMAI 是一家 AI 产品与研究工作室，把人工智能变成清晰、可靠、真正有用的产品。",
+    "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 审计服务。",
   openGraph: {
     title: "BAYBIMAI",
-    description: "Building AI that moves ideas forward.",
+    description: "课程包 · 企业培训 · BIM 审计",
     url: "https://baybimai.org",
     siteName: "BAYBIMAI",
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-v2.png", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "BAYBIMAI",
-    description: "Building AI that moves ideas forward.",
-    images: ["/og.png"],
+    description: "把 BIM 学到真正能用。",
+    images: ["/og-v2.png"],
   },
 };
 

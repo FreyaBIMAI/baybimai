@@ -1,139 +1,103 @@
-const capabilities = [
+const offers = [
   {
-    number: "01",
-    title: "AI Products",
-    copy: "从清晰的问题出发，设计真正进入工作流的智能产品，而不是停留在演示阶段。",
+    tag: "TO C · 主线",
+    title: "BIM 实战课程包",
+    copy: "从建模基础到项目交付，按真实工作流程组织内容。随时学习，学完就能上手。",
+    note: "适合个人学习与职业提升",
+    featured: true,
   },
   {
-    number: "02",
-    title: "Agent Systems",
-    copy: "把模型、工具与业务知识编排成可靠、可评估、可持续迭代的智能代理系统。",
+    tag: "TO B · 企业",
+    title: "企业 BIM 培训",
+    copy: "围绕团队现状、项目类型和交付目标定制课程，让培训直接服务于正在发生的项目。",
+    note: "适合设计院、施工与业主团队",
+    featured: false,
   },
   {
-    number: "03",
-    title: "Applied Research",
-    copy: "用快速原型与严格验证，把新技术转化成组织能理解、采用并放大的能力。",
+    tag: "TO B · 专项",
+    title: "BIM 审计",
+    copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
+    note: "适合项目节点与交付前审查",
+    featured: false,
   },
 ];
-
-const principles = [
-  ["Useful", "价值先于炫技"],
-  ["Human", "增强人的判断"],
-  ["Rigorous", "用结果验证想法"],
-];
-
-function Arrow() {
-  return <span aria-hidden="true">↗</span>;
-}
 
 export default function Home() {
   return (
     <main>
       <nav className="nav" aria-label="主导航">
         <a className="brand" href="#top" aria-label="BAYBIMAI 首页">
-          BAYBIM<span>AI</span>
+          BAY<span>BIM</span>AI
         </a>
-        <div className="nav-links">
-          <a href="#work">我们做什么</a>
-          <a href="#approach">方法</a>
-          <a className="nav-cta" href="mailto:hello@baybimai.org">
-            开始合作 <Arrow />
-          </a>
-        </div>
+        <p>BIM LEARNING &amp; ENTERPRISE SERVICES</p>
       </nav>
 
       <section className="hero" id="top">
-        <div className="eyebrow">
-          <span className="status-dot" />
-          AI PRODUCT &amp; RESEARCH STUDIO
-        </div>
-        <h1>
-          让想法
-          <br />
-          <em>向前发生。</em>
-        </h1>
-        <div className="hero-bottom">
-          <p>
-            BAYBIMAI 与有远见的团队一起，把人工智能变成清晰、可靠、真正有用的产品。
+        <div className="hero-copy">
+          <div className="eyebrow">
+            <span />
+            从课程到企业落地
+          </div>
+          <h1>
+            把 <em>BIM</em> 学到
+            <br />
+            真正能用。
+          </h1>
+          <p className="subtitle">
+            面向个人的实战课程包，面向企业的定制培训。
+            <br />
+            需要更严格的项目把关，我们也提供独立 BIM 审计。
           </p>
-          <a className="circle-link" href="#work" aria-label="了解我们的能力">
-            <span>探索</span>
-            <Arrow />
+          <a
+            className="cta"
+            href="mailto:hello@baybimai.org?subject=%E8%8E%B7%E5%8F%96%20BIM%20%E8%AF%BE%E7%A8%8B%E5%8C%85"
+          >
+            获取课程包
+            <span aria-hidden="true">→</span>
           </a>
         </div>
-        <div className="orbital" aria-hidden="true">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="orbit orbit-three" />
-          <div className="core">B</div>
+
+        <div className="bim-graphic" aria-hidden="true">
+          <div className="plane plane-a" />
+          <div className="plane plane-b" />
+          <div className="axis axis-x" />
+          <div className="axis axis-y" />
+          <div className="node node-a" />
+          <div className="node node-b" />
+          <div className="node node-c" />
+          <span>BIM</span>
         </div>
       </section>
 
-      <section className="manifesto" id="approach">
-        <p className="section-label">OUR POINT OF VIEW</p>
-        <div className="manifesto-grid">
-          <h2>
-            智能不该只是
-            <br />
-            更多输出。
-          </h2>
-          <div>
-            <p className="lead">
-              它应该带来更好的决策、更轻的工作方式，以及原本不可能实现的新体验。
-            </p>
-            <p className="subcopy">
-              我们连接产品思维、AI 工程和设计，从第一天就围绕真实价值构建。
-            </p>
-          </div>
+      <section className="offers" aria-labelledby="offers-title">
+        <div className="offers-heading">
+          <p>THREE WAYS TO WORK WITH US</p>
+          <h2 id="offers-title">学习、培训、审计，一条清晰的能力路径。</h2>
         </div>
-      </section>
 
-      <section className="work" id="work">
-        <div className="section-heading">
-          <p className="section-label">WHAT WE BUILD</p>
-          <p>从机会识别，到可工作的第一版，再到规模化落地。</p>
-        </div>
-        <div className="capability-list">
-          {capabilities.map((item) => (
-            <article className="capability" key={item.number}>
-              <span className="cap-number">{item.number}</span>
-              <h3>{item.title}</h3>
-              <p>{item.copy}</p>
-              <Arrow />
+        <div className="cards">
+          {offers.map((offer, index) => (
+            <article
+              className={`card ${offer.featured ? "featured" : ""}`}
+              key={offer.title}
+            >
+              <div className="card-top">
+                <span className="card-index">0{index + 1}</span>
+                <span className="card-tag">{offer.tag}</span>
+              </div>
+              <h3>{offer.title}</h3>
+              <p>{offer.copy}</p>
+              <div className="card-note">{offer.note}</div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="principles">
-        <p className="section-label">HOW WE THINK</p>
-        <div className="principle-grid">
-          {principles.map(([title, copy]) => (
-            <div className="principle" key={title}>
-              <span>{title}</span>
-              <p>{copy}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="contact">
-        <p className="section-label">LET&apos;S BUILD WHAT&apos;S NEXT</p>
-        <h2>
-          有一个值得
-          <br />
-          实现的想法？
-        </h2>
-        <a href="mailto:hello@baybimai.org">
-          hello@baybimai.org <Arrow />
-        </a>
-      </section>
-
       <footer>
         <a className="brand" href="#top">
-          BAYBIM<span>AI</span>
+          BAY<span>BIM</span>AI
         </a>
-        <p>BUILDING AI THAT MOVES IDEAS FORWARD.</p>
+        <p>让 BIM 能力真正进入工作。</p>
         <p>© {new Date().getFullYear()} BAYBIMAI.ORG</p>
       </footer>
     </main>
