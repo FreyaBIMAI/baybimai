@@ -1,7 +1,55 @@
+import { env } from "cloudflare:workers";
 import { getDb } from "../../../db";
 import { leads } from "../../../db/schema";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type SupabaseConfig = {
+  url: string;
+  key: string;
+};
+
+function getSupabaseConfig(): SupabaseConfig | null {
+  const bindings = env as unknown as Record<string, string | undefined>;
+  const url = bindings.SUPABASE_URL ?? process.env.SUPABASE_URL;
+  const key = bindings.SUPABASE_KEY ?? process.env.SUPABASE_KEY;
+
+  if (!url || !key || url === "..." || key === "...") {
+    return null;
+  }
+
+  return {
+    url: url.replace(/\/+$/, ""),
+    key,
+  };
+}
+
+async function insertIntoSupabase(
+  config: SupabaseConfig,
+  lead: { name: string; email: string },
+) {
+  const headers: Record<string, string> = {
+    apikey: config.key,
+    "Content-Type": "application/json",
+    Prefer: "return=minimal",
+  };
+
+  // Legacy service_role keys are JWTs and also use a Bearer header.
+  // New sb_secret_* keys must only be sent through the apikey header.
+  if (config.key.startsWith("eyJ")) {
+    headers.Authorization = `Bearer ${config.key}`;
+  }
+
+  const response = await fetch(`${config.url}/rest/v1/leads`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(lead),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase insert failed with status ${response.status}`);
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +79,14 @@ export async function POST(request: Request) {
       return Response.json({ error: "请输入有效的邮件地址。" }, { status: 400 });
     }
 
-    await getDb().insert(leads).values({ name, email });
+    const supabase = getSupabaseConfig();
+
+    if (supabase) {
+      await insertIntoSupabase(supabase, { name, email });
+    } else {
+      // Keep the current production form working until Supabase is configured.
+      await getDb().insert(leads).values({ name, email });
+    }
 
     return Response.json({ ok: true }, { status: 201 });
   } catch (error) {
