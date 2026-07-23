@@ -72,26 +72,81 @@ main {
   align-items: center;
   border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(circle at 72% 45%, #7c3aed20 0, transparent 31%),
-    linear-gradient(135deg, #0b0714 48%, #10091d);
+    radial-gradient(circle at 72% 38%, #8b5cf63d 0, transparent 25%),
+    radial-gradient(circle at 22% 82%, #5b21b62e 0, transparent 30%),
+    radial-gradient(circle at 48% 18%, #312e8138 0, transparent 24%),
+    linear-gradient(145deg, #08050f 0%, #140823 48%, #0b0714 100%);
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.09;
+  opacity: 0.62;
   pointer-events: none;
   background-image:
-    linear-gradient(#a78bfa 1px, transparent 1px),
-    linear-gradient(90deg, #a78bfa 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: linear-gradient(90deg, transparent 40%, #000 72%, transparent);
+    radial-gradient(circle, #ffffff 0 1px, transparent 1.4px),
+    radial-gradient(circle, #c4b5fd 0 1px, transparent 1.4px),
+    radial-gradient(circle, #ddd6fe 0 0.7px, transparent 1.1px);
+  background-position: 8px 18px, 44px 72px, 18px 34px;
+  background-size: 94px 94px, 137px 137px, 61px 61px;
+  mask-image: linear-gradient(to bottom, #000, #000 78%, transparent);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 78% 43%, transparent 0 10%, #a78bfa10 10.3%, transparent 11%),
+    radial-gradient(circle at 78% 43%, transparent 0 20%, #7c3aed0b 20.2%, transparent 21%);
+}
+
+.star-field {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.float-term {
+  position: absolute;
+  color: #f3f4f6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(0.56rem, 0.72vw, 0.72rem);
+  letter-spacing: 0.14em;
+  opacity: 0.18;
+  white-space: nowrap;
+  animation: drift 9s ease-in-out infinite alternate;
+}
+
+.term-1 { top: 11%; left: 59%; animation-delay: -2s; }
+.term-2 { top: 19%; left: 79%; animation-delay: -6s; }
+.term-3 { top: 30%; left: 67%; animation-delay: -4s; }
+.term-4 { top: 42%; left: 86%; animation-delay: -8s; }
+.term-5 { top: 54%; left: 72%; animation-delay: -3s; }
+.term-6 { top: 68%; left: 84%; animation-delay: -7s; }
+.term-7 { top: 81%; left: 61%; animation-delay: -1s; }
+.term-8 { top: 88%; left: 78%; animation-delay: -5s; }
+.term-9 { top: 13%; left: 43%; animation-delay: -7s; }
+.term-10 { top: 73%; left: 46%; animation-delay: -4s; }
+.term-11 { top: 90%; left: 28%; animation-delay: -8s; }
+.term-12 { top: 59%; left: 54%; animation-delay: -2s; }
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(12px, -10px, 0);
+  }
 }
 
 .hero-copy {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: min(760px, 62vw);
 }
 
@@ -256,6 +311,7 @@ h1 em {
 
 .bim-graphic {
   position: absolute;
+  z-index: 2;
   right: 4vw;
   top: 92px;
   width: min(43vw, 610px);
@@ -478,6 +534,26 @@ footer .brand {
     opacity: 0.55;
   }
 
+  .float-term {
+    opacity: 0.12;
+  }
+
+  .term-1,
+  .term-3,
+  .term-5,
+  .term-8,
+  .term-9,
+  .term-10 {
+    display: none;
+  }
+
+  .term-2 { top: 15%; left: 64%; }
+  .term-4 { top: 42%; left: 68%; }
+  .term-6 { top: 68%; left: 62%; }
+  .term-7 { top: 82%; left: 8%; }
+  .term-11 { top: 91%; left: 18%; }
+  .term-12 { top: 56%; left: 58%; }
+
   .offers {
     padding: 82px 20px;
   }
@@ -511,5 +587,9 @@ footer .brand {
   .lead-form button,
   .lead-form input {
     transition: none;
+  }
+
+  .float-term {
+    animation: none;
   }
 }

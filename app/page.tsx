@@ -1,5 +1,20 @@
 import ContactForm from "./contact-form";
 
+const floatingTerms = [
+  "BIM MANAGER",
+  "REVIT 建模",
+  "DYNAMO",
+  "BIM COORDINATOR",
+  "参数化设计",
+  "NAVISWORKS",
+  "族库管理",
+  "LOD 300",
+  "模型审计",
+  "AUTODESK REVIT",
+  "碰撞检测",
+  "项目交付",
+];
+
 const offers = [
   {
     tag: "TO C · 主线",
@@ -35,6 +50,14 @@ export default function Home() {
       </nav>
 
       <section className="hero" id="top">
+        <div className="star-field" aria-hidden="true">
+          {floatingTerms.map((term, index) => (
+            <span className={`float-term term-${index + 1}`} key={term}>
+              {term}
+            </span>
+          ))}
+        </div>
+
         <div className="hero-copy">
           <div className="eyebrow">
             <span />

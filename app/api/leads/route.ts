@@ -5,17 +5,21 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as {
-      name?: string;
-      email?: string;
-      website?: string;
-    };
+    const payload: unknown = await request.json();
 
-    const name = payload.name?.trim() ?? "";
-    const email = payload.email?.trim().toLowerCase() ?? "";
+    if (!payload || typeof payload !== "object") {
+      return Response.json({ error: "请求内容格式不正确。" }, { status: 400 });
+    }
 
-    // Quietly accept bot submissions without saving them.
-    if (payload.website) {
+    const fields = payload as Record<string, unknown>;
+    const name = typeof fields.name === "string" ? fields.name.trim() : "";
+    const email =
+      typeof fields.email === "string"
+        ? fields.email.trim().toLowerCase()
+        : "";
+
+    // Honeypot: bot submissions are accepted without entering the database.
+    if (typeof fields.website === "string" && fields.website) {
       return Response.json({ ok: true }, { status: 201 });
     }
 
@@ -27,11 +31,14 @@ export async function POST(request: Request) {
       return Response.json({ error: "请输入有效的邮件地址。" }, { status: 400 });
     }
 
-    const db = getDb();
-    await db.insert(leads).values({ name, email });
+    await getDb().insert(leads).values({ name, email });
 
     return Response.json({ ok: true }, { status: 201 });
-  } catch {
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: "请求内容格式不正确。" }, { status: 400 });
+    }
+
     return Response.json(
       { error: "暂时无法提交，请稍后再试。" },
       { status: 500 },
