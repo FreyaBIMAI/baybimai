@@ -1,3 +1,5 @@
+import ContactForm from "./contact-form";
+
 const offers = [
   {
     tag: "TO C · 主线",
@@ -48,13 +50,7 @@ export default function Home() {
             <br />
             需要更严格的项目把关，我们也提供独立 BIM 审计。
           </p>
-          <a
-            className="cta"
-            href="mailto:hello@baybimai.org?subject=%E8%8E%B7%E5%8F%96%20BIM%20%E8%AF%BE%E7%A8%8B%E5%8C%85"
-          >
-            获取课程包
-            <span aria-hidden="true">→</span>
-          </a>
+          <ContactForm />
         </div>
 
         <div className="bim-graphic" aria-hidden="true">
