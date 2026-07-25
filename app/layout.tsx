@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 审计服务。",
   icons: {
     icon: "/favicon.svg",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: "BAYBIMAI",

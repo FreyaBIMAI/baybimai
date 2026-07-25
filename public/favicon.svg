@@ -1,11 +1,37 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#b69af4"/>
-      <stop offset="1" stop-color="#e4cea0"/>
+    <linearGradient id="gold" x1="2" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4d27a"/>
+      <stop offset="1" stop-color="#a97a26"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="16" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1c4372"/>
+      <stop offset="1" stop-color="#081b32"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="1" y1="1" x2="31" y2="31" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4d27a"/>
+      <stop offset="1" stop-color="#a97a26"/>
     </linearGradient>
   </defs>
-  <rect width="32" height="32" rx="7" fill="#0d0912"/>
-  <rect x="8" y="8" width="16" height="16" rx="3" transform="rotate(45 16 16)" fill="none" stroke="url(#g)" stroke-width="2.5"/>
-  <rect x="12.5" y="12.5" width="7" height="7" rx="1.5" transform="rotate(45 16 16)" fill="url(#g)"/>
+
+  <circle cx="16" cy="16" r="14.5" fill="url(#blue)"/>
+
+  <path
+    d="M16,1.5
+       C12.3,3 10.8,7 10.9,10.5
+       C11,12.6 13,13.6 13,15
+       C13,16.6 9,17.7 9,19.2
+       C9,20.6 12.6,21.1 12.7,22.3
+       C12.8,23.6 11,24.3 11.1,26.2
+       C11.2,28 13.6,29.6 16,30.5
+       A14.5,14.5 0 0 1 16,1.5
+       Z"
+    fill="url(#gold)"
+  />
+
+  <circle cx="21" cy="12.5" r="0.85" fill="#ffe8b8"/>
+  <circle cx="23" cy="15" r="0.6" fill="#ffe8b8"/>
+  <circle cx="20.5" cy="16.5" r="0.5" fill="#ffe8b8"/>
+
+  <circle cx="16" cy="16" r="14.5" fill="none" stroke="url(#ring)" stroke-width="1"/>
 </svg>
