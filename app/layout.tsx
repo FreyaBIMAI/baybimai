@@ -7,7 +7,10 @@ export const metadata: Metadata = {
   description:
     "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 审计服务。",
   icons: {
-    icon: "/favicon.svg",
+    // Versioned query string: Cloudflare's edge cache serves /favicon.svg by
+    // URL, so bumping this value is what actually invalidates the icon for
+    // visitors after an edit (there's no cache-purge scope on this token).
+    icon: "/favicon.svg?v=2",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
