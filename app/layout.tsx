@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     // Versioned query string: Cloudflare's edge cache serves /favicon.svg by
     // URL, so bumping this value is what actually invalidates the icon for
     // visitors after an edit (there's no cache-purge scope on this token).
-    icon: "/favicon.svg?v=2",
+    icon: "/favicon.svg?v=3",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
