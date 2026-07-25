@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "./language-context";
 
 export default function PurchaseButton() {
+  const { dict } = useLanguage();
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
   async function startCheckout() {
@@ -33,12 +35,12 @@ export default function PurchaseButton() {
         onClick={startCheckout}
         type="button"
       >
-        <span>{status === "loading" ? "正在打开付款页…" : "立即购买"}</span>
+        <span>{status === "loading" ? dict.purchase.loading : dict.purchase.cta}</span>
         <span aria-hidden="true">↗</span>
       </button>
       {status === "error" ? (
         <p className="purchase-error" role="alert">
-          暂时无法打开付款页，请稍后再试。
+          {dict.purchase.error}
         </p>
       ) : null}
     </div>

@@ -1,10 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useLanguage } from "./language-context";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
 export default function ContactForm() {
+  const { dict } = useLanguage();
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
 
@@ -29,7 +31,7 @@ export default function ContactForm() {
 
       const result = (await response.json()) as { error?: string };
       if (!response.ok) {
-        throw new Error(result.error ?? "暂时无法提交，请稍后再试。");
+        throw new Error(result.error ?? dict.form.defaultError);
       }
 
       form.reset();
@@ -38,7 +40,7 @@ export default function ContactForm() {
       setError(
         submitError instanceof Error
           ? submitError.message
-          : "暂时无法提交，请稍后再试。",
+          : dict.form.defaultError,
       );
       setState("error");
     }
@@ -48,7 +50,7 @@ export default function ContactForm() {
     return (
       <div className="form-success" role="status" aria-live="polite">
         <span aria-hidden="true">✓</span>
-        <p>谢谢，已经收到😊</p>
+        <p>{dict.form.successMessage}</p>
       </div>
     );
   }
@@ -57,36 +59,36 @@ export default function ContactForm() {
     <form className="lead-form" onSubmit={handleSubmit}>
       <div className="form-fields">
         <label>
-          <span>姓名（必填）</span>
+          <span>{dict.form.nameLabel}</span>
           <input
             name="name"
             type="text"
             autoComplete="name"
             maxLength={80}
             required
-            placeholder="您的姓名"
+            placeholder={dict.form.namePlaceholder}
           />
         </label>
         <label>
-          <span>邮件（必填）</span>
+          <span>{dict.form.emailLabel}</span>
           <input
             name="email"
             type="email"
             autoComplete="email"
             maxLength={160}
             required
-            placeholder="name@company.com"
+            placeholder={dict.form.emailPlaceholder}
           />
         </label>
       </div>
 
       <label className="honeypot" aria-hidden="true">
-        网站
+        {dict.form.honeypotLabel}
         <input name="website" type="text" tabIndex={-1} autoComplete="off" />
       </label>
 
       <button type="submit" disabled={state === "submitting"}>
-        {state === "submitting" ? "提交中…" : "提交"}
+        {state === "submitting" ? dict.form.submitting : dict.form.submit}
         <span aria-hidden="true">→</span>
       </button>
 

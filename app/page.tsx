@@ -1,62 +1,34 @@
+"use client";
+
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
-
-const floatingTerms = [
-  "BIM MANAGER",
-  "REVIT 建模",
-  "DYNAMO",
-  "BIM COORDINATOR",
-  "参数化设计",
-  "NAVISWORKS",
-  "族库管理",
-  "LOD 300",
-  "模型审计",
-  "AUTODESK REVIT",
-  "碰撞检测",
-  "项目交付",
-];
-
-const offers = [
-  {
-    tag: "TO C · 主线",
-    title: "Revit 闪电入门课",
-    copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
-    note: "$59 · 一次性购买",
-    featured: true,
-  },
-  {
-    tag: "TO B · 企业",
-    title: "企业 BIM 培训",
-    copy: "围绕团队现状、项目类型和交付目标定制课程，让培训直接服务于正在发生的项目。",
-    note: "适合设计院、施工与业主团队",
-    featured: false,
-  },
-  {
-    tag: "TO B · 专项",
-    title: "BIM 审计",
-    copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
-    note: "适合项目节点与交付前审查",
-    featured: false,
-  },
-];
+import LanguageToggle from "./language-toggle";
+import { useLanguage } from "./language-context";
+import { floatingTerms } from "./dictionaries";
 
 export default function Home() {
+  const { lang, dict } = useLanguage();
+  const terms = floatingTerms[lang];
+
   return (
     <>
       <a className="skip-link" href="#main-content">
-        跳到主要内容
+        {dict.skipLink}
       </a>
       <main id="main-content" tabIndex={-1}>
-        <nav className="nav" aria-label="主导航">
-          <a className="brand" href="#top" aria-label="BAYBIMAI 首页">
+        <nav className="nav" aria-label={dict.nav.ariaLabel}>
+          <a className="brand" href="#top" aria-label={dict.nav.brandAria}>
             BAY<span>BIM</span>AI
           </a>
-          <p>BIM LEARNING &amp; ENTERPRISE SERVICES</p>
+          <div className="nav-meta">
+            <p>{dict.nav.tagline}</p>
+            <LanguageToggle />
+          </div>
         </nav>
 
         <section className="hero" id="top">
           <div className="star-field" aria-hidden="true">
-            {floatingTerms.map((term, index) => (
+            {terms.map((term, index) => (
               <span className={`float-term term-${index + 1}`} key={term}>
                 {term}
               </span>
@@ -66,17 +38,19 @@ export default function Home() {
           <div className="hero-copy">
             <div className="eyebrow">
               <span />
-              从课程到企业落地
+              {dict.hero.eyebrow}
             </div>
             <h1>
-              把 <em>BIM</em> 学到
+              {dict.hero.titleBefore}
+              <em>{dict.hero.titleEm}</em>
+              {dict.hero.titleAfter}
               <br />
-              真正能用。
+              {dict.hero.titleLine2}
             </h1>
             <p className="subtitle">
-              面向个人的实战课程包，面向企业的定制培训。
+              {dict.hero.subtitleLine1}
               <br />
-              需要更严格的项目把关，我们也提供独立 BIM 审计。
+              {dict.hero.subtitleLine2}
             </p>
             <ContactForm />
           </div>
@@ -95,12 +69,12 @@ export default function Home() {
 
         <section className="offers" id="courses" aria-labelledby="offers-title">
           <div className="offers-heading">
-            <p>THREE WAYS TO WORK WITH US</p>
-            <h2 id="offers-title">学习、培训、审计，一条清晰的能力路径。</h2>
+            <p>{dict.offersSection.eyebrow}</p>
+            <h2 id="offers-title">{dict.offersSection.heading}</h2>
           </div>
 
           <div className="cards">
-            {offers.map((offer, index) => (
+            {dict.offers.map((offer, index) => (
               <article
                 className={`card ${offer.featured ? "featured" : ""}`}
                 key={offer.title}
@@ -121,10 +95,10 @@ export default function Home() {
         </section>
 
         <footer>
-          <a className="brand" href="#top">
+          <a className="brand" href="#top" aria-label={dict.footer.brandAria}>
             BAY<span>BIM</span>AI
           </a>
-          <p>让 BIM 能力真正进入工作。</p>
+          <p>{dict.footer.tagline}</p>
           <p>© {new Date().getFullYear()} BAYBIMAI.ORG</p>
         </footer>
       </main>
