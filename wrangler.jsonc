@@ -1,0 +1,26 @@
+{
+  "name": "my-project",
+  "compatibility_date": "2026-07-23",
+  "assets": {
+    "directory": "./dist"
+  },
+  "vars": {
+    "SITE_URL": "https://baybimai.org",
+    "STRIPE_PRODUCT_ID": "prod_UwwriUKoYty5aU",
+    "STRIPE_PRICE_ID": "price_1Tx2xp0q1azuHcKoncjOFTPl"
+  },
+  "routes": [
+    {
+      "pattern": "baybimai.org",
+      "custom_domain": true
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "site-creator-d1",
+      "database_id": "f0988d9e-675f-4f92-88ce-6a0001e81925",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}

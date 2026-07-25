@@ -1,4 +1,5 @@
 import vinext from "vinext";
+import { readFileSync } from "node:fs";
 import { defineConfig } from "vite";
 import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
@@ -7,6 +8,21 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";
 
 const { d1, r2 } = hostingConfig;
+const wranglerConfig = JSON.parse(
+  readFileSync(new URL("./wrangler.jsonc", import.meta.url), "utf8"),
+) as {
+  d1_databases?: Array<{
+    binding: string;
+    database_name: string;
+    database_id: string;
+  }>;
+};
+const hasDirectD1Binding = Boolean(
+  d1 &&
+    wranglerConfig.d1_databases?.some(
+      (database) => database.binding === d1,
+    ),
+);
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
@@ -14,7 +30,7 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
-  d1_databases: d1
+  d1_databases: d1 && !hasDirectD1Binding
     ? [
         {
           binding: d1,

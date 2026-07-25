@@ -8,6 +8,13 @@
       "when": 1784796623352,
       "tag": "0000_nostalgic_the_anarchist",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784976028279,
+      "tag": "0001_sour_vermin",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,5 @@
 import ContactForm from "./contact-form";
+import PurchaseButton from "./purchase-button";
 
 const floatingTerms = [
   "BIM MANAGER",
@@ -18,9 +19,9 @@ const floatingTerms = [
 const offers = [
   {
     tag: "TO C · 主线",
-    title: "BIM 实战课程包",
-    copy: "从建模基础到项目交付，按真实工作流程组织内容。随时学习，学完就能上手。",
-    note: "适合个人学习与职业提升",
+    title: "Revit 闪电入门课",
+    copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
+    note: "$59 · 一次性购买",
     featured: true,
   },
   {
@@ -88,7 +89,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="offers" aria-labelledby="offers-title">
+      <section className="offers" id="courses" aria-labelledby="offers-title">
         <div className="offers-heading">
           <p>THREE WAYS TO WORK WITH US</p>
           <h2 id="offers-title">学习、培训、审计，一条清晰的能力路径。</h2>
@@ -106,7 +107,10 @@ export default function Home() {
               </div>
               <h3>{offer.title}</h3>
               <p>{offer.copy}</p>
-              <div className="card-note">{offer.note}</div>
+              <div className="card-footer">
+                <div className="card-note">{offer.note}</div>
+                {offer.featured ? <PurchaseButton /> : null}
+              </div>
             </article>
           ))}
         </div>

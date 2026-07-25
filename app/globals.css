@@ -471,12 +471,119 @@ h1 em {
   line-height: 1.75;
 }
 
-.card-note {
+.card-footer {
   margin-top: auto;
+}
+
+.card-note {
   padding-top: 24px;
   border-top: 1px solid var(--line);
   color: #756c86;
   font-size: 0.76rem;
+}
+
+.card.featured .card-note {
+  color: var(--purple-light);
+  font-weight: 700;
+}
+
+.purchase-area {
+  margin-top: 16px;
+}
+
+.purchase-button {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--purple);
+  border-radius: 0;
+  background: var(--purple);
+  color: white;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms, border-color 160ms, transform 160ms;
+}
+
+.purchase-button:hover:not(:disabled) {
+  background: #6d28d9;
+  border-color: #a78bfa;
+  transform: translateY(-2px);
+}
+
+.purchase-button:focus-visible,
+.return-link:focus-visible {
+  outline: 3px solid #c4b5fd;
+  outline-offset: 3px;
+}
+
+.purchase-button:disabled {
+  cursor: wait;
+  opacity: 0.66;
+}
+
+.purchase-error {
+  margin: 10px 0 0 !important;
+  color: #fca5a5 !important;
+  font-size: 0.74rem;
+}
+
+.checkout-result {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 20%, #7c3aed38 0, transparent 34%),
+    linear-gradient(145deg, #08050f 0%, #140823 48%, #0b0714 100%);
+}
+
+.checkout-result-card {
+  width: min(680px, 100%);
+  padding: clamp(32px, 6vw, 64px);
+  border: 1px solid #7c3aed66;
+  background: #130d20e8;
+}
+
+.checkout-eyebrow {
+  margin: 0;
+}
+
+.success-mark {
+  width: 52px;
+  height: 52px;
+  margin-top: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--purple-light);
+  color: var(--purple-light);
+  font-size: 1.35rem;
+}
+
+.checkout-result h1 {
+  margin-top: 28px;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 1;
+}
+
+.checkout-result-card > p:not(.eyebrow) {
+  margin: 28px 0 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.return-link {
+  width: fit-content;
+  margin-top: 34px;
+  padding-bottom: 5px;
+  display: inline-block;
+  border-bottom: 1px solid var(--purple-light);
+  color: var(--purple-light);
+  font-weight: 700;
 }
 
 footer {
@@ -585,7 +692,8 @@ footer .brand {
   }
 
   .lead-form button,
-  .lead-form input {
+  .lead-form input,
+  .purchase-button {
     transition: none;
   }
 
