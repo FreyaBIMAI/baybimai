@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useLanguage } from "./language-context";
+import { dictionaries, type Lang } from "./dictionaries";
 
-export default function PurchaseButton() {
-  const { dict } = useLanguage();
+export default function PurchaseButton({ lang }: { lang: Lang }) {
+  const dict = dictionaries[lang];
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
   async function startCheckout() {

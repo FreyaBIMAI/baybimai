@@ -1,18 +1,17 @@
-"use client";
+import Link from "next/link";
+import { dictionaries, type Lang } from "./dictionaries";
 
-import { useLanguage } from "./language-context";
-
-export default function LanguageToggle() {
-  const { dict, toggleLang } = useLanguage();
+export default function LanguageToggle({ lang }: { lang: Lang }) {
+  const dict = dictionaries[lang];
+  const target = lang === "zh" ? "/en" : "/";
 
   return (
-    <button
-      type="button"
+    <Link
       className="lang-toggle"
-      onClick={toggleLang}
+      href={target}
       aria-label={dict.langToggleAria}
     >
       {dict.langToggleLabel}
-    </button>
+    </Link>
   );
 }

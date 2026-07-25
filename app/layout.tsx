@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { LanguageProvider } from "./language-context";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://baybimai.org"),
@@ -30,9 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body>
-        <LanguageProvider>{children}</LanguageProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

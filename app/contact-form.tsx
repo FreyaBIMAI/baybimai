@@ -1,12 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useLanguage } from "./language-context";
+import { dictionaries, type Lang } from "./dictionaries";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
-export default function ContactForm() {
-  const { dict } = useLanguage();
+export default function ContactForm({ lang }: { lang: Lang }) {
+  const dict = dictionaries[lang];
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
 
