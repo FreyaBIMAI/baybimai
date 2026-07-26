@@ -145,6 +145,7 @@ main:focus {
   align-items: center;
   justify-content: center;
   min-width: 44px;
+  min-height: 44px;
   padding: 8px 14px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;

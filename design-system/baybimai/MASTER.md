@@ -89,6 +89,8 @@ Content gutters are fluid: 20px on small screens and up to 80px on desktop.
 - Avoid horizontal scrolling and fixed-width containers.
 - Do not use color as the only state indicator.
 - Keep the floating technical terms decorative and hidden from assistive tech.
+- Preserve language choice in the URL (`/` for Chinese, `/en` for English) and
+  translate every form, feedback, checkout, and success state.
 
 ## Avoid
 

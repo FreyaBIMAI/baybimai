@@ -11,7 +11,11 @@ export default function PurchaseButton({ lang }: { lang: Lang }) {
     setStatus("loading");
 
     try {
-      const response = await fetch("/api/stripe/checkout", { method: "POST" });
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lang }),
+      });
       const result = (await response.json()) as {
         url?: string;
         error?: string;
