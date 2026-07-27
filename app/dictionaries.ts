@@ -21,6 +21,7 @@ type Dictionary = {
     brandAria: string;
     tagline: string;
     newsLabel: string;
+    careersLabel: string;
   };
   hero: {
     eyebrow: string;
@@ -100,6 +101,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       brandAria: "BAYBIMAI 首页",
       tagline: "BIM Consulting",
       newsLabel: "新闻",
+      careersLabel: "湾区求职",
     },
     hero: {
       eyebrow: "从课程到企业落地",
@@ -183,6 +185,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       brandAria: "BAYBIMAI home",
       tagline: "BIM Consulting",
       newsLabel: "News",
+      careersLabel: "Bay Area Careers",
     },
     hero: {
       eyebrow: "From courses to enterprise delivery",

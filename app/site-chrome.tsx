@@ -2,7 +2,13 @@ import Link from "next/link";
 import LanguageToggle from "./language-toggle";
 import { dictionaries, type Lang } from "./dictionaries";
 
-export function SiteNav({ lang }: { lang: Lang }) {
+export function SiteNav({
+  lang,
+  active,
+}: {
+  lang: Lang;
+  active?: "news" | "careers";
+}) {
   const dict = dictionaries[lang];
 
   return (
@@ -12,8 +18,19 @@ export function SiteNav({ lang }: { lang: Lang }) {
       </Link>
       <div className="nav-meta">
         <p>{dict.nav.tagline}</p>
-        <Link className="nav-link" href={lang === "zh" ? "/news" : "/en/news"}>
+        <Link
+          className="nav-link nav-link-news"
+          href={lang === "zh" ? "/news" : "/en/news"}
+          aria-current={active === "news" ? "page" : undefined}
+        >
           {dict.nav.newsLabel}
+        </Link>
+        <Link
+          className="nav-link nav-link-careers"
+          href={lang === "zh" ? "/careers" : "/en/careers"}
+          aria-current={active === "careers" ? "page" : undefined}
+        >
+          {dict.nav.careersLabel}
         </Link>
         <LanguageToggle lang={lang} />
       </div>

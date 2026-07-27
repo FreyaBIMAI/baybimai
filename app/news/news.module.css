@@ -598,6 +598,10 @@
     display: none;
   }
 
+  .navLinks a {
+    font-size: 0.66rem;
+  }
+
   .readerToolbar {
     width: calc(100% - 24px);
     margin-top: 16px;

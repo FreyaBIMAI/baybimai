@@ -54,3 +54,54 @@ test("includes accessible reading controls and local preferences", async () => {
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
   assert.match(styles, /\.darkMode/);
 });
+
+test("ships bilingual Bay Area AEC careers routes in the primary navigation", async () => {
+  await Promise.all([
+    access(new URL("app/careers/page.tsx", root)),
+    access(new URL("app/en/careers/page.tsx", root)),
+  ]);
+
+  const [chrome, dictionaries, newsShell] = await Promise.all([
+    source("app/site-chrome.tsx"),
+    source("app/dictionaries.ts"),
+    source("app/news/news-shell.tsx"),
+  ]);
+
+  assert.match(chrome, /\/careers/);
+  assert.match(chrome, /\/en\/careers/);
+  assert.match(dictionaries, /careersLabel: "湾区求职"/);
+  assert.match(dictionaries, /careersLabel: "Bay Area Careers"/);
+  assert.match(newsShell, /content\.careersPath/);
+});
+
+test("careers ranking distinguishes public market cap from private valuation", async () => {
+  const [content, ranking] = await Promise.all([
+    source("app/careers/careers-content.ts"),
+    source("app/careers/company-ranking.tsx"),
+  ]);
+
+  assert.match(content, /Turner Construction/);
+  assert.match(content, /DPR Construction/);
+  assert.match(content, /公开集团年营收/);
+  assert.match(content, /Private · not disclosed/);
+  assert.match(content, /companiesmarketcap\.com/);
+  assert.match(content, /turnerconstruction\.com\/careers/);
+  assert.match(ranking, /aria-pressed/);
+  assert.match(ranking, /marketCapUsd === null/);
+  assert.match(ranking, /Open official careers|copy\.careersCta/);
+});
+
+test("careers page includes accessible controls and interview preparation resources", async () => {
+  const [page, styles] = await Promise.all([
+    source("app/careers/careers-page.tsx"),
+    source("app/careers/careers.module.css"),
+  ]);
+
+  assert.match(page, /company-ranking-title/);
+  assert.match(page, /content\.prep\.screenItems/);
+  assert.match(page, /content\.prep\.portfolioItems/);
+  assert.match(page, /content\.prep\.days/);
+  assert.match(styles, /min-height:\s*44px/);
+  assert.match(styles, /@media \(max-width:\s*440px\)/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+});
