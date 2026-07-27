@@ -38,6 +38,13 @@ navigation, and bilingual URL behavior, with the following page-specific rules.
   reading signal.
 - People are presented as learnable paths, not as an influence ranking or
   endorsement.
+- People cards use official portraits only. Every portrait has a fixed 1:1 crop,
+  localized alt text, and an 80px circular frame (72px on narrow phones).
+- A shared grayscale, soft-sepia, purple-shift filter unifies portraits from
+  different source eras. Hover never reveals full color, so no person receives
+  stronger visual emphasis.
+- Portrait dimensions are reserved before loading and below-the-fold files load
+  lazily to avoid layout shift and unnecessary transfer.
 
 ## Responsive and accessibility
 
@@ -52,4 +59,3 @@ navigation, and bilingual URL behavior, with the following page-specific rules.
 - Body text remains at least 16px where it carries explanatory content, with
   1.65–1.8 line height.
 - Respect `prefers-reduced-motion`; no required information depends on hover.
-

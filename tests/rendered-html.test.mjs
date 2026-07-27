@@ -144,8 +144,9 @@ test("radar uses official sources and distinguishes confirmed dates from watch i
 });
 
 test("radar includes events, standards, papers, builder paths, and accessible responsive rules", async () => {
-  const [page, styles] = await Promise.all([
+  const [page, content, styles] = await Promise.all([
     source("app/radar/radar-page.tsx"),
+    source("app/radar/radar-content.ts"),
     source("app/radar/radar.module.css"),
   ]);
 
@@ -154,8 +155,27 @@ test("radar includes events, standards, papers, builder paths, and accessible re
   assert.match(page, /id="standards"/);
   assert.match(page, /id="research"/);
   assert.match(page, /id="people"/);
+  assert.match(page, /from "next\/image"/);
+  assert.match(page, /card\.imageAlt/);
+  assert.match(page, /loading="lazy"/);
+  assert.match(page, /unoptimized/);
   assert.match(page, /content\.awards\.steps/);
+  assert.match(content, /\/people\/rebecca-de-cicco\.webp/);
+  assert.match(content, /\/people\/kimon-onuma\.webp/);
+  assert.match(content, /\/people\/keith-bentley\.webp/);
+  assert.match(content, /\/people\/leon-van-berlo\.webp/);
+  assert.match(styles, /\.personPortrait/);
+  assert.match(styles, /filter:\s*grayscale\(1\)/);
   assert.match(styles, /min-height:\s*44px/);
   assert.match(styles, /@media \(max-width:\s*430px\)/);
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+});
+
+test("radar ships optimized local portraits for all builder profiles", async () => {
+  await Promise.all([
+    access(new URL("public/people/rebecca-de-cicco.webp", root)),
+    access(new URL("public/people/kimon-onuma.webp", root)),
+    access(new URL("public/people/keith-bentley.webp", root)),
+    access(new URL("public/people/leon-van-berlo.webp", root)),
+  ]);
 });

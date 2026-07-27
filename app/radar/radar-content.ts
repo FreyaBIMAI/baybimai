@@ -57,8 +57,7 @@ const links = {
   kimon:
     "https://nibs.org/?eventDisplay=past&post_type=tribe_organizer&tribe_organizer=kimon-onuma",
   keith: "https://www.bentley.com/company/executive-bios/",
-  leon:
-    "https://www.buildingsmart.org/buildingsmart-international-appoints-leon-van-berlo-as-the-technical-director/",
+  leon: "https://mybimapi.com/about/",
 };
 
 export const radarContent = {
@@ -339,6 +338,8 @@ export const radarContent = {
       cards: [
         {
           initials: "RD",
+          image: "/people/rebecca-de-cicco.webp",
+          imageAlt: "Rebecca De Cicco 官方头像",
           name: "Rebecca De Cicco",
           role: "Women in BIM 创始人及全球主席",
           path: ["建筑实践", "BIM 与数字领导力", "全球社群与导师网络"],
@@ -347,6 +348,8 @@ export const radarContent = {
         },
         {
           initials: "KO",
+          image: "/people/kimon-onuma.webp",
+          imageAlt: "Kimon Onuma 官方头像",
           name: "Kimon Onuma",
           role: "ONUMA 创始人 · BIMStorm 创建者",
           path: ["建筑师 + 开发者", "云端 BIM 与开放数据", "跨机构原型协作"],
@@ -355,6 +358,8 @@ export const radarContent = {
         },
         {
           initials: "KB",
+          image: "/people/keith-bentley.webp",
+          imageAlt: "Keith Bentley 官方头像",
           name: "Keith Bentley",
           role: "Bentley Systems 联合创始人",
           path: ["软件架构", "MicroStation", "基础设施数字平台"],
@@ -363,8 +368,10 @@ export const radarContent = {
         },
         {
           initials: "LvB",
+          image: "/people/leon-van-berlo.webp",
+          imageAlt: "Léon van Berlo 官方头像",
           name: "Léon van Berlo",
-          role: "buildingSMART 技术负责人",
+          role: "MyBimApi 联合创始人及 CEO · 前 buildingSMART 技术负责人",
           path: ["BIMserver 与研究", "开放标准协作", "技术路线治理"],
           lesson: "路径判断：标准工作既需要代码，也需要跨组织共识。",
           href: links.leon,
@@ -675,6 +682,8 @@ export const radarContent = {
       cards: [
         {
           initials: "RD",
+          image: "/people/rebecca-de-cicco.webp",
+          imageAlt: "Official portrait of Rebecca De Cicco",
           name: "Rebecca De Cicco",
           role: "Founder & Global Chair, Women in BIM",
           path: ["Architecture practice", "BIM and digital leadership", "Global community and mentoring"],
@@ -684,6 +693,8 @@ export const radarContent = {
         },
         {
           initials: "KO",
+          image: "/people/kimon-onuma.webp",
+          imageAlt: "Official portrait of Kimon Onuma",
           name: "Kimon Onuma",
           role: "Founder, ONUMA · Creator, BIMStorm",
           path: ["Architect + developer", "Cloud BIM and open data", "Cross-organization prototyping"],
@@ -693,6 +704,8 @@ export const radarContent = {
         },
         {
           initials: "KB",
+          image: "/people/keith-bentley.webp",
+          imageAlt: "Official portrait of Keith Bentley",
           name: "Keith Bentley",
           role: "Co-founder, Bentley Systems",
           path: ["Software architecture", "MicroStation", "Infrastructure platforms"],
@@ -702,8 +715,10 @@ export const radarContent = {
         },
         {
           initials: "LvB",
+          image: "/people/leon-van-berlo.webp",
+          imageAlt: "Official portrait of Léon van Berlo",
           name: "Léon van Berlo",
-          role: "Technical leadership, buildingSMART",
+          role: "Co-founder & CEO, MyBimApi · Former buildingSMART technical director",
           path: ["BIMserver and research", "Open-standard collaboration", "Technical road-map governance"],
           lesson:
             "Path signal: standards need both working code and cross-organization consensus.",
@@ -735,4 +750,3 @@ export const radarContent = {
     },
   },
 } as const;
-

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter, SiteNav } from "../site-chrome";
 import EventFilter from "./event-filter";
@@ -201,7 +202,19 @@ export default function RadarPage({ lang }: { lang: RadarLang }) {
             {content.people.cards.map((card) => (
               <article className={styles.personCard} key={card.name}>
                 <div className={styles.personTop}>
-                  <span>{card.initials}</span>
+                  <div className={styles.personPortrait}>
+                    <Image
+                      className={styles.personPortraitImage}
+                      src={card.image}
+                      alt={card.imageAlt}
+                      width={160}
+                      height={160}
+                      sizes="(max-width: 430px) 72px, 80px"
+                      quality={82}
+                      loading="lazy"
+                      unoptimized
+                    />
+                  </div>
                   <div>
                     <h3>{card.name}</h3>
                     <p>{card.role}</p>
@@ -304,4 +317,3 @@ function SectionHeading({
     </div>
   );
 }
-
