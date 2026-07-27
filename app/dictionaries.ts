@@ -6,6 +6,7 @@ export type Offer = {
   copy: string;
   note: string;
   featured: boolean;
+  detailHref: string;
 };
 
 type Dictionary = {
@@ -41,6 +42,7 @@ type Dictionary = {
   offersSection: {
     eyebrow: string;
     heading: string;
+    detailLabel: string;
   };
   offers: Offer[];
   purchase: {
@@ -119,6 +121,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     offersSection: {
       eyebrow: "THREE WAYS TO WORK WITH US",
       heading: "学习、培训、审计，一条清晰的能力路径。",
+      detailLabel: "了解详情",
     },
     offers: [
       {
@@ -127,6 +130,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
         note: "$59 · 一次性购买",
         featured: true,
+        detailHref: "/course",
       },
       {
         tag: "TO B · 企业",
@@ -134,6 +138,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "围绕团队现状、项目类型和交付目标定制课程，让培训直接服务于正在发生的项目。",
         note: "适合设计院、施工与业主团队",
         featured: false,
+        detailHref: "/training",
       },
       {
         tag: "TO B · 专项",
@@ -141,6 +146,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
         note: "适合项目节点与交付前审查",
         featured: false,
+        detailHref: "/audit",
       },
     ],
     purchase: {
@@ -188,6 +194,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     offersSection: {
       eyebrow: "THREE WAYS TO WORK WITH US",
       heading: "Learn, train, audit — one clear path to real capability.",
+      detailLabel: "Learn more",
     },
     offers: [
       {
@@ -196,6 +203,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "For complete beginners — get fluent in core Revit modeling and everyday workflows, fast. Learn on your own schedule, apply it immediately.",
         note: "$59 · one-time purchase",
         featured: true,
+        detailHref: "/en/course",
       },
       {
         tag: "TO B · ENTERPRISE",
@@ -203,6 +211,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "Curriculum built around your team's current tools, project types, and delivery goals — training that serves the work already underway.",
         note: "For design firms, contractors & owners",
         featured: false,
+        detailHref: "/en/training",
       },
       {
         tag: "TO B · SPECIALIZED",
@@ -210,6 +219,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
         note: "For project milestones & pre-delivery review",
         featured: false,
+        detailHref: "/en/audit",
       },
     ],
     purchase: {

@@ -18,12 +18,12 @@ test("ships Chinese and English news routes", async () => {
     ),
   ]);
 
-  const [home, dictionaries] = await Promise.all([
-    source("app/home-view.tsx"),
+  const [chrome, dictionaries] = await Promise.all([
+    source("app/site-chrome.tsx"),
     source("app/dictionaries.ts"),
   ]);
-  assert.match(home, /\/news/);
-  assert.match(home, /\/en\/news/);
+  assert.match(chrome, /\/news/);
+  assert.match(chrome, /\/en\/news/);
   assert.match(dictionaries, /newsLabel: "新闻"/);
   assert.match(dictionaries, /newsLabel: "News"/);
 });

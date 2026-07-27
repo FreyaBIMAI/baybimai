@@ -1,6 +1,7 @@
+import Link from "next/link";
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
-import LanguageToggle from "./language-toggle";
+import { SiteNav, SiteFooter } from "./site-chrome";
 import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
 
 export default function HomeView({ lang }: { lang: Lang }) {
@@ -13,21 +14,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
         {dict.skipLink}
       </a>
       <main id="main-content" tabIndex={-1}>
-        <nav className="nav" aria-label={dict.nav.ariaLabel}>
-          <a className="brand" href="#top" aria-label={dict.nav.brandAria}>
-            BAY<span>BIM</span>AI
-          </a>
-          <div className="nav-meta">
-            <p>{dict.nav.tagline}</p>
-            <a
-              className="nav-link"
-              href={lang === "zh" ? "/news" : "/en/news"}
-            >
-              {dict.nav.newsLabel}
-            </a>
-            <LanguageToggle lang={lang} />
-          </div>
-        </nav>
+        <SiteNav lang={lang} />
 
         <section className="hero" id="top">
           <div className="star-field" aria-hidden="true">
@@ -89,7 +76,13 @@ export default function HomeView({ lang }: { lang: Lang }) {
                 <h3>{offer.title}</h3>
                 <p>{offer.copy}</p>
                 <div className="card-footer">
-                  <div className="card-note">{offer.note}</div>
+                  <div className="card-note-row">
+                    <div className="card-note">{offer.note}</div>
+                    <Link className="card-detail-link" href={offer.detailHref}>
+                      {dict.offersSection.detailLabel}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                   {offer.featured ? <PurchaseButton lang={lang} /> : null}
                 </div>
               </article>
@@ -97,13 +90,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        <footer>
-          <a className="brand" href="#top" aria-label={dict.footer.brandAria}>
-            BAY<span>BIM</span>AI
-          </a>
-          <p>{dict.footer.tagline}</p>
-          <p>© {new Date().getFullYear()} BAYBIMAI.ORG</p>
-        </footer>
+        <SiteFooter lang={lang} />
       </main>
     </>
   );

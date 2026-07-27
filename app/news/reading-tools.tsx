@@ -29,12 +29,12 @@ export default function ReadingTools({
   const [speechState, setSpeechState] = useState<
     "idle" | "playing" | "paused"
   >("idle");
-  const [status, setStatus] = useState(labels.idle);
+  const [status, setStatus] = useState<string>(labels.idle);
   const segmentsRef = useRef<string[]>([]);
   const segmentIndexRef = useRef(0);
   const rateRef = useRef<number>(1);
 
-  const stopSpeech = (message = labels.stopped) => {
+  const stopSpeech = (message: string = labels.stopped) => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
