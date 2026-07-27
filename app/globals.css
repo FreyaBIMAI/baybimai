@@ -157,7 +157,7 @@ main:focus {
 }
 
 .nav-link[aria-current="page"] {
-  color: var(--gold-light);
+  color: var(--purple-light);
 }
 
 .lang-toggle {
@@ -392,14 +392,14 @@ h1 em {
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(135deg, #111014, #08070a) padding-box,
+    linear-gradient(120deg, #6d3fc9, #8b5cf6 45%, #a5773a 100%) padding-box,
     linear-gradient(120deg, #d7bd82, #8c7448 56%, #7452a9) border-box;
-  color: var(--gold-light);
+  color: #ffffff;
   font: inherit;
   font-weight: 700;
   box-shadow:
-    inset 0 1px 0 #ffffff12,
-    0 12px 30px #02010352;
+    inset 0 1px 0 #ffffff30,
+    0 14px 34px #6d3fc93d;
   transition:
     color 200ms var(--ease),
     box-shadow 200ms var(--ease),
@@ -412,7 +412,7 @@ h1 em {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(105deg, transparent 18%, #d6bd8517 50%, transparent 82%);
+  background: linear-gradient(105deg, transparent 18%, #f5e2b317 50%, transparent 82%);
   opacity: 0;
   transition: opacity 200ms var(--ease);
 }
@@ -436,19 +436,19 @@ h1 em {
   height: 28px;
   display: grid;
   place-items: center;
-  border: 1px solid #d3b97838;
+  border: 1px solid #ffffff55;
   border-radius: 50%;
-  color: var(--gold-light);
+  color: #ffffff;
 }
 
 .lead-form button:hover:not(:disabled),
 .purchase-button:hover:not(:disabled) {
-  color: #f3e5c4;
-  filter: brightness(1.12);
+  color: #ffffff;
+  filter: brightness(1.1);
   box-shadow:
-    inset 0 1px 0 #ffffff16,
-    0 14px 38px #04010670,
-    0 0 0 1px #d3b97816;
+    inset 0 1px 0 #ffffff40,
+    0 16px 40px #6d3fc94d,
+    0 0 0 1px #f5e2b330;
 }
 
 .lead-form button:hover:not(:disabled)::before,
@@ -1266,9 +1266,9 @@ footer .brand {
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 680px) {
   .nav-meta {
-    gap: 8px;
+    gap: 10px;
   }
 
   .nav-link-news {
@@ -1279,10 +1279,23 @@ footer .brand {
     padding-inline: 2px;
     font-size: 0.66rem;
   }
+}
+
+@media (max-width: 500px) {
+  .nav-link-careers {
+    display: none;
+  }
+
+  .nav-meta {
+    gap: 8px;
+  }
 
   .lang-toggle {
     padding-inline: 11px;
   }
+}
+
+@media (max-width: 430px) {
 
   .hero {
     min-height: 600px;
