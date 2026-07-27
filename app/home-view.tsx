@@ -66,7 +66,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
           <div className="cards">
             {dict.offers.map((offer, index) => (
               <article
-                className={`card ${offer.featured ? "featured" : ""}`}
+                className={`card card-${offer.theme} ${offer.featured ? "featured" : ""}`}
                 key={offer.title}
               >
                 <div className="card-top">

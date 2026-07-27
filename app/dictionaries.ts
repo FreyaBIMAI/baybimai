@@ -1,5 +1,7 @@
 export type Lang = "zh" | "en";
 
+export type OfferTheme = "green" | "blue" | "purple" | "paper";
+
 export type Offer = {
   tag: string;
   title: string;
@@ -7,6 +9,7 @@ export type Offer = {
   note: string;
   featured: boolean;
   detailHref: string;
+  theme: OfferTheme;
 };
 
 type Dictionary = {
@@ -95,7 +98,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     nav: {
       ariaLabel: "主导航",
       brandAria: "BAYBIMAI 首页",
-      tagline: "BIM LEARNING & ENTERPRISE SERVICES",
+      tagline: "BIM Consulting",
       newsLabel: "新闻",
     },
     hero: {
@@ -119,8 +122,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       defaultError: "暂时无法提交，请稍后再试。",
     },
     offersSection: {
-      eyebrow: "THREE WAYS TO WORK WITH US",
-      heading: "学习、培训、审计，一条清晰的能力路径。",
+      eyebrow: "WAYS TO WORK WITH US",
+      heading: "学习、培训、审计、新闻，一条清晰的能力路径。",
       detailLabel: "了解详情",
     },
     offers: [
@@ -131,6 +134,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "$59 · 一次性购买",
         featured: true,
         detailHref: "/course",
+        theme: "green",
       },
       {
         tag: "TO B · 企业",
@@ -139,6 +143,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "适合设计院、施工与业主团队",
         featured: false,
         detailHref: "/training",
+        theme: "blue",
       },
       {
         tag: "TO B · 专项",
@@ -147,6 +152,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "适合项目节点与交付前审查",
         featured: false,
         detailHref: "/audit",
+        theme: "purple",
+      },
+      {
+        tag: "新闻 · 观察",
+        title: "BIM 新闻与深度报告",
+        copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化，仿古纸阅读页面，支持语音朗读。",
+        note: "每周更新 · 支持语音朗读",
+        featured: false,
+        detailHref: "/news",
+        theme: "paper",
       },
     ],
     purchase: {
@@ -166,7 +181,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     nav: {
       ariaLabel: "Main navigation",
       brandAria: "BAYBIMAI home",
-      tagline: "BIM LEARNING & ENTERPRISE SERVICES",
+      tagline: "BIM Consulting",
       newsLabel: "News",
     },
     hero: {
@@ -192,8 +207,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       defaultError: "Couldn't submit right now — please try again shortly.",
     },
     offersSection: {
-      eyebrow: "THREE WAYS TO WORK WITH US",
-      heading: "Learn, train, audit — one clear path to real capability.",
+      eyebrow: "WAYS TO WORK WITH US",
+      heading:
+        "Learn, train, audit, and stay informed — one clear path to real capability.",
       detailLabel: "Learn more",
     },
     offers: [
@@ -204,6 +220,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "$59 · one-time purchase",
         featured: true,
         detailHref: "/en/course",
+        theme: "green",
       },
       {
         tag: "TO B · ENTERPRISE",
@@ -212,6 +229,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "For design firms, contractors & owners",
         featured: false,
         detailHref: "/en/training",
+        theme: "blue",
       },
       {
         tag: "TO B · SPECIALIZED",
@@ -220,6 +238,16 @@ export const dictionaries: Record<Lang, Dictionary> = {
         note: "For project milestones & pre-delivery review",
         featured: false,
         detailHref: "/en/audit",
+        theme: "purple",
+      },
+      {
+        tag: "NEWS · FIELD NOTES",
+        title: "BIM News & Deep Dives",
+        copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A parchment reading page with read-aloud support.",
+        note: "Updated weekly · Listen mode available",
+        featured: false,
+        detailHref: "/en/news",
+        theme: "paper",
       },
     ],
     purchase: {
