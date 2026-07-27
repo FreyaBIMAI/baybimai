@@ -19,6 +19,12 @@ export default function HomeView({ lang }: { lang: Lang }) {
           </a>
           <div className="nav-meta">
             <p>{dict.nav.tagline}</p>
+            <a
+              className="nav-link"
+              href={lang === "zh" ? "/news" : "/en/news"}
+            >
+              {dict.nav.newsLabel}
+            </a>
             <LanguageToggle lang={lang} />
           </div>
         </nav>

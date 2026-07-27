@@ -140,6 +140,22 @@ main:focus {
   gap: 18px;
 }
 
+.nav-link {
+  min-height: 44px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: color 180ms var(--ease);
+}
+
+.nav-link:hover {
+  color: var(--text);
+}
+
 .lang-toggle {
   display: inline-flex;
   align-items: center;
