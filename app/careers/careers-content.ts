@@ -18,6 +18,8 @@ export type CompanyProfile = {
   presenceUrl: string;
   revenueSource: string;
   marketSource?: string;
+  visaSummary?: string;
+  visaSource?: string;
 };
 
 type CompanyBase = Omit<
@@ -30,6 +32,7 @@ type CompanyBase = Omit<
   | "revenue"
   | "valuation"
   | "revenuePeriod"
+  | "visaSummary"
 >;
 
 const bases: CompanyBase[] = [
@@ -44,6 +47,7 @@ const bases: CompanyBase[] = [
       "https://www.turnerconstruction.com/locations/san-francisco-bay-area",
     revenueSource:
       "https://www.turnerconstruction.com/insights/turner-achieves-record-revenue-and-backlog-in-2025",
+    visaSource: "https://www.myvisajobs.com/employer/turner-construction/",
   },
   {
     id: "bechtel",
@@ -55,6 +59,7 @@ const bases: CompanyBase[] = [
     presenceUrl:
       "https://www.bechtel.com/press-releases/bechtel-awarded-contract-for-bart-silicon-valley-extension/",
     revenueSource: "https://www.bechtel.com/impact/financials/",
+    visaSource: "https://www.myvisajobs.com/employer/bechtel-international/",
   },
   {
     id: "aecom",
@@ -66,6 +71,7 @@ const bases: CompanyBase[] = [
     presenceUrl: "https://aecom.com/careers/",
     revenueSource: "https://investors.aecom.com/",
     marketSource: "https://companiesmarketcap.com/aecom/marketcap/",
+    visaSource: "https://www.myvisajobs.com/employer/aecom/",
   },
   {
     id: "dpr",
@@ -76,6 +82,8 @@ const bases: CompanyBase[] = [
     careersUrl: "https://www.dpr.com/company/careers/current-positions",
     presenceUrl: "https://www.dpr.com/company/careers/current-positions",
     revenueSource: "https://www.dpr.com/press-room",
+    visaSource:
+      "https://www.myvisajobs.com/employer/dpr-construction-a-general-partnership/",
   },
   {
     id: "wsp",
@@ -90,6 +98,7 @@ const bases: CompanyBase[] = [
     revenueSource:
       "https://www.wsp.com/en-ca/news/2026/wsp-releases-strong-q4-2025-results-and-issues-2026-financial-outlook",
     marketSource: "https://companiesmarketcap.com/wsp-global/marketcap/",
+    visaSource: "https://h1bgrader.com/h1b-sponsors/wsp-usa-inc-p1kz9mmj0m",
   },
   {
     id: "jacobs",
@@ -103,6 +112,7 @@ const bases: CompanyBase[] = [
       "https://www.jacobs.com/newsroom/press-release/jacobs-reports-strong-fiscal-fourth-quarter-and-fiscal-year-2025-earnings",
     marketSource:
       "https://www.macrotrends.net/stocks/charts/J/jacobs-solutions/market-cap",
+    visaSource: "https://www.myvisajobs.com/employer/jacobs/",
   },
   {
     id: "stantec",
@@ -116,6 +126,8 @@ const bases: CompanyBase[] = [
     revenueSource:
       "https://www.stantec.com/uk/news/2026/stantec-reports-record-2025-results-provides-2026-outlook",
     marketSource: "https://companiesmarketcap.com/stantec/marketcap/",
+    visaSource:
+      "https://www.myvisajobs.com/employer/stantec-consulting-services/",
   },
   {
     id: "arup",
@@ -125,6 +137,7 @@ const bases: CompanyBase[] = [
     marketCapUsd: null,
     careersUrl: "https://jobs.arup.com/page/americas-region-3",
     presenceUrl: "https://jobs.arup.com/page/americas-region-3",
+    visaSource: "https://www.myvisajobs.com/employer/arup/",
     revenueSource:
       "https://www.arup.com/globalassets/downloads/corporate-documents/financial-statements/arup-financial-statement-2025.pdf",
   },
@@ -144,6 +157,7 @@ const companyCopy: Record<
       | "revenue"
       | "valuation"
       | "revenuePeriod"
+      | "visaSummary"
     >
   >
 > = {
@@ -157,6 +171,8 @@ const companyCopy: Record<
       revenue: "$29.2B",
       valuation: "私营子公司 · 未单独公开",
       revenuePeriod: "2025 年集团营收",
+      visaSummary:
+        "有 H-1B 与 PERM 绿卡申请记录：2022–2024 财年提交约 164 份 H-1B LCA、15 份绿卡劳工证；2025 财年新增 3 份 PERM 申请，平均年薪约 $95,035。近年岗位数量有所下降，建议以官方招聘页当前岗位为准。",
     },
     bechtel: {
       type: "EPC · 大型基础设施",
@@ -167,6 +183,8 @@ const companyCopy: Record<
       revenue: "$20.6B",
       valuation: "私营公司 · 未公开",
       revenuePeriod: "2024 年 principal revenue",
+      visaSummary:
+        "多个关联主体（如 Bechtel Hydrocarbon Technology Solutions、Bechtel Oil Gas & Chemicals）分别提交 H-1B/绿卡申请，2022–2024 财年各自数量从个位数到约 53 份不等，规模相对温和。",
     },
     aecom: {
       type: "工程咨询 · 基础设施",
@@ -177,6 +195,8 @@ const companyCopy: Record<
       revenue: "$16.1B",
       valuation: "约 $8.69B",
       revenuePeriod: "FY2025 集团营收",
+      visaSummary:
+        "常年提交 H-1B LCA 与绿卡 PERM 申请，常见受资助岗位包括 Environmental Engineer、Software Developer；员工评价中提到公司绿卡政策相对合理。暂未找到最新精确数量，建议直接查证。",
     },
     dpr: {
       type: "技术型总承包 · VDC",
@@ -187,6 +207,8 @@ const companyCopy: Record<
       revenue: "$14.1B",
       valuation: "员工持有私营公司 · 未公开",
       revenuePeriod: "2025 年集团营收",
+      visaSummary:
+        "2021–2023 财年有 H-1B LCA 与绿卡劳工证申请记录（含核准、拒绝与撤回等状态）；员工评价提到团队协作好、绿卡赞助政策合理。",
     },
     wsp: {
       type: "工程咨询 · 建筑与交通",
@@ -197,6 +219,8 @@ const companyCopy: Record<
       revenue: "C$18.285B",
       valuation: "约 US$15.37B",
       revenuePeriod: "2025 年集团营收",
+      visaSummary:
+        "WSP USA Inc 2025 财年提交约 264 份 H-1B LCA；美国劳工部未将其列为 H-1B 依赖型雇主或存在恶意违规记录，同时提交绿卡 PERM 申请。",
     },
     jacobs: {
       type: "工程咨询 · 先进设施",
@@ -207,6 +231,8 @@ const companyCopy: Record<
       revenue: "$12.03B",
       valuation: "约 $15.89B",
       revenuePeriod: "FY2025 gross revenue",
+      visaSummary:
+        "2025 财年提交约 163 份 H-1B LCA，同时提交绿卡 PERM 申请；常见受资助岗位包括 Mechanical Engineer。",
     },
     stantec: {
       type: "设计与工程咨询",
@@ -217,6 +243,8 @@ const companyCopy: Record<
       revenue: "C$8.144B",
       valuation: "约 US$7.61B",
       revenuePeriod: "2025 年 gross revenue",
+      visaSummary:
+        "Stantec Consulting Services 2025 财年合计提交约 293 份 H-1B LCA 与绿卡 PERM 申请；注意 2021–2023 财年该主体一度没有新申请记录，赞助节奏并不稳定。",
     },
     arup: {
       type: "设计工程 · 技术顾问",
@@ -227,6 +255,8 @@ const companyCopy: Record<
       revenue: "£2.159B",
       valuation: "信托持有 · 无公开市值",
       revenuePeriod: "FY2025 集团营收",
+      visaSummary:
+        "多个 Arup 关联主体持续提交 H-1B 与绿卡 PERM 申请；员工评价不一，有人认为绿卡赞助政策合理，也有分部反馈移民支持一般，建议按具体办公室核实。",
     },
   },
   en: {
@@ -241,6 +271,8 @@ const companyCopy: Record<
       revenue: "$29.2B",
       valuation: "Private subsidiary · not separately disclosed",
       revenuePeriod: "2025 group revenue",
+      visaSummary:
+        "Active H-1B and PERM sponsor: roughly 164 H-1B LCAs and 15 green-card labor certifications filed FY2022–2024; 3 new PERM filings in FY2025 at an average salary near $95,035. Filing volume has been trending down—verify current openings on the official careers page.",
     },
     bechtel: {
       type: "EPC · Major infrastructure",
@@ -253,6 +285,8 @@ const companyCopy: Record<
       revenue: "$20.6B",
       valuation: "Private · not disclosed",
       revenuePeriod: "2024 principal revenue",
+      visaSummary:
+        "Several Bechtel entities (e.g. Bechtel Hydrocarbon Technology Solutions, Bechtel Oil Gas & Chemicals) file H-1B/green-card petitions separately, each in the single digits to roughly 53 filings across FY2022–2024—modest but active sponsorship.",
     },
     aecom: {
       type: "Engineering consultancy · Infrastructure",
@@ -265,6 +299,8 @@ const companyCopy: Record<
       revenue: "$16.1B",
       valuation: "Approx. $8.69B",
       revenuePeriod: "FY2025 group revenue",
+      visaSummary:
+        "Regular H-1B LCA and green-card PERM filer; commonly sponsored roles include Environmental Engineer and Software Developer. Employee reports describe the green-card policy as reasonable. No precise recent count found—verify directly.",
     },
     dpr: {
       type: "Technical GC · VDC",
@@ -277,6 +313,8 @@ const companyCopy: Record<
       revenue: "$14.1B",
       valuation: "Employee-owned private company · not disclosed",
       revenuePeriod: "2025 group revenue",
+      visaSummary:
+        "H-1B LCA and green-card labor certification filings on record for FY2021–2023 (mix of certified, denied, and withdrawn). Employee reviews cite strong team collaboration and a reasonable green-card sponsorship policy.",
     },
     wsp: {
       type: "Engineering consultancy · Buildings & transit",
@@ -289,6 +327,8 @@ const companyCopy: Record<
       revenue: "C$18.285B",
       valuation: "Approx. US$15.37B",
       revenuePeriod: "2025 group revenue",
+      visaSummary:
+        "WSP USA Inc filed about 264 H-1B LCAs in FY2025; not classified by DOL as H-1B dependent or a willful violator. Also files green-card PERM petitions.",
     },
     jacobs: {
       type: "Engineering consultancy · Advanced facilities",
@@ -301,6 +341,8 @@ const companyCopy: Record<
       revenue: "$12.03B",
       valuation: "Approx. $15.89B",
       revenuePeriod: "FY2025 gross revenue",
+      visaSummary:
+        "Filed about 163 H-1B LCAs in FY2025 and also sponsors green-card PERM cases; Mechanical Engineer is a commonly sponsored title.",
     },
     stantec: {
       type: "Design & engineering consultancy",
@@ -313,6 +355,8 @@ const companyCopy: Record<
       revenue: "C$8.144B",
       valuation: "Approx. US$7.61B",
       revenuePeriod: "2025 gross revenue",
+      visaSummary:
+        "Stantec Consulting Services filed roughly 293 combined H-1B LCA and green-card PERM applications in FY2025 — though the same entity shows no new filings for FY2021–2023, so sponsorship activity has been uneven year to year.",
     },
     arup: {
       type: "Design engineering · Technical advisory",
@@ -325,6 +369,8 @@ const companyCopy: Record<
       revenue: "£2.159B",
       valuation: "Trust-owned · no public market cap",
       revenuePeriod: "FY2025 group revenue",
+      visaSummary:
+        "Multiple Arup entities file H-1B and green-card PERM petitions on an ongoing basis. Employee reports are mixed — some describe reasonable green-card support, others report weaker immigration support at specific offices, so verify by office.",
     },
   },
 };
@@ -376,6 +422,8 @@ export const careersContent = {
       revenueSource: "营收来源",
       marketSource: "市值来源",
       presenceSource: "湾区依据",
+      visaFocus: "H-1B / PERM 绿卡赞助情况",
+      visaSourceLabel: "签证数据来源",
       privateRank: "未公开",
       asOf: "数据快照：2026 年 7 月 27 日",
     },
@@ -450,6 +498,7 @@ export const careersContent = {
       paragraphs: [
         "“年营收”是公司最新公开的全球集团口径，不是湾区办公室产值。跨币种公司按公开数字换算成美元近似值用于排序，卡片保留原报告币种。",
         "“估值”对上市公司使用 2026 年 7 月市场市值近似快照；私营、员工持有或信托持有公司统一标为未公开，不使用未经公司确认的媒体估算。",
+        "H-1B / PERM 绿卡赞助信息来自 MyVisaJobs、H1BGrader、H1BData.org 等公开劳工部（LCA / PERM）披露数据的整理网站，反映的是“提交过申请”，不代表个人一定能获批、拿到 offer 或实际入职；本页目前只核实了列表中已有官方数据来源的公司，其余公司请直接在这些网站或 USCIS H-1B Employer Data Hub 上按公司名查询。",
         "岗位数量、地点和招聘流程会变化。申请时只通过公司官方招聘页核对职位；本页不是雇主背书，也不保证获得面试或录用。",
       ],
     },
@@ -489,6 +538,8 @@ export const careersContent = {
       revenueSource: "Revenue source",
       marketSource: "Market-cap source",
       presenceSource: "Bay Area evidence",
+      visaFocus: "H-1B / PERM green card sponsorship",
+      visaSourceLabel: "Visa data source",
       privateRank: "Not public",
       asOf: "Data snapshot: July 27, 2026",
     },
@@ -563,6 +614,7 @@ export const careersContent = {
       paragraphs: [
         "Annual revenue is the latest reported global group figure, not Bay Area office output. Cross-currency values are converted to approximate USD for sorting; each card keeps the original reporting currency.",
         "Valuation uses an approximate July 2026 market-cap snapshot for listed firms. Private, employee-owned, and trust-owned firms are marked not public; unconfirmed media estimates are excluded.",
+        "H-1B / PERM green-card sponsorship notes come from public Department of Labor (LCA / PERM) disclosure data as compiled by MyVisaJobs, H1BGrader, and H1BData.org. Filing a petition is not the same as an approval, an offer, or a hire. Only the firms listed here have a sourced note so far — for any other firm, search it directly on those sites or the USCIS H-1B Employer Data Hub.",
         "Openings, locations, and recruiting processes change. Verify every role on the official careers page. This guide is not an employer endorsement and cannot guarantee an interview or offer.",
       ],
     },

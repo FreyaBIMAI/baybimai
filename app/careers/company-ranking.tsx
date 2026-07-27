@@ -19,6 +19,8 @@ type RankingCopy = {
   revenueSource: string;
   marketSource: string;
   presenceSource: string;
+  visaFocus: string;
+  visaSourceLabel: string;
   privateRank: string;
   asOf: string;
 };
@@ -180,6 +182,23 @@ export default function CompanyRanking({
                     >
                       {copy.presenceSource}
                     </a>
+                    {company.visaSummary ? (
+                      <p className={styles.visaNote}>
+                        <strong>{copy.visaFocus}</strong> {company.visaSummary}
+                        {company.visaSource ? (
+                          <>
+                            {" "}
+                            <a
+                              href={company.visaSource}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {copy.visaSourceLabel}
+                            </a>
+                          </>
+                        ) : null}
+                      </p>
+                    ) : null}
                   </div>
                 </details>
               </div>

@@ -452,7 +452,7 @@
   right: 0;
   bottom: calc(100% + 8px);
   width: max-content;
-  max-width: min(330px, 80vw);
+  max-width: min(380px, 85vw);
   padding: 10px;
   display: grid;
   gap: 4px;
@@ -473,6 +473,25 @@
 .companyActions details a:hover {
   background: #f0e9f5;
   color: #593b77;
+}
+
+.visaNote {
+  margin: 4px 2px 2px;
+  padding-top: 8px;
+  border-top: 1px solid #e4dbe9;
+  color: #4f3b5e;
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.visaNote strong {
+  color: #2a2030;
+}
+
+.visaNote a {
+  color: #7c4fd8;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .prepSection {
