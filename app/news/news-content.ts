@@ -28,6 +28,8 @@ export const newsContent = {
     navNews: "新闻",
     navCareers: "湾区求职",
     careersPath: "/careers",
+    navRadar: "全球 BIM 雷达",
+    radarPath: "/radar",
     skip: "跳到主要内容",
     footer: "BIM、施工科技与职业能力的独立观察。",
     index: {
@@ -190,6 +192,8 @@ export const newsContent = {
     navNews: "News",
     navCareers: "Bay Area careers",
     careersPath: "/en/careers",
+    navRadar: "Global BIM radar",
+    radarPath: "/en/radar",
     skip: "Skip to main content",
     footer: "Independent notes on BIM, construction technology, and careers.",
     index: {

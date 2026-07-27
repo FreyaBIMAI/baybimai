@@ -648,6 +648,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .careersLink {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skipLink,
   .readLink,

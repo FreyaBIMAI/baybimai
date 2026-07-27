@@ -105,3 +105,57 @@ test("careers page includes accessible controls and interview preparation resour
   assert.match(styles, /@media \(max-width:\s*440px\)/);
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
 });
+
+test("ships bilingual Global BIM Radar routes in primary and news navigation", async () => {
+  await Promise.all([
+    access(new URL("app/radar/page.tsx", root)),
+    access(new URL("app/en/radar/page.tsx", root)),
+  ]);
+
+  const [chrome, dictionaries, newsShell] = await Promise.all([
+    source("app/site-chrome.tsx"),
+    source("app/dictionaries.ts"),
+    source("app/news/news-shell.tsx"),
+  ]);
+
+  assert.match(chrome, /\/radar/);
+  assert.match(chrome, /\/en\/radar/);
+  assert.match(dictionaries, /radarLabel: "全球BIM雷达"/);
+  assert.match(dictionaries, /radarLabel: "Global BIM Radar"/);
+  assert.match(newsShell, /content\.radarPath/);
+});
+
+test("radar uses official sources and distinguishes confirmed dates from watch items", async () => {
+  const [content, filter] = await Promise.all([
+    source("app/radar/radar-content.ts"),
+    source("app/radar/event-filter.tsx"),
+  ]);
+
+  assert.match(content, /aechackathon\.com/);
+  assert.match(content, /building-smart\.or\.jp\/bsisummittokyo2026/);
+  assert.match(content, /technical\.buildingsmart\.org\/standards/);
+  assert.match(content, /company\.sbb\.ch/);
+  assert.match(content, /boverket\.se/);
+  assert.match(content, /buildingsmart\.fi/);
+  assert.match(content, /arxiv\.org\/abs\/2606\.20146/);
+  assert.match(content, /2026 年 7 月 27 日/);
+  assert.match(filter, /aria-pressed/);
+  assert.match(filter, /data-status/);
+});
+
+test("radar includes events, standards, papers, builder paths, and accessible responsive rules", async () => {
+  const [page, styles] = await Promise.all([
+    source("app/radar/radar-page.tsx"),
+    source("app/radar/radar.module.css"),
+  ]);
+
+  assert.match(page, /id="events"/);
+  assert.match(page, /id="regions"/);
+  assert.match(page, /id="standards"/);
+  assert.match(page, /id="research"/);
+  assert.match(page, /id="people"/);
+  assert.match(page, /content\.awards\.steps/);
+  assert.match(styles, /min-height:\s*44px/);
+  assert.match(styles, /@media \(max-width:\s*430px\)/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+});

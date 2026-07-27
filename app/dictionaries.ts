@@ -22,6 +22,7 @@ type Dictionary = {
     tagline: string;
     newsLabel: string;
     careersLabel: string;
+    radarLabel: string;
   };
   hero: {
     eyebrow: string;
@@ -102,6 +103,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tagline: "BIM Consulting",
       newsLabel: "新闻",
       careersLabel: "湾区求职",
+      radarLabel: "全球BIM雷达",
     },
     hero: {
       eyebrow: "从课程到企业落地",
@@ -186,6 +188,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       tagline: "BIM Consulting",
       newsLabel: "News",
       careersLabel: "Bay Area Careers",
+      radarLabel: "Global BIM Radar",
     },
     hero: {
       eyebrow: "From courses to enterprise delivery",

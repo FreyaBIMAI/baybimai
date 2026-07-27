@@ -35,7 +35,10 @@ export default function NewsShell({
             <a href={content.newsPath} aria-current="page">
               {content.navNews}
             </a>
-            <a href={content.careersPath}>{content.navCareers}</a>
+            <a className={styles.careersLink} href={content.careersPath}>
+              {content.navCareers}
+            </a>
+            <a href={content.radarPath}>{content.navRadar}</a>
             <a className={styles.languageLink} href={switchPath}>
               {content.switchLabel}
             </a>

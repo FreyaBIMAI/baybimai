@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { dictionaries, type Lang } from "./dictionaries";
 
-export default function LanguageToggle({ lang }: { lang: Lang }) {
+export default function LanguageToggle({
+  lang,
+  href,
+}: {
+  lang: Lang;
+  href?: string;
+}) {
   const dict = dictionaries[lang];
-  const target = lang === "zh" ? "/en" : "/";
+  const target = href ?? (lang === "zh" ? "/en" : "/");
 
   return (
     <Link
