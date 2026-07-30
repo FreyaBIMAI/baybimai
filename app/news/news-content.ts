@@ -182,7 +182,7 @@ export const newsContent = {
     locale: "en-US",
     homePath: "/en",
     newsPath: "/en/news",
-    articlePath: `/en/news/${ARTICLE_SLUG}`,
+    articlePath: "/en/news/weekly-bim-intelligence-001",
     switchPath: "/news",
     switchArticlePath: `/news/${ARTICLE_SLUG}`,
     switchLabel: "中文",
@@ -197,19 +197,19 @@ export const newsContent = {
     skip: "Skip to main content",
     footer: "Independent notes on BIM, construction technology, and careers.",
     index: {
-      eyebrow: "BAYBIMAI FIELD NOTES · JUL 27, 2026",
-      titleBefore: "BIM is entering the age of",
-      titleEm: "executable AI",
+      eyebrow: "WEEKLY BIM INTELLIGENCE · JUL 30, 2026",
+      titleBefore: "The renovation economy is changing",
+      titleEm: "what BIM expertise is worth",
       titleAfter: "",
       intro:
         "No generic tech hype—only product shifts that change how models, estimating, project controls, and delivery actually work.",
-      featuredLabel: "This week’s BIM deep dive",
+      featuredLabel: "Weekly BIM Intelligence · #001",
       featuredTitle:
-        "Construction AI is no longer just answering questions. It is starting to execute company workflows.",
+        "From China’s urban-renewal wave to Singapore’s CORENET X mandate",
       featuredSummary:
-        "From Procore Digital Coworker and Trimble AI Takeoff to Autodesk Forma, construction software is moving from providing tools to understanding standards, executing processes, and connecting outcomes.",
-      readArticle: "Read the report",
-      readTime: "About 9 minutes",
+        "Five signals on existing-condition BIM, openBIM submissions, AI judgment, coordinate-system risk, and the move beyond pure modeling.",
+      readArticle: "Read Issue #001",
+      readTime: "8 min read",
       signalTitle: "Three signals this week",
       signals: [
         {
