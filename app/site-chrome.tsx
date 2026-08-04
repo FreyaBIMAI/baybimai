@@ -7,7 +7,7 @@ export function SiteNav({
   active,
 }: {
   lang: Lang;
-  active?: "news" | "careers" | "radar";
+  active?: "news" | "careers" | "radar" | "daily";
 }) {
   const dict = dictionaries[lang];
   const languageHref =
@@ -23,6 +23,10 @@ export function SiteNav({
           ? lang === "zh"
             ? "/en/radar"
             : "/radar"
+          : active === "daily"
+            ? lang === "zh"
+              ? "/en/daily"
+              : "/daily"
           : undefined;
 
   return (
@@ -52,6 +56,13 @@ export function SiteNav({
           aria-current={active === "radar" ? "page" : undefined}
         >
           {dict.nav.radarLabel}
+        </Link>
+        <Link
+          className="nav-link nav-link-daily"
+          href={lang === "zh" ? "/daily" : "/en/daily"}
+          aria-current={active === "daily" ? "page" : undefined}
+        >
+          {dict.nav.dailyLabel}
         </Link>
         <LanguageToggle lang={lang} href={languageHref} />
       </div>

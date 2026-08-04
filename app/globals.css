@@ -1271,7 +1271,8 @@ footer .brand {
     gap: 10px;
   }
 
-  .nav-link-news {
+  .nav-link-news,
+  .nav-link-careers {
     display: none;
   }
 
@@ -1282,7 +1283,7 @@ footer .brand {
 }
 
 @media (max-width: 500px) {
-  .nav-link-careers {
+  .nav-link-radar {
     display: none;
   }
 

@@ -179,3 +179,51 @@ test("radar ships optimized local portraits for all builder profiles", async () 
     access(new URL("public/people/leon-van-berlo.webp", root)),
   ]);
 });
+
+test("ships bilingual Founder Daily routes in the primary navigation", async () => {
+  await Promise.all([
+    access(new URL("app/daily/page.tsx", root)),
+    access(new URL("app/en/daily/page.tsx", root)),
+  ]);
+
+  const [chrome, dictionaries] = await Promise.all([
+    source("app/site-chrome.tsx"),
+    source("app/dictionaries.ts"),
+  ]);
+
+  assert.match(chrome, /\/daily/);
+  assert.match(chrome, /\/en\/daily/);
+  assert.match(dictionaries, /dailyLabel: "Founder Daily"/);
+});
+
+test("Founder Daily includes a complete 28-day founder-English curriculum", async () => {
+  const content = await source("app/daily/daily-content.ts");
+
+  assert.match(content, /id: 1,[\s\S]*title: "Say what the company does"/);
+  assert.match(content, /id: 8,[\s\S]*title: "Enter a sales call with a hypothesis"/);
+  assert.match(content, /id: 15,[\s\S]*title: "Know why you are raising"/);
+  assert.match(content, /id: 28,[\s\S]*title: "Deliver the founder story"/);
+  assert.equal((content.match(/^    id: \d+,/gm) ?? []).length, 28);
+  assert.match(content, /每天 6 分钟/);
+  assert.match(content, /Six minutes a day/);
+});
+
+test("Founder Daily protects one-a-day progress and offers accessible practice tools", async () => {
+  const [reader, styles] = await Promise.all([
+    source("app/daily/daily-reader.tsx"),
+    source("app/daily/daily.module.css"),
+  ]);
+
+  assert.match(reader, /baybimai-founder-daily-v1/);
+  assert.match(reader, /window\.localStorage/);
+  assert.match(reader, /speechSynthesis/);
+  assert.match(reader, /completedToday/);
+  assert.match(reader, /nextLesson/);
+  assert.match(reader, /role="progressbar"/);
+  assert.match(reader, /aria-live="polite"/);
+  assert.match(reader, /aria-expanded=/);
+  assert.match(reader, /disabled=\{!ready \|\| isLessonComplete \|\| allComplete\}/);
+  assert.match(styles, /min-height:\s*44px/);
+  assert.match(styles, /@media \(max-width:\s*430px\)/);
+  assert.match(styles, /prefers-reduced-motion:\s*reduce/);
+});
