@@ -20,7 +20,8 @@ Use this override for `/daily` and `/en/daily`. The global BAYBIMAI system remai
 - The next unfinished lesson is today's lesson. Missing a day never skips content.
 - A completed lesson stays visible for the rest of the local day; the next lesson arrives on the next local date.
 - Translation is collapsed by default.
-- Speech synthesis reads English only and supports play, pause/resume, stop, and three speeds.
+- Speech synthesis reads English only, ranks natural system voices ahead of compact/robotic voices, and supports voice preview, manual selection, play, pause/resume, stop, and three speeds.
+- Save the preferred English voice locally and reuse it across Founder Daily and English news.
 - The learner writes two imperfect English sentences and explicitly completes the lesson.
 - Store completions and drafts in `localStorage`; require no account and make the device-local behavior explicit.
 - Never permit future-lesson navigation from the route map.

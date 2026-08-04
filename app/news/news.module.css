@@ -364,6 +364,7 @@
   padding: 10px 12px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   border: 1px solid var(--reader-line);
   border-radius: 16px;
@@ -378,7 +379,8 @@
 }
 
 .readerToolbar button,
-.speedControl select {
+.speedControl select,
+.voiceControl select {
   min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--reader-line);
@@ -391,11 +393,13 @@
 }
 
 .readerToolbar button:hover:not(:disabled),
-.speedControl select:hover {
+.speedControl select:hover,
+.voiceControl select:hover:not(:disabled) {
   border-color: var(--reader-ink);
 }
 
-.readerToolbar button:disabled {
+.readerToolbar button:disabled,
+.voiceControl select:disabled {
   cursor: not-allowed;
   opacity: 0.38;
 }
@@ -409,8 +413,32 @@
   font-weight: 700;
 }
 
+.voiceControl {
+  width: 100%;
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--reader-line);
+}
+
+.voiceControl label {
+  color: var(--reader-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.voiceControl select {
+  width: 100%;
+  min-width: 0;
+}
+
 .readerStatus {
-  margin: 0 0 0 auto;
+  grid-column: 1 / -1;
+  min-height: 1.4em;
+  margin: 0;
   color: var(--reader-muted);
   font-size: 0.68rem;
   white-space: nowrap;
@@ -628,7 +656,6 @@
 
   .readerStatus {
     width: 100%;
-    margin-left: 0;
   }
 
   .readerActions {
@@ -637,6 +664,14 @@
 
   .readerActions button {
     flex: 1;
+  }
+
+  .voiceControl {
+    grid-template-columns: 1fr auto;
+  }
+
+  .voiceControl label {
+    grid-column: 1 / -1;
   }
 
   .article {

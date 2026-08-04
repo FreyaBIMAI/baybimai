@@ -13,8 +13,9 @@
 
 ## Interaction
 
-- Native browser speech synthesis supports start, pause/resume, stop, and
-  0.8×–1.5× speed.
+- Native browser speech synthesis ranks natural voices ahead of compact/robotic
+  voices and supports saved voice selection, preview, start, pause/resume, stop,
+  and 0.8×–1.5× speed.
 - Reading controls and language links are at least 44px high.
 - Reading progress and the last scroll position are saved locally.
 - Font size and reading theme are stored as device-local preferences.

@@ -55,6 +55,30 @@ test("includes accessible reading controls and local preferences", async () => {
   assert.match(styles, /\.darkMode/);
 });
 
+test("reading tools prioritize natural system voices and let users preview a saved choice", async () => {
+  const [voiceHook, newsReader, dailyReader, newsContent, dailyContent] = await Promise.all([
+    source("app/use-natural-voice.ts"),
+    source("app/news/reading-tools.tsx"),
+    source("app/daily/daily-reader.tsx"),
+    source("app/news/news-content.ts"),
+    source("app/daily/daily-content.ts"),
+  ]);
+
+  assert.match(voiceHook, /NATURAL_VOICE_NAMES/);
+  assert.match(voiceHook, /microsoft \(aria\|jenny/);
+  assert.match(voiceHook, /compact\|espeak\|festival\|robot/);
+  assert.match(voiceHook, /voiceschanged/);
+  assert.match(voiceHook, /window\.localStorage\.setItem/);
+  assert.match(newsReader, /useNaturalVoice/);
+  assert.match(newsReader, /previewSelectedVoice/);
+  assert.match(newsReader, /utterance\.voice = selectedVoice/);
+  assert.match(dailyReader, /useNaturalVoice/);
+  assert.match(dailyReader, /function previewVoice/);
+  assert.match(dailyReader, /utterance\.voice = selectedVoice/);
+  assert.match(newsContent, /voice: "朗读声音"/);
+  assert.match(dailyContent, /voice: "Reading voice"/);
+});
+
 test("ships bilingual Bay Area AEC careers routes in the primary navigation", async () => {
   await Promise.all([
     access(new URL("app/careers/page.tsx", root)),

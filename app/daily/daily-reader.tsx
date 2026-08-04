@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { displayVoiceName, useNaturalVoice, voiceId } from "../use-natural-voice";
 import { dailyCopy, dailyLessons, type DailyLang } from "./daily-content";
 import styles from "./daily.module.css";
 
@@ -67,8 +68,13 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
   const [ready, setReady] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [speechState, setSpeechState] = useState<"idle" | "playing" | "paused">("idle");
+  const [previewingVoice, setPreviewingVoice] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [status, setStatus] = useState("");
+  const { voices, selectedVoice, selectedVoiceId, chooseVoice } = useNaturalVoice(
+    "en-US",
+    "baybimai-reading-voice-en",
+  );
   const today = localDate();
 
   useEffect(() => {
@@ -123,6 +129,7 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
       completed: [...progress.completed, { lessonId: lesson.id, date: today }],
     });
     window.speechSynthesis?.cancel();
+    setPreviewingVoice(false);
     setSpeechState("idle");
     setStatus(lesson.id === dailyLessons.length ? copy.roundComplete : copy.doneToday);
   }
@@ -139,15 +146,14 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
       return;
     }
     window.speechSynthesis.cancel();
+    setPreviewingVoice(false);
     const utterance = new SpeechSynthesisUtterance(
       `${lesson.title}. ${lesson.article.join(" ")} ${copy.phraseTitle}. ${lesson.phrase}. ${copy.speakTitle}. ${lesson.sayIt}`,
     );
     utterance.lang = "en-US";
     utterance.rate = speed;
-    const voice = window.speechSynthesis
-      .getVoices()
-      .find((candidate) => candidate.lang.toLowerCase().startsWith("en"));
-    if (voice) utterance.voice = voice;
+    utterance.pitch = 1;
+    if (selectedVoice) utterance.voice = selectedVoice;
     utterance.onend = () => setSpeechState("idle");
     utterance.onerror = () => setSpeechState("idle");
     window.speechSynthesis.speak(utterance);
@@ -155,14 +161,45 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
     setStatus(copy.speechPlaying);
   }
 
+  function previewVoice() {
+    if (!("speechSynthesis" in window) || !selectedVoice) return;
+    window.speechSynthesis.cancel();
+    setSpeechState("idle");
+    setPreviewingVoice(true);
+    const utterance = new SpeechSynthesisUtterance(
+      "A clear message earns the next conversation.",
+    );
+    utterance.lang = "en-US";
+    utterance.voice = selectedVoice;
+    utterance.rate = 0.96;
+    utterance.pitch = 1;
+    utterance.onend = () => {
+      setPreviewingVoice(false);
+      setStatus(copy.voiceReady);
+    };
+    utterance.onerror = () => setPreviewingVoice(false);
+    window.speechSynthesis.speak(utterance);
+    setStatus(copy.previewingVoice);
+  }
+
+  function changeVoice(nextVoiceId: string) {
+    window.speechSynthesis?.cancel();
+    setSpeechState("idle");
+    setPreviewingVoice(false);
+    chooseVoice(nextVoiceId);
+    setStatus(copy.voiceReady);
+  }
+
   function pause() {
     window.speechSynthesis.pause();
+    setPreviewingVoice(false);
     setSpeechState("paused");
     setStatus(copy.speechPaused);
   }
 
   function stop() {
     window.speechSynthesis.cancel();
+    setPreviewingVoice(false);
     setSpeechState("idle");
     setStatus(copy.speechStopped);
   }
@@ -214,6 +251,29 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
                 <option value="0.85">0.85×</option><option value="1">1×</option><option value="1.15">1.15×</option>
               </select>
             </label>
+            <div className={styles.voiceControl}>
+              <label htmlFor="daily-reading-voice">{copy.voice}</label>
+              <select
+                id="daily-reading-voice"
+                value={selectedVoiceId}
+                disabled={voices.length === 0}
+                onChange={(event) => changeVoice(event.target.value)}
+              >
+                {voices.length === 0 && <option value="">{copy.voiceLoading}</option>}
+                {voices.map((voice, index) => (
+                  <option value={voiceId(voice)} key={voiceId(voice)}>
+                    {displayVoiceName(voice)}{index === 0 ? ` · ${copy.recommended}` : ""}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={previewVoice}
+                disabled={!selectedVoice || previewingVoice}
+              >
+                {previewingVoice ? copy.previewingVoice : copy.previewVoice}
+              </button>
+            </div>
           </div>
 
           <button

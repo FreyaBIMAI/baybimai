@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { displayVoiceName, useNaturalVoice, voiceId } from "../use-natural-voice";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
@@ -29,16 +30,22 @@ export default function ReadingTools({
   const [speechState, setSpeechState] = useState<
     "idle" | "playing" | "paused"
   >("idle");
+  const [previewingVoice, setPreviewingVoice] = useState(false);
   const [status, setStatus] = useState<string>(labels.idle);
   const segmentsRef = useRef<string[]>([]);
   const segmentIndexRef = useRef(0);
   const rateRef = useRef<number>(1);
+  const { voices, selectedVoice, selectedVoiceId, chooseVoice } = useNaturalVoice(
+    newsContent[lang].locale,
+    `baybimai-reading-voice-${lang}`,
+  );
 
   const stopSpeech = (message: string = labels.stopped) => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
     segmentIndexRef.current = 0;
+    setPreviewingVoice(false);
     setSpeechState("idle");
     setStatus(message);
   };
@@ -58,11 +65,8 @@ export default function ReadingTools({
     const utterance = new SpeechSynthesisUtterance(segment);
     utterance.lang = newsContent[lang].locale;
     utterance.rate = rateRef.current;
-    const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find((item) =>
-      item.lang.toLowerCase().startsWith(lang === "zh" ? "zh" : "en"),
-    );
-    if (voice) utterance.voice = voice;
+    utterance.pitch = 1;
+    if (selectedVoice) utterance.voice = selectedVoice;
     utterance.onend = () => {
       segmentIndexRef.current += 1;
       speakNext();
@@ -89,9 +93,42 @@ export default function ReadingTools({
       .filter(Boolean);
     segmentIndexRef.current = 0;
     window.speechSynthesis.cancel();
+    setPreviewingVoice(false);
     setSpeechState("playing");
     setStatus(labels.playing);
     speakNext();
+  };
+
+  const previewSelectedVoice = () => {
+    if (!("speechSynthesis" in window) || !selectedVoice) return;
+    window.speechSynthesis.cancel();
+    segmentIndexRef.current = 0;
+    setSpeechState("idle");
+    setPreviewingVoice(true);
+    const sample = lang === "zh"
+      ? "清楚、自然的声音，让阅读更轻松。"
+      : "A calm, confident voice makes focused reading easier.";
+    const utterance = new SpeechSynthesisUtterance(sample);
+    utterance.lang = newsContent[lang].locale;
+    utterance.voice = selectedVoice;
+    utterance.rate = lang === "zh" ? 0.92 : 0.96;
+    utterance.pitch = 1;
+    utterance.onend = () => {
+      setPreviewingVoice(false);
+      setStatus(labels.voiceReady);
+    };
+    utterance.onerror = () => setPreviewingVoice(false);
+    window.speechSynthesis.speak(utterance);
+    setStatus(labels.previewingVoice);
+  };
+
+  const changeVoice = (nextVoiceId: string) => {
+    window.speechSynthesis?.cancel();
+    segmentIndexRef.current = 0;
+    setSpeechState("idle");
+    setPreviewingVoice(false);
+    chooseVoice(nextVoiceId);
+    setStatus(labels.voiceReady);
   };
 
   const togglePause = () => {
@@ -292,9 +329,32 @@ export default function ReadingTools({
             {darkMode ? labels.light : labels.dark}
           </button>
         </div>
-        <p className={styles.readerStatus} aria-live="polite">
-          {status}
-        </p>
+        <div className={styles.voiceControl}>
+          <label htmlFor={`news-reading-voice-${lang}`}>{labels.voice}</label>
+          <select
+            id={`news-reading-voice-${lang}`}
+            value={selectedVoiceId}
+            disabled={voices.length === 0}
+            onChange={(event) => changeVoice(event.target.value)}
+          >
+            {voices.length === 0 && <option value="">{labels.voiceLoading}</option>}
+            {voices.map((voice, index) => (
+              <option value={voiceId(voice)} key={voiceId(voice)}>
+                {displayVoiceName(voice)}{index === 0 ? ` · ${labels.recommended}` : ""}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={previewSelectedVoice}
+            disabled={!selectedVoice || previewingVoice}
+          >
+            {previewingVoice ? labels.previewingVoice : labels.previewVoice}
+          </button>
+          <p className={styles.readerStatus} aria-live="polite">
+            {status}
+          </p>
+        </div>
       </aside>
       {children}
     </div>
