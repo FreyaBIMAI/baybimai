@@ -72,14 +72,17 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
   const today = localDate();
 
   useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved) setProgress(sanitizeProgress(JSON.parse(saved)));
-    } catch {
-      setProgress(EMPTY_PROGRESS);
-    } finally {
-      setReady(true);
-    }
+    const frame = window.requestAnimationFrame(() => {
+      try {
+        const saved = window.localStorage.getItem(STORAGE_KEY);
+        if (saved) setProgress(sanitizeProgress(JSON.parse(saved)));
+      } catch {
+        setProgress(EMPTY_PROGRESS);
+      } finally {
+        setReady(true);
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => () => window.speechSynthesis?.cancel(), []);
