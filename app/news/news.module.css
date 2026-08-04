@@ -296,6 +296,23 @@
   font-weight: 700;
 }
 
+.weeklyLabel {
+  margin: 0 0 10px !important;
+  color: var(--news-gold) !important;
+  font-size: 0.68rem !important;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.insightStatement {
+  margin: 16px 0 0;
+  color: inherit !important;
+  font-family: "Lora", "PingFang SC", serif;
+  font-size: clamp(1.12rem, 2vw, 1.42rem) !important;
+  font-weight: 600;
+  line-height: 1.55 !important;
+}
+
 .readerShell {
   --reader-scale: 1;
   --reader-bg: #f2e7cc;
