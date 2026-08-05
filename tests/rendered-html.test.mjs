@@ -29,12 +29,30 @@ test("ships Chinese and English news routes", async () => {
   assert.match(chrome, /nav-link-hotspot/);
   assert.match(chrome, /nav-link-radar/);
   assert.match(chrome, /nav-separator/);
-  assert.doesNotMatch(chrome, /nav-link-course/);
+  assert.match(chrome, /nav-link-course/);
+  assert.match(chrome, /course#foundation/);
+  assert.match(chrome, /course#advanced/);
+  assert.match(chrome, /course#expansion/);
   assert.doesNotMatch(chrome, /nav-link-news/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
   assert.match(dictionaries, /hotspotLabel: "HOTSPOT"/);
   assert.match(dictionaries, /radarLabel: "RADAR"/);
+});
+
+test("course navigation exposes staged deep links and the homepage course action", async () => {
+  const [home, catalog, styles] = await Promise.all([
+    source("app/home-view.tsx"),
+    source("app/course-catalog.tsx"),
+    source("app/course.module.css"),
+  ]);
+
+  assert.match(home, /课程探索/);
+  assert.match(home, /EXPLORE COURSES/);
+  assert.match(home, /card-course-explore/);
+  assert.match(catalog, /groupAnchors/);
+  assert.match(catalog, /active="course"/);
+  assert.match(styles, /scroll-margin-top/);
 });
 
 test("includes verified report content and official sources", async () => {

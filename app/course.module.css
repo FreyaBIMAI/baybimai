@@ -74,6 +74,7 @@
 }
 
 .group {
+  scroll-margin-top: 112px;
   padding: clamp(28px, 4vw, 46px);
   display: grid;
   grid-template-columns: minmax(205px, 0.62fr) minmax(0, 1.38fr);

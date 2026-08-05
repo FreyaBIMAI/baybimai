@@ -59,7 +59,7 @@ export const newsContent = {
         "Autodesk 把 AI 放进模型、RFI 与成本流程，Procore 为下一阶段扩张准备资本，Trimble 则把 AI Takeoff 推向估算团队的实际培训场景。",
       readArticle: "阅读全文",
       readTime: "约 9 分钟",
-      signalTitle: "本周三个关键信号",
+      signalTitle: "今日三个关键信号",
       signals: [
         {
           company: "PROCORE",
@@ -253,7 +253,7 @@ export const newsContent = {
         "Five signals on existing-condition BIM, openBIM submissions, AI judgment, coordinate-system risk, and the move beyond pure modeling.",
       readArticle: "Read Issue #001",
       readTime: "8 min read",
-      signalTitle: "Three signals this week",
+      signalTitle: "Three signals today",
       signals: [
         {
           company: "PROCORE",

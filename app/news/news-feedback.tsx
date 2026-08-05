@@ -11,7 +11,7 @@ const copy = {
   zh: {
     label: "PRODUCT LOOP",
     title: "下一期，应该继续追踪什么？",
-    intro: "不收集个人信息。你的反馈会直接影响下周一的选题与信号筛选。",
+    intro: "不收集个人信息。你的反馈会直接影响下一期的选题与信号筛选。",
     useful: "继续追踪这类信号",
     examples: "想看更具体的项目案例",
     sources: "想看更多一手来源",
@@ -24,8 +24,8 @@ const copy = {
   },
   en: {
     label: "PRODUCT LOOP",
-    title: "What should next week’s brief track?",
-    intro: "No personal information is collected. Your feedback shapes Monday’s next story and signal filter.",
+    title: "What should the next brief track?",
+    intro: "No personal information is collected. Your feedback shapes the next story and signal filter.",
     useful: "Keep tracking this signal",
     examples: "Show more concrete project cases",
     sources: "Bring in more primary sources",

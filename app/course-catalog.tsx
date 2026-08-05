@@ -20,6 +20,8 @@ type CourseGroup = {
   courses: Course[];
 };
 
+const groupAnchors = ["foundation", "advanced", "expansion"] as const;
+
 const catalog: Record<Lang, {
   eyebrow: string;
   title: string;
@@ -159,7 +161,7 @@ export default function CourseCatalog({ lang }: { lang: Lang }) {
     <>
       <a className="skip-link" href="#course-catalog">{lang === "zh" ? "跳到主要内容" : "Skip to main content"}</a>
       <main id="course-catalog" tabIndex={-1} className={styles.page}>
-        <SiteNav lang={lang} />
+        <SiteNav lang={lang} active="course" />
 
         <section className={styles.hero}>
           <Reveal>
@@ -176,7 +178,11 @@ export default function CourseCatalog({ lang }: { lang: Lang }) {
         <section className={styles.groups} aria-label={lang === "zh" ? "课程分类" : "Course categories"}>
           {copy.groups.map((group, groupIndex) => (
             <Reveal delay={groupIndex * 70} key={group.number}>
-              <section className={styles.group} aria-labelledby={`course-group-${group.number}`}>
+              <section
+                className={styles.group}
+                id={groupAnchors[groupIndex]}
+                aria-labelledby={`course-group-${group.number}`}
+              >
                 <div className={styles.groupIntro}>
                   <span>{group.number}</span>
                   <p>{group.label}</p>

@@ -12,6 +12,17 @@ export function SiteNav({
   languageHref?: string;
 }) {
   const dict = dictionaries[lang];
+  const courseLinks = lang === "zh"
+    ? [
+        { href: "/course#foundation", label: "入门" },
+        { href: "/course#advanced", label: "进阶" },
+        { href: "/course#expansion", label: "拓展" },
+      ]
+    : [
+        { href: "/en/course#foundation", label: "Foundation" },
+        { href: "/en/course#advanced", label: "Advanced" },
+        { href: "/en/course#expansion", label: "Expansion" },
+      ];
   const languageHref =
     languageHrefOverride ?? (active === "course"
       ? lang === "zh"
@@ -48,6 +59,24 @@ export function SiteNav({
         >
           {dict.nav.homeLabel}
         </Link>
+        <span className="nav-separator" aria-hidden="true">｜</span>
+        <details className={`nav-course-menu ${active === "course" ? "nav-course-current" : ""}`}>
+          <summary
+            className="nav-link nav-link-course"
+            aria-current={active === "course" ? "page" : undefined}
+            aria-label={lang === "zh" ? "课程分类" : "Course categories"}
+          >
+            COURSE
+            <span className="nav-course-chevron" aria-hidden="true">⌄</span>
+          </summary>
+          <div className="nav-course-popover">
+            {courseLinks.map((course) => (
+              <Link href={course.href} key={course.href}>
+                {course.label}
+              </Link>
+            ))}
+          </div>
+        </details>
         <span className="nav-separator" aria-hidden="true">｜</span>
         <Link
           className="nav-link nav-link-hotspot"
