@@ -40,26 +40,6 @@ function allowedOrigins(request: Request) {
   ]);
 }
 
-function cacheKey(request: Request, text: string, voiceId: ElevenLabsVoiceId) {
-  return crypto.subtle
-    .digest("SHA-256", new TextEncoder().encode(`${ELEVENLABS_MODEL_ID}:${voiceId}:${text}`))
-    .then((digest) => {
-      const hash = Array.from(new Uint8Array(digest), (byte) =>
-        byte.toString(16).padStart(2, "0"),
-      ).join("");
-      // v3: bumped again to orphan v2 entries — those were written via a
-      // backgrounded (waitUntil) clone of a live upstream stream, which
-      // could still be truncated mid-write when the request finished before
-      // the write completed, poisoning the entry for every future cache hit.
-      return new Request(`${new URL(request.url).origin}/api/tts/cache/v3/${hash}`);
-    });
-}
-
-function defaultCache(): Cache | null {
-  if (typeof caches === "undefined") return null;
-  return (caches as CacheStorage & { default?: Cache }).default ?? null;
-}
-
 export function isElevenLabsVoiceId(value: string): value is ElevenLabsVoiceId {
   return ELEVENLABS_VOICE_IDS.some((voiceId) => voiceId === value);
 }
@@ -89,11 +69,6 @@ export async function createSpeech(
       { status: 503 },
     );
   }
-
-  const cache = defaultCache();
-  const key = await cacheKey(request, normalizedText, voiceId);
-  const cached = await cache?.match(key);
-  if (cached) return cached;
 
   const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
@@ -127,26 +102,19 @@ export async function createSpeech(
     );
   }
 
-  // Buffer the full clip instead of streaming + cloning response.body: a
-  // teed ReadableStream branch that sits unread while its sibling drains
-  // gets buffered in memory by the runtime regardless, and a backgrounded
-  // (waitUntil) write can still be cut off mid-stream when the request
-  // ends — both crashed the Worker or poisoned the cache on read. The
-  // client already awaits response.blob() before playback, so nothing is
-  // lost by resolving the bytes once, up front, on the server too.
+  // Buffer the full clip rather than passing response.body straight
+  // through as a stream.
   const audioBuffer = await response.arrayBuffer();
   const headers = {
     "Content-Type": response.headers.get("content-type") || "audio/mpeg",
-    "Cache-Control": "public, max-age=86400, s-maxage=2592000, immutable",
+    // Not cached at the edge (see git history: caches.default here reliably
+    // crashed the Worker on read, however the entry was written — reading
+    // back a stored Response, streamed or fully buffered, kept 500ing on
+    // every hit after the first while a fresh synthesis always succeeded).
+    // Every request re-synthesizes; ElevenLabs cost/latency traded for
+    // reliability until that's root-caused with Cloudflare.
+    "Cache-Control": "no-store",
     "X-BAYBIMAI-Voice": voiceId,
   };
-
-  if (cache) {
-    try {
-      await cache.put(key, new Response(audioBuffer, { headers }));
-    } catch (error) {
-      console.error("Unable to cache ElevenLabs speech", error);
-    }
-  }
   return new Response(audioBuffer, { headers });
 }
