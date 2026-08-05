@@ -159,6 +159,9 @@ export default function ReadingTools({
   };
 
   useEffect(() => {
+    // The article reader is visual-only. Stop any speech left running by an
+    // older deployment or another tab as soon as this page opens.
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     const initializePreferences = window.setTimeout(() => {
       const savedFont = Number(
         localStorage.getItem(`${storagePrefix}-font`) ?? "1",
@@ -269,44 +272,6 @@ export default function ReadingTools({
 
       <aside className={styles.readerToolbar} aria-label={labels.progressLabel}>
         <div className={styles.readerActions}>
-          <button type="button" onClick={startSpeech}>
-            {labels.listen}
-          </button>
-          <button
-            type="button"
-            onClick={togglePause}
-            disabled={speechState === "idle"}
-          >
-            {speechState === "paused" ? labels.resume : labels.pause}
-          </button>
-          <button
-            type="button"
-            onClick={() => stopSpeech()}
-            disabled={speechState === "idle"}
-          >
-            {labels.stop}
-          </button>
-        </div>
-
-        <label className={styles.speedControl}>
-          <span>{labels.speed}</span>
-          <select
-            value={rate}
-            onChange={(event) =>
-              changeRate(
-                Number(event.target.value) as (typeof SPEEDS)[number],
-              )
-            }
-          >
-            {SPEEDS.map((speed) => (
-              <option value={speed} key={speed}>
-                {speed}×
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <div className={styles.readerActions}>
           <button
             type="button"
             onClick={() => changeFont(-1)}
@@ -328,32 +293,6 @@ export default function ReadingTools({
           >
             {darkMode ? labels.light : labels.dark}
           </button>
-        </div>
-        <div className={styles.voiceControl}>
-          <label htmlFor={`news-reading-voice-${lang}`}>{labels.voice}</label>
-          <select
-            id={`news-reading-voice-${lang}`}
-            value={selectedVoiceId}
-            disabled={voices.length === 0}
-            onChange={(event) => changeVoice(event.target.value)}
-          >
-            {voices.length === 0 && <option value="">{labels.voiceLoading}</option>}
-            {voices.map((voice, index) => (
-              <option value={voiceId(voice)} key={voiceId(voice)}>
-                {displayVoiceName(voice)}{index === 0 ? ` · ${labels.recommended}` : ""}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={previewSelectedVoice}
-            disabled={!selectedVoice || previewingVoice}
-          >
-            {previewingVoice ? labels.previewingVoice : labels.previewVoice}
-          </button>
-          <p className={styles.readerStatus} aria-live="polite">
-            {status}
-          </p>
         </div>
       </aside>
       {children}

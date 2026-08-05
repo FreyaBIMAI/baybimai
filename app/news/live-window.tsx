@@ -83,8 +83,11 @@ export default function LiveWindow({ lang: _lang }: { lang: "zh" | "en" }) {
     setState("idle");
   };
 
-  useEffect(() => () => {
+  useEffect(() => {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    return () => {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
   }, []);
 
   if (collapsed) {
