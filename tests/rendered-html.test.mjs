@@ -98,7 +98,7 @@ test("News and Founder Daily provide reliable ElevenLabs voice playback", async 
   assert.match(dailyContent, /voice: "Reading voice"/);
 });
 
-test("HOTSPOT has subscription, Monday refresh, and a reader-feedback loop", async () => {
+test("HOTSPOT has subscription, daily refresh, and a reader-feedback loop", async () => {
   const [index, subscribe, feedback, feedbackRoute, worker, wrangler, reader, ttsRoute] = await Promise.all([
     source("app/news/news-index.tsx"),
     source("app/news/subscribe-view.tsx"),
@@ -116,8 +116,8 @@ test("HOTSPOT has subscription, Monday refresh, and a reader-feedback loop", asy
   assert.match(feedback, /PRODUCT LOOP/);
   assert.match(feedback, /\/api\/news\/feedback/);
   assert.match(feedbackRoute, /newsFeedback/);
-  assert.match(worker, /refreshMondayNews/);
-  assert.match(wrangler, /0 16 \* \* 1/);
+  assert.match(worker, /refreshDailyNews/);
+  assert.match(wrangler, /0 16 \* \* \*/);
   assert.match(reader, /splitBrowserSpeechText/);
   assert.match(reader, /cloudAvailable !== true/);
   assert.match(ttsRoute, /isElevenLabsConfigured/);

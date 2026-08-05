@@ -74,7 +74,7 @@ export default async function NewsIndex({ lang }: { lang: NewsLang }) {
 
         <section className={styles.signals} aria-labelledby="signals-title">
           <div className={styles.sectionHeading}>
-            <p>WEEKLY SIGNALS</p>
+            <p>DAILY SIGNALS</p>
             <h2 id="signals-title">{index.signalTitle}</h2>
           </div>
           <div className={styles.signalGrid}>

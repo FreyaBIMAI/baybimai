@@ -20,6 +20,8 @@ type NewsBindings = {
   DB?: D1Database;
   NEWS_REFRESH_URL?: string;
   NEWS_REFRESH_TOKEN?: string;
+  NEWS_DISTRIBUTION_URL?: string;
+  NEWS_DISTRIBUTION_TOKEN?: string;
 };
 
 type RefreshPayload = {
@@ -101,7 +103,7 @@ export async function getLatestPublishedNews(
   }
 }
 
-export async function refreshMondayNews(
+export async function refreshDailyNews(
   scheduledTime: number,
   override?: NewsBindings,
 ): Promise<void> {
@@ -160,4 +162,39 @@ export async function refreshMondayNews(
       ),
     ),
   );
+
+  await distributeDailyNews(current, publications);
+}
+
+// Best-effort fan-out to an external CRM/email tool once one is connected.
+// Never configured today, so this safely no-ops; a failure here must never
+// undo the publication that already landed in D1 above.
+async function distributeDailyNews(
+  current: NewsBindings,
+  publications: Array<[NewsLang, PublishedNews]>,
+): Promise<void> {
+  if (!current.NEWS_DISTRIBUTION_URL) return;
+
+  try {
+    const response = await fetch(current.NEWS_DISTRIBUTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(current.NEWS_DISTRIBUTION_TOKEN
+          ? { Authorization: `Bearer ${current.NEWS_DISTRIBUTION_TOKEN}` }
+          : {}),
+      },
+      body: JSON.stringify({
+        publications: publications.map(([language, publication]) => ({
+          language,
+          ...publication,
+        })),
+      }),
+    });
+    if (!response.ok) {
+      console.warn(`News distribution endpoint returned ${response.status}.`);
+    }
+  } catch (error) {
+    console.warn("Unable to reach News distribution endpoint", error);
+  }
 }

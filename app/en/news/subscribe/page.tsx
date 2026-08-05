@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import SubscribeView from "../../../news/subscribe-view";
 
 export const metadata: Metadata = {
-  title: "Subscribe to Weekly BIM Intelligence | BAYBIMAI",
-  description: "A Monday BIM headline and signal roundup. $5.9 monthly or $59 yearly.",
+  title: "Subscribe to Daily BIM Intelligence | BAYBIMAI",
+  description: "A daily BIM headline and signal roundup. $5.9 monthly or $59 yearly.",
   alternates: {
     canonical: "/en/news/subscribe",
     languages: {

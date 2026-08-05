@@ -39,7 +39,7 @@ export const newsContent = {
     skip: "跳到主要内容",
     footer: "BIM、施工科技与职业能力的独立观察。",
     index: {
-      eyebrow: "BAYBIMAI WEEKLY · 2026.08.05",
+      eyebrow: "BAYBIMAI DAILY · 2026.08.05",
       titleBefore: "本周施工科技：",
       titleEm: "AI 开始进入真实流程",
       titleAfter: "与资本周期",
@@ -47,7 +47,7 @@ export const newsContent = {
         "不追逐泛泛的技术热词，只追踪真正改变模型、造价、项目控制与交付方式的产品变化。",
       membership: {
         label: "MEMBER BRIEFING",
-        title: "每周一，一份可执行的 BIM 情报。",
+        title: "每天，一份可执行的 BIM 情报。",
         body: "获取头条深度报告、三条关键信号和完整历史归档。按月或按年订阅，随时可取消。",
         price: "$5.9 / 月 · $59 / 年",
         cta: "查看订阅说明",
@@ -232,7 +232,7 @@ export const newsContent = {
     skip: "Skip to main content",
     footer: "Independent notes on BIM, construction technology, and careers.",
     index: {
-      eyebrow: "WEEKLY BIM INTELLIGENCE · JUL 30, 2026",
+      eyebrow: "DAILY BIM INTELLIGENCE · JUL 30, 2026",
       titleBefore: "The renovation economy is changing",
       titleEm: "what BIM expertise is worth",
       titleAfter: "",
@@ -240,7 +240,7 @@ export const newsContent = {
         "No generic tech hype—only product shifts that change how models, estimating, project controls, and delivery actually work.",
       membership: {
         label: "MEMBER BRIEFING",
-        title: "One actionable BIM intelligence brief, every Monday.",
+        title: "One actionable BIM intelligence brief, every day.",
         body: "Get the lead story, three key signals, and the full archive. Subscribe monthly or yearly and cancel any time.",
         price: "$5.9 / mo · $59 / yr",
         cta: "View membership",

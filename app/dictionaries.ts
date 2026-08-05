@@ -149,8 +149,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         tag: "新闻 · 观察",
         title: "BIM 新闻与深度报告",
-        copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化。每周一自动发布头条和关键信号总结。",
-        note: "每周一更新 · $5.9/月 或 $59/年",
+        copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化。每天自动发布头条和关键信号总结。",
+        note: "每日更新 · $5.9/月 或 $59/年",
         featured: false,
         detailHref: "/news",
         action: {
@@ -242,8 +242,8 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         tag: "NEWS · FIELD NOTES",
         title: "BIM News & Deep Dives",
-        copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A new headline and signal roundup lands every Monday.",
-        note: "Mondays · $5.9/mo or $59/yr",
+        copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A new headline and signal roundup lands every day.",
+        note: "Daily · $5.9/mo or $59/yr",
         featured: false,
         detailHref: "/en/news",
         action: {

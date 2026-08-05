@@ -8,11 +8,11 @@ const copy = {
     backLabel: "返回新闻首页",
     backHref: "/news",
     eyebrow: "BAYBIMAI NEWS · 会员",
-    title: "订阅每周 BIM 深度报告",
+    title: "订阅每日 BIM 深度报告",
     intro:
-      "加入会员后，每周一自动更新的头条与关键信号第一时间推送，并解锁完整历史归档与语音朗读。",
+      "加入会员后，每天自动更新的头条与关键信号第一时间推送，并解锁完整历史归档与语音朗读。",
     features: [
-      "每周一更新：头条深度报告 + 三条关键信号",
+      "每日更新：头条深度报告 + 三条关键信号",
       "完整历史归档，随时回看过往报告",
       "语音朗读与文字跟读，通勤路上也能听完",
       "随时可取消，按月或按年付费",
@@ -29,11 +29,11 @@ const copy = {
     backLabel: "Back to News",
     backHref: "/en/news",
     eyebrow: "BAYBIMAI NEWS · MEMBERSHIP",
-    title: "Subscribe to the weekly BIM intelligence report",
+    title: "Subscribe to the daily BIM intelligence report",
     intro:
-      "Members get the Monday headline and signal roundup first, plus the full archive and read-aloud support.",
+      "Members get each day's headline and signal roundup first, plus the full archive and read-aloud support.",
     features: [
-      "New headline + 3 key signals every Monday",
+      "New headline + 3 key signals every day",
       "Full archive access — revisit any past report",
       "Read-aloud and word-by-word follow-along",
       "Cancel anytime — pay monthly or yearly",

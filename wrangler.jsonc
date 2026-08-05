@@ -5,7 +5,7 @@
     "directory": "./dist"
   },
   "triggers": {
-    "crons": ["0 16 * * 1"]
+    "crons": ["0 16 * * *"]
   },
   "vars": {
     "SITE_URL": "https://baybimai.org",
