@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
+import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
 
@@ -25,7 +26,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
             ))}
           </div>
 
-          <div className="hero-copy">
+          <Reveal className="hero-copy">
             <div className="eyebrow">
               <span />
               {dict.hero.eyebrow}
@@ -43,7 +44,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
               {dict.hero.subtitleLine2}
             </p>
             <ContactForm lang={lang} />
-          </div>
+          </Reveal>
 
           <div className="bim-graphic" aria-hidden="true">
             <div className="plane plane-a" />
@@ -58,34 +59,35 @@ export default function HomeView({ lang }: { lang: Lang }) {
         </section>
 
         <section className="offers" id="courses" aria-labelledby="offers-title">
-          <div className="offers-heading">
+          <Reveal className="offers-heading">
             <p>{dict.offersSection.eyebrow}</p>
             <h2 id="offers-title">{dict.offersSection.heading}</h2>
-          </div>
+          </Reveal>
 
           <div className="cards">
             {dict.offers.map((offer, index) => (
-              <article
-                className={`card card-${offer.theme} ${offer.featured ? "featured" : ""}`}
-                key={offer.title}
-              >
-                <div className="card-top">
-                  <span className="card-index">0{index + 1}</span>
-                  <span className="card-tag">{offer.tag}</span>
-                </div>
-                <h3>{offer.title}</h3>
-                <p>{offer.copy}</p>
-                <div className="card-footer">
-                  <div className="card-note-row">
-                    <div className="card-note">{offer.note}</div>
-                    <Link className="card-detail-link" href={offer.detailHref}>
-                      {dict.offersSection.detailLabel}
-                      <span aria-hidden="true">→</span>
-                    </Link>
+              <Reveal delay={index * 90} key={offer.title}>
+                <article
+                  className={`card card-${offer.theme} ${offer.featured ? "featured" : ""}`}
+                >
+                  <div className="card-top">
+                    <span className="card-index">0{index + 1}</span>
+                    <span className="card-tag">{offer.tag}</span>
                   </div>
-                  {offer.featured ? <PurchaseButton lang={lang} /> : null}
-                </div>
-              </article>
+                  <h3>{offer.title}</h3>
+                  <p>{offer.copy}</p>
+                  <div className="card-footer">
+                    <div className="card-note-row">
+                      <div className="card-note">{offer.note}</div>
+                      <Link className="card-detail-link" href={offer.detailHref}>
+                        {dict.offersSection.detailLabel}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </div>
+                    {offer.featured ? <PurchaseButton lang={lang} /> : null}
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </section>

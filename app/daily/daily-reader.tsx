@@ -17,6 +17,34 @@ type StoredProgress = { completed: Completion[]; drafts: Record<string, string> 
 
 const EMPTY_PROGRESS: StoredProgress = { completed: [], drafts: {} };
 
+type WordToken = { text: string; start: number; end: number; paragraphIndex: number; tokenIndex: number };
+
+// Tokenizes each paragraph into words with character offsets relative to
+// `paragraphs.join(" ")` — the exact string handed to the TTS hook — so the
+// approximate playback charIndex it reports can be mapped back to a word.
+function tokenizeArticle(paragraphs: string[]): WordToken[] {
+  const tokens: WordToken[] = [];
+  let offset = 0;
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    const wordPattern = /\S+/g;
+    let match: RegExpExecArray | null;
+    let tokenIndex = 0;
+    while ((match = wordPattern.exec(paragraph)) !== null) {
+      const start = offset + match.index;
+      tokens.push({
+        text: match[0],
+        start,
+        end: start + match[0].length,
+        paragraphIndex,
+        tokenIndex,
+      });
+      tokenIndex += 1;
+    }
+    offset += paragraph.length + 1; // +1 for the space joining paragraphs
+  });
+  return tokens;
+}
+
 function localDate(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -89,6 +117,7 @@ export default function DailyReader({
     resume,
     stop: stopVoice,
     setRate: setPlaybackRate,
+    charIndex,
   } = useElevenLabsVoice();
   const { voiceId, chooseVoice } = useVoicePreference();
   const previewingVoice = speechMode === "preview" && speechState !== "idle";
@@ -122,6 +151,31 @@ export default function DailyReader({
   const streak = calculateStreak(progress.completed, today);
   const draft = progress.drafts[String(lesson.id)] ?? "";
   const progressPercent = Math.round((progress.completed.length / lessons.length) * 100);
+
+  // The spoken string is `${title}. ${article}. ...` — this is where the
+  // article body starts within it, so the global charIndex the hook reports
+  // can be translated into a local offset for word-cursor highlighting.
+  const articleStart = `${lesson.title}. `.length;
+  const articleTokens = useMemo(() => tokenizeArticle(lesson.article), [lesson.article]);
+  const articleLength = useMemo(
+    () => lesson.article.reduce((sum, paragraph) => sum + paragraph.length + 1, -1),
+    [lesson.article],
+  );
+  const showCursor =
+    speechMode === "lesson" &&
+    (speechState === "playing" || speechState === "paused") &&
+    charIndex >= articleStart &&
+    charIndex < articleStart + articleLength;
+  const localCharIndex = charIndex - articleStart;
+  const activeToken = useMemo(() => {
+    if (!showCursor) return null;
+    let active: WordToken | null = null;
+    for (const token of articleTokens) {
+      if (token.start <= localCharIndex) active = token;
+      else break;
+    }
+    return active;
+  }, [articleTokens, showCursor, localCharIndex]);
 
   function persist(next: StoredProgress) {
     setProgress(next);
@@ -234,7 +288,26 @@ export default function DailyReader({
           </header>
 
           <div className={styles.articleCopy} lang="en">
-            {lesson.article.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {lesson.article.map((paragraph, paragraphIndex) => (
+              <p key={paragraph}>
+                {articleTokens
+                  .filter((token) => token.paragraphIndex === paragraphIndex)
+                  .map((token, index, paragraphTokens) => (
+                    <span key={token.start}>
+                      <span
+                        className={
+                          activeToken?.start === token.start
+                            ? `${styles.word} ${styles.activeWord}`
+                            : styles.word
+                        }
+                      >
+                        {token.text}
+                      </span>
+                      {index < paragraphTokens.length - 1 ? " " : ""}
+                    </span>
+                  ))}
+              </p>
+            ))}
           </div>
 
           <div className={styles.audioControls} aria-label={copy.listen}>

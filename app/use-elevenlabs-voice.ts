@@ -72,7 +72,13 @@ export function useVoicePreference() {
 
   useEffect(() => {
     const saved = window.localStorage.getItem(VOICE_STORAGE_KEY);
-    if (saved && isBAYBIMAIVoice(saved)) setVoiceId(saved);
+    if (saved && isBAYBIMAIVoice(saved)) {
+      // One-time sync from localStorage after mount: state must start as
+      // ADAM_VOICE_ID to match the server-rendered markup, so the saved
+      // preference can only be applied once we're safely past hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVoiceId(saved);
+    }
   }, []);
 
   const chooseVoice = useCallback((nextVoiceId: ElevenLabsVoiceId) => {
@@ -83,13 +89,44 @@ export function useVoicePreference() {
   return { voiceId, chooseVoice };
 }
 
+// How often the playback-position poll updates charIndex. ElevenLabs gives us
+// no word-level timestamps, so this is an approximation from
+// audio.currentTime/audio.duration — a full requestAnimationFrame loop would
+// just churn re-renders for precision nothing downstream can use.
+const PROGRESS_POLL_MS = 90;
+
 export function useElevenLabsVoice() {
   const [state, setState] = useState<ElevenLabsSpeechState>("idle");
+  const [charIndex, setCharIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const generationRef = useRef(0);
   const rateRef = useRef(1);
+  const progressTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const chunksRef = useRef<string[]>([]);
+  const chunkOffsetsRef = useRef<number[]>([]);
+  const chunkIndexRef = useRef(0);
+
+  const clearProgressTimer = useCallback(() => {
+    if (progressTimerRef.current !== null) {
+      clearInterval(progressTimerRef.current);
+      progressTimerRef.current = null;
+    }
+  }, []);
+
+  const startProgressTimer = useCallback(() => {
+    clearProgressTimer();
+    progressTimerRef.current = setInterval(() => {
+      const audio = audioRef.current;
+      const chunk = chunksRef.current[chunkIndexRef.current];
+      const offset = chunkOffsetsRef.current[chunkIndexRef.current];
+      if (!audio || chunk === undefined || offset === undefined) return;
+      if (!audio.duration || Number.isNaN(audio.duration)) return;
+      const fraction = Math.min(1, audio.currentTime / audio.duration);
+      setCharIndex(offset + Math.round(fraction * chunk.length));
+    }, PROGRESS_POLL_MS);
+  }, [clearProgressTimer]);
 
   const releaseAudio = useCallback(() => {
     const audio = audioRef.current;
@@ -111,9 +148,11 @@ export function useElevenLabsVoice() {
     generationRef.current += 1;
     abortRef.current?.abort();
     abortRef.current = null;
+    clearProgressTimer();
     releaseAudio();
     setState("idle");
-  }, [releaseAudio]);
+    setCharIndex(0);
+  }, [releaseAudio, clearProgressTimer]);
 
   const speak = useCallback(async (
     text: string,
@@ -124,16 +163,34 @@ export function useElevenLabsVoice() {
     const chunks = splitSpeechText(text);
     if (chunks.length === 0) return;
 
+    // Locate each chunk's start offset within the original text so charIndex
+    // can be reported against the caller's untouched string. In practice
+    // lesson-length text almost always yields a single chunk, so this is
+    // exact; indexOf falling back to the running cursor keeps it sane even
+    // if a chunk's whitespace was trimmed and no longer matches verbatim.
+    const offsets: number[] = [];
+    let searchFrom = 0;
+    for (const chunk of chunks) {
+      const found = text.indexOf(chunk, searchFrom);
+      const start = found >= 0 ? found : searchFrom;
+      offsets.push(start);
+      searchFrom = start + chunk.length;
+    }
+    chunksRef.current = chunks;
+    chunkOffsetsRef.current = offsets;
+
     const generation = generationRef.current;
     rateRef.current = options.rate ?? 1;
 
     const playChunk = async (index: number): Promise<void> => {
       if (generation !== generationRef.current) return;
       if (index >= chunks.length) {
+        clearProgressTimer();
         setState("idle");
         options.onEnded?.();
         return;
       }
+      chunkIndexRef.current = index;
 
       const controller = new AbortController();
       abortRef.current = controller;
@@ -158,19 +215,24 @@ export function useElevenLabsVoice() {
         audioRef.current = audio;
         audio.playbackRate = rateRef.current;
         audio.onended = () => {
+          clearProgressTimer();
           releaseAudio();
           void playChunk(index + 1);
         };
         audio.onerror = () => {
+          clearProgressTimer();
           releaseAudio();
           setState("idle");
           options.onError?.();
         };
         await audio.play();
         setState("playing");
+        setCharIndex(offsets[index] ?? 0);
+        startProgressTimer();
       } catch (error) {
         if (controller.signal.aborted || generation !== generationRef.current) return;
         console.error("Unable to play ElevenLabs voice", error);
+        clearProgressTimer();
         releaseAudio();
         setState("idle");
         options.onError?.();
@@ -178,19 +240,21 @@ export function useElevenLabsVoice() {
     };
 
     await playChunk(0);
-  }, [releaseAudio, stop]);
+  }, [releaseAudio, stop, clearProgressTimer, startProgressTimer]);
 
   const pause = useCallback(() => {
     if (!audioRef.current) return;
     audioRef.current.pause();
+    clearProgressTimer();
     setState("paused");
-  }, []);
+  }, [clearProgressTimer]);
 
   const resume = useCallback(async () => {
     if (!audioRef.current) return;
     await audioRef.current.play();
     setState("playing");
-  }, []);
+    startProgressTimer();
+  }, [startProgressTimer]);
 
   const setRate = useCallback((rate: number) => {
     rateRef.current = rate;
@@ -199,5 +263,5 @@ export function useElevenLabsVoice() {
 
   useEffect(() => stop, [stop]);
 
-  return { state, speak, pause, resume, stop, setRate };
+  return { state, speak, pause, resume, stop, setRate, charIndex };
 }

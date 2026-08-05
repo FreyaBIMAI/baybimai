@@ -675,6 +675,15 @@ h1 em {
   gap: 18px;
 }
 
+.cards > .reveal {
+  display: flex;
+  flex-direction: column;
+}
+
+.cards > .reveal > .card {
+  flex: 1;
+}
+
 .card {
   position: relative;
   min-height: 390px;
@@ -1131,7 +1140,7 @@ h1 em {
   letter-spacing: -0.02em;
 }
 
-.service-cta > p {
+.service-cta p {
   margin: 16px 0 32px;
   color: var(--muted);
   font-size: 0.98rem;
@@ -1331,6 +1340,21 @@ footer .brand {
   footer p {
     margin: 0;
   }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 760ms var(--ease),
+    transform 760ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

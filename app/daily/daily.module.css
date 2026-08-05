@@ -299,6 +299,25 @@
   margin-top: 1.15em;
 }
 
+.word {
+  border-radius: 3px;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.activeWord {
+  padding: 0 2px;
+  margin: 0 -2px;
+  color: var(--daily-purple-deep);
+  background: linear-gradient(120deg, #e6d6fa, #f4e6d0);
+  box-shadow: 0 0 0 1px #6d43bf2e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    transition: none;
+  }
+}
+
 .audioControls {
   max-width: 770px;
   margin: 34px auto 0;

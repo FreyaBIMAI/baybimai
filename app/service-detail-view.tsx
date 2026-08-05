@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { servicesContent, type ServiceKey } from "./services-content";
 import { dictionaries, type Lang } from "./dictionaries";
@@ -33,31 +34,37 @@ export default function ServiceDetailView({
 
         <div className={THEME_BY_SERVICE[service]}>
           <section className="service-hero">
-            <Link className="service-back" href={homeHref}>
-              <span aria-hidden="true">←</span>
-              {content.backLabel}
-            </Link>
-            <div className="eyebrow">
-              <span />
-              {content.eyebrow}
-            </div>
-            <h1>{content.title}</h1>
-            <p className="service-intro">{content.intro}</p>
+            <Reveal>
+              <Link className="service-back" href={homeHref}>
+                <span aria-hidden="true">←</span>
+                {content.backLabel}
+              </Link>
+              <div className="eyebrow">
+                <span />
+                {content.eyebrow}
+              </div>
+              <h1>{content.title}</h1>
+              <p className="service-intro">{content.intro}</p>
+            </Reveal>
           </section>
 
           <section className="service-body">
-            {content.sections.map((section) => (
-              <div className="service-block" key={section.heading}>
-                <h2>{section.heading}</h2>
-                <p>{section.body}</p>
-              </div>
+            {content.sections.map((section, index) => (
+              <Reveal delay={index * 90} key={section.heading}>
+                <div className="service-block">
+                  <h2>{section.heading}</h2>
+                  <p>{section.body}</p>
+                </div>
+              </Reveal>
             ))}
           </section>
 
           <section className="service-cta">
-            <h2>{content.ctaHeading}</h2>
-            <p>{content.ctaIntro}</p>
-            {cta}
+            <Reveal>
+              <h2>{content.ctaHeading}</h2>
+              <p>{content.ctaIntro}</p>
+              {cta}
+            </Reveal>
           </section>
         </div>
 
