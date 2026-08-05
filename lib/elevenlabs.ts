@@ -1,5 +1,4 @@
 import { env } from "cloudflare:workers";
-import { getRequestExecutionContext } from "vinext/shims/request-context";
 
 export const MARK_VOICE_ID = "UgBBYS2sOqTuMpoF3BR0";
 export const ADAM_VOICE_ID = "zKTOd8cxZlIf5EKC5Giv";
@@ -48,10 +47,11 @@ function cacheKey(request: Request, text: string, voiceId: ElevenLabsVoiceId) {
       const hash = Array.from(new Uint8Array(digest), (byte) =>
         byte.toString(16).padStart(2, "0"),
       ).join("");
-      // v2: bumped to orphan cache entries written by the pre-fix code path
-      // (see createSpeech), which could store a response that crashes the
-      // Worker on read after the awaited-cache.put teed-stream bug.
-      return new Request(`${new URL(request.url).origin}/api/tts/cache/v2/${hash}`);
+      // v3: bumped again to orphan v2 entries — those were written via a
+      // backgrounded (waitUntil) clone of a live upstream stream, which
+      // could still be truncated mid-write when the request finished before
+      // the write completed, poisoning the entry for every future cache hit.
+      return new Request(`${new URL(request.url).origin}/api/tts/cache/v3/${hash}`);
     });
 }
 
@@ -127,30 +127,26 @@ export async function createSpeech(
     );
   }
 
-  const audio = new Response(response.body, {
-    headers: {
-      "Content-Type": response.headers.get("content-type") || "audio/mpeg",
-      "Cache-Control": "public, max-age=86400, s-maxage=2592000, immutable",
-      "X-BAYBIMAI-Voice": voiceId,
-    },
-  });
+  // Buffer the full clip instead of streaming + cloning response.body: a
+  // teed ReadableStream branch that sits unread while its sibling drains
+  // gets buffered in memory by the runtime regardless, and a backgrounded
+  // (waitUntil) write can still be cut off mid-stream when the request
+  // ends — both crashed the Worker or poisoned the cache on read. The
+  // client already awaits response.blob() before playback, so nothing is
+  // lost by resolving the bytes once, up front, on the server too.
+  const audioBuffer = await response.arrayBuffer();
+  const headers = {
+    "Content-Type": response.headers.get("content-type") || "audio/mpeg",
+    "Cache-Control": "public, max-age=86400, s-maxage=2592000, immutable",
+    "X-BAYBIMAI-Voice": voiceId,
+  };
 
   if (cache) {
-    // Write to cache in the background instead of awaiting it: a teed
-    // ReadableStream branch that isn't actively read while its sibling is
-    // fully drained gets buffered entirely in memory by the runtime, which
-    // was crashing the Worker on longer (larger) audio. waitUntil lets the
-    // client stream and the cache write drain concurrently instead.
-    // Caching is best-effort — a failure here (e.g. clone() on a stream in
-    // an unexpected state) must never take down the actual audio response.
     try {
-      const putPromise = cache.put(key, audio.clone()).catch((error) => {
-        console.error("Unable to cache ElevenLabs speech", error);
-      });
-      getRequestExecutionContext()?.waitUntil(putPromise);
+      await cache.put(key, new Response(audioBuffer, { headers }));
     } catch (error) {
-      console.error("Unable to schedule ElevenLabs speech cache write", error);
+      console.error("Unable to cache ElevenLabs speech", error);
     }
   }
-  return audio;
+  return new Response(audioBuffer, { headers });
 }
