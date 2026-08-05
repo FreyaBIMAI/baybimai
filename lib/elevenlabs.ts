@@ -48,7 +48,10 @@ function cacheKey(request: Request, text: string, voiceId: ElevenLabsVoiceId) {
       const hash = Array.from(new Uint8Array(digest), (byte) =>
         byte.toString(16).padStart(2, "0"),
       ).join("");
-      return new Request(`${new URL(request.url).origin}/api/tts/cache/${hash}`);
+      // v2: bumped to orphan cache entries written by the pre-fix code path
+      // (see createSpeech), which could store a response that crashes the
+      // Worker on read after the awaited-cache.put teed-stream bug.
+      return new Request(`${new URL(request.url).origin}/api/tts/cache/v2/${hash}`);
     });
 }
 
