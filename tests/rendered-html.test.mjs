@@ -31,51 +31,57 @@ test("ships Chinese and English news routes", async () => {
 test("includes verified report content and official sources", async () => {
   const content = await source("app/news/news-content.ts");
 
-  assert.match(content, /施工 AI 不再只回答问题/);
+  assert.match(content, /从 Forma 70\+ 项更新到 Procore 融资/);
   assert.match(content, /Construction AI is no longer/);
   assert.match(content, /procore\.com\/press/);
   assert.match(content, /news\.trimble\.com/);
   assert.match(content, /adsknews\.autodesk\.com/);
-  assert.match(content, /2026 年 7 月 27 日/);
+  assert.match(content, /2026 年 8 月 5 日/);
 });
 
-test("includes accessible reading controls and local preferences", async () => {
+test("includes accessible visual reading controls and local preferences", async () => {
   const [tools, styles] = await Promise.all([
     source("app/news/reading-tools.tsx"),
     source("app/news/news.module.css"),
   ]);
 
-  assert.match(tools, /speechSynthesis/);
   assert.match(tools, /aria-valuenow/);
-  assert.match(tools, /aria-live="polite"/);
   assert.match(tools, /localStorage/);
-  assert.match(tools, /\[0\.8, 1, 1\.2, 1\.5\]/);
+  assert.match(tools, /FONT_SCALES/);
   assert.match(styles, /min-height:\s*44px/);
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
   assert.match(styles, /\.darkMode/);
 });
 
-test("reading tools prioritize natural system voices and let users preview a saved choice", async () => {
-  const [voiceHook, newsReader, dailyReader, newsContent, dailyContent] = await Promise.all([
-    source("app/use-natural-voice.ts"),
+test("news live and Founder Daily offer only the approved ElevenLabs Mark and Korina voices", async () => {
+  const [voiceHook, voiceRoute, voiceServer, newsLive, newsReader, dailyReader, dailyContent] = await Promise.all([
+    source("app/use-elevenlabs-voice.ts"),
+    source("app/api/tts/route.ts"),
+    source("lib/elevenlabs.ts"),
+    source("app/news/live-window.tsx"),
     source("app/news/reading-tools.tsx"),
     source("app/daily/daily-reader.tsx"),
-    source("app/news/news-content.ts"),
     source("app/daily/daily-content.ts"),
   ]);
 
-  assert.match(voiceHook, /NATURAL_VOICE_NAMES/);
-  assert.match(voiceHook, /microsoft \(aria\|jenny/);
-  assert.match(voiceHook, /compact\|espeak\|festival\|robot/);
-  assert.match(voiceHook, /voiceschanged/);
-  assert.match(voiceHook, /window\.localStorage\.setItem/);
-  assert.match(newsReader, /useNaturalVoice/);
-  assert.match(newsReader, /previewSelectedVoice/);
-  assert.match(newsReader, /utterance\.voice = selectedVoice/);
-  assert.match(dailyReader, /useNaturalVoice/);
+  assert.match(voiceHook, /UgBBYS2sOqTuMpoF3BR0/);
+  assert.match(voiceHook, /ZiK4vToL7fv1vROW8pbA/);
+  assert.match(voiceHook, /Mark · Natural Conversations/);
+  assert.match(voiceHook, /Korina · Calm and Friendly/);
+  assert.match(voiceHook, /fetch\("\/api\/tts"/);
+  assert.match(voiceRoute, /createSpeech/);
+  assert.match(voiceServer, /ELEVENLABS_API_KEY/);
+  assert.match(voiceServer, /eleven_multilingual_v2/);
+  assert.match(voiceServer, /text-to-speech/);
+  assert.match(newsLive, /useElevenLabsVoice/);
+  assert.match(newsLive, /const preview/);
+  assert.match(newsLive, /BAYBIMAI_VOICES/);
+  assert.doesNotMatch(newsLive, /useNaturalVoice|SpeechSynthesisUtterance/);
+  assert.doesNotMatch(newsReader, /useNaturalVoice|SpeechSynthesisUtterance/);
+  assert.match(dailyReader, /useElevenLabsVoice/);
   assert.match(dailyReader, /function previewVoice/);
-  assert.match(dailyReader, /utterance\.voice = selectedVoice/);
-  assert.match(newsContent, /voice: "朗读声音"/);
+  assert.match(dailyReader, /BAYBIMAI_VOICES/);
+  assert.doesNotMatch(dailyReader, /useNaturalVoice|speechSynthesis/);
   assert.match(dailyContent, /voice: "Reading voice"/);
 });
 
@@ -95,7 +101,7 @@ test("ships bilingual Bay Area AEC careers routes in the primary navigation", as
   assert.match(chrome, /\/en\/careers/);
   assert.match(dictionaries, /careersLabel: "湾区求职"/);
   assert.match(dictionaries, /careersLabel: "Bay Area Careers"/);
-  assert.match(newsShell, /content\.careersPath/);
+  assert.match(newsShell, /SiteNav/);
 });
 
 test("careers ranking distinguishes public market cap from private valuation", async () => {
@@ -146,7 +152,7 @@ test("ships bilingual Global BIM Radar routes in primary and news navigation", a
   assert.match(chrome, /\/en\/radar/);
   assert.match(dictionaries, /radarLabel: "全球BIM雷达"/);
   assert.match(dictionaries, /radarLabel: "Global BIM Radar"/);
-  assert.match(newsShell, /content\.radarPath/);
+  assert.match(newsShell, /SiteNav/);
 });
 
 test("radar uses official sources and distinguishes confirmed dates from watch items", async () => {
@@ -240,7 +246,7 @@ test("Founder Daily protects one-a-day progress and offers accessible practice t
 
   assert.match(reader, /baybimai-founder-daily-v1/);
   assert.match(reader, /window\.localStorage/);
-  assert.match(reader, /speechSynthesis/);
+  assert.match(reader, /useElevenLabsVoice/);
   assert.match(reader, /completedToday/);
   assert.match(reader, /nextLesson/);
   assert.match(reader, /role="progressbar"/);

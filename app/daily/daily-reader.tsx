@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { displayVoiceName, useNaturalVoice, voiceId } from "../use-natural-voice";
+import {
+  BAYBIMAI_VOICES,
+  isBAYBIMAIVoice,
+  useElevenLabsVoice,
+  useVoicePreference,
+} from "../use-elevenlabs-voice";
 import { dailyCopy, dailyLessons, type DailyLang } from "./daily-content";
 import styles from "./daily.module.css";
 
@@ -67,14 +72,19 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
   const [progress, setProgress] = useState<StoredProgress>(EMPTY_PROGRESS);
   const [ready, setReady] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [speechState, setSpeechState] = useState<"idle" | "playing" | "paused">("idle");
-  const [previewingVoice, setPreviewingVoice] = useState(false);
+  const [speechMode, setSpeechMode] = useState<"lesson" | "preview" | null>(null);
   const [speed, setSpeed] = useState(1);
   const [status, setStatus] = useState("");
-  const { voices, selectedVoice, selectedVoiceId, chooseVoice } = useNaturalVoice(
-    "en-US",
-    "baybimai-reading-voice-en",
-  );
+  const {
+    state: speechState,
+    speak,
+    pause: pauseVoice,
+    resume,
+    stop: stopVoice,
+    setRate: setPlaybackRate,
+  } = useElevenLabsVoice();
+  const { voiceId, chooseVoice } = useVoicePreference();
+  const previewingVoice = speechMode === "preview" && speechState !== "idle";
   const today = localDate();
 
   useEffect(() => {
@@ -90,8 +100,6 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
     });
     return () => window.cancelAnimationFrame(frame);
   }, []);
-
-  useEffect(() => () => window.speechSynthesis?.cancel(), []);
 
   const completedIds = useMemo(
     () => new Set(progress.completed.map((entry) => entry.lessonId)),
@@ -128,79 +136,65 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
       ...progress,
       completed: [...progress.completed, { lessonId: lesson.id, date: today }],
     });
-    window.speechSynthesis?.cancel();
-    setPreviewingVoice(false);
-    setSpeechState("idle");
+    stopVoice();
+    setSpeechMode(null);
     setStatus(lesson.id === dailyLessons.length ? copy.roundComplete : copy.doneToday);
   }
 
   function listen() {
-    if (!("speechSynthesis" in window)) {
-      setStatus(copy.speechUnsupported);
-      return;
-    }
     if (speechState === "paused") {
-      window.speechSynthesis.resume();
-      setSpeechState("playing");
+      void resume();
       setStatus(copy.speechPlaying);
       return;
     }
-    window.speechSynthesis.cancel();
-    setPreviewingVoice(false);
-    const utterance = new SpeechSynthesisUtterance(
-      `${lesson.title}. ${lesson.article.join(" ")} ${copy.phraseTitle}. ${lesson.phrase}. ${copy.speakTitle}. ${lesson.sayIt}`,
-    );
-    utterance.lang = "en-US";
-    utterance.rate = speed;
-    utterance.pitch = 1;
-    if (selectedVoice) utterance.voice = selectedVoice;
-    utterance.onend = () => setSpeechState("idle");
-    utterance.onerror = () => setSpeechState("idle");
-    window.speechSynthesis.speak(utterance);
-    setSpeechState("playing");
-    setStatus(copy.speechPlaying);
+    const text = `${lesson.title}. ${lesson.article.join(" ")} ${copy.phraseTitle}. ${lesson.phrase}. ${copy.speakTitle}. ${lesson.sayIt}`;
+    setSpeechMode("lesson");
+    setStatus(copy.speechLoading);
+    void speak(text, voiceId, {
+      rate: speed,
+      onEnded: () => {
+        setSpeechMode(null);
+        setStatus(copy.speechComplete);
+      },
+      onError: () => {
+        setSpeechMode(null);
+        setStatus(copy.speechError);
+      },
+    });
   }
 
   function previewVoice() {
-    if (!("speechSynthesis" in window) || !selectedVoice) return;
-    window.speechSynthesis.cancel();
-    setSpeechState("idle");
-    setPreviewingVoice(true);
-    const utterance = new SpeechSynthesisUtterance(
-      "A clear message earns the next conversation.",
-    );
-    utterance.lang = "en-US";
-    utterance.voice = selectedVoice;
-    utterance.rate = 0.96;
-    utterance.pitch = 1;
-    utterance.onend = () => {
-      setPreviewingVoice(false);
-      setStatus(copy.voiceReady);
-    };
-    utterance.onerror = () => setPreviewingVoice(false);
-    window.speechSynthesis.speak(utterance);
+    setSpeechMode("preview");
     setStatus(copy.previewingVoice);
+    void speak("A clear message earns the next conversation.", voiceId, {
+      rate: 0.96,
+      onEnded: () => {
+        setSpeechMode(null);
+        setStatus(copy.voiceReady);
+      },
+      onError: () => {
+        setSpeechMode(null);
+        setStatus(copy.speechError);
+      },
+    });
   }
 
   function changeVoice(nextVoiceId: string) {
-    window.speechSynthesis?.cancel();
-    setSpeechState("idle");
-    setPreviewingVoice(false);
+    if (!isBAYBIMAIVoice(nextVoiceId)) return;
+    stopVoice();
+    setSpeechMode(null);
     chooseVoice(nextVoiceId);
     setStatus(copy.voiceReady);
   }
 
   function pause() {
-    window.speechSynthesis.pause();
-    setPreviewingVoice(false);
-    setSpeechState("paused");
+    pauseVoice();
     setStatus(copy.speechPaused);
   }
 
   function stop() {
-    window.speechSynthesis.cancel();
-    setPreviewingVoice(false);
-    setSpeechState("idle");
+    stopVoice();
+    setSpeechMode(null);
     setStatus(copy.speechStopped);
   }
 
@@ -241,35 +235,35 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
               <svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14">
                 <path d="M4 2.8v10.4L13 8 4 2.8Z" fill="currentColor" />
               </svg>
-              {speechState === "paused" ? copy.resume : copy.listen}
+              {speechMode === "lesson" && speechState === "loading"
+                ? copy.speechLoading
+                : speechState === "paused"
+                  ? copy.resume
+                  : copy.listen}
             </button>
             {speechState === "playing" && <button type="button" onClick={pause}>{copy.pause}</button>}
             {speechState !== "idle" && <button type="button" onClick={stop}>{copy.stop}</button>}
             <label>
               <span>{copy.speed}</span>
-              <select value={speed} onChange={(event) => { setSpeed(Number(event.target.value)); if (speechState !== "idle") stop(); }}>
+              <select value={speed} onChange={(event) => { const next = Number(event.target.value); setSpeed(next); setPlaybackRate(next); }}>
                 <option value="0.85">0.85×</option><option value="1">1×</option><option value="1.15">1.15×</option>
               </select>
             </label>
             <div className={styles.voiceControl}>
-              <label htmlFor="daily-reading-voice">{copy.voice}</label>
+              <span className={styles.voiceLabel}>{copy.voice}</span>
               <select
-                id="daily-reading-voice"
-                value={selectedVoiceId}
-                disabled={voices.length === 0}
+                aria-label={copy.voice}
+                value={voiceId}
                 onChange={(event) => changeVoice(event.target.value)}
               >
-                {voices.length === 0 && <option value="">{copy.voiceLoading}</option>}
-                {voices.map((voice, index) => (
-                  <option value={voiceId(voice)} key={voiceId(voice)}>
-                    {displayVoiceName(voice)}{index === 0 ? ` · ${copy.recommended}` : ""}
-                  </option>
+                {BAYBIMAI_VOICES.map((voice) => (
+                  <option value={voice.id} key={voice.id}>{voice.name}</option>
                 ))}
               </select>
               <button
                 type="button"
                 onClick={previewVoice}
-                disabled={!selectedVoice || previewingVoice}
+                disabled={previewingVoice}
               >
                 {previewingVoice ? copy.previewingVoice : copy.previewVoice}
               </button>

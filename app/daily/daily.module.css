@@ -375,6 +375,22 @@
   white-space: nowrap;
 }
 
+.voiceLabel {
+  color: var(--daily-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fixedVoice {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--daily-ink);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .voiceControl select {
   width: 100%;
   min-width: 0;

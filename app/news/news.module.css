@@ -474,6 +474,28 @@
   gap: 8px;
 }
 
+.liveVoiceControl {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+  color: var(--reader-muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.liveVoiceControl select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--reader-line);
+  border-radius: 10px;
+  background: var(--reader-paper);
+  color: var(--reader-ink);
+  font: inherit;
+  font-size: 0.72rem;
+}
+
 .broadcastControls button {
   min-height: 38px;
   padding: 0 14px;
@@ -735,6 +757,22 @@
   color: var(--reader-muted);
   font-size: 0.72rem;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.voiceLabel {
+  color: var(--reader-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fixedVoice {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--reader-ink);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

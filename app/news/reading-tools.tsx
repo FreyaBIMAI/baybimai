@@ -4,14 +4,11 @@ import {
   type CSSProperties,
   type ReactNode,
   useEffect,
-  useRef,
   useState,
 } from "react";
-import { displayVoiceName, useNaturalVoice, voiceId } from "../use-natural-voice";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
-const SPEEDS = [0.8, 1, 1.2, 1.5] as const;
 const FONT_SCALES = [0.94, 1, 1.1, 1.2] as const;
 
 export default function ReadingTools({
@@ -26,137 +23,7 @@ export default function ReadingTools({
   const [progress, setProgress] = useState(0);
   const [fontIndex, setFontIndex] = useState(1);
   const [darkMode, setDarkMode] = useState(false);
-  const [rate, setRate] = useState<(typeof SPEEDS)[number]>(1);
-  const [speechState, setSpeechState] = useState<
-    "idle" | "playing" | "paused"
-  >("idle");
-  const [previewingVoice, setPreviewingVoice] = useState(false);
-  const [status, setStatus] = useState<string>(labels.idle);
-  const segmentsRef = useRef<string[]>([]);
-  const segmentIndexRef = useRef(0);
-  const rateRef = useRef<number>(1);
-  const { voices, selectedVoice, selectedVoiceId, chooseVoice } = useNaturalVoice(
-    newsContent[lang].locale,
-    `baybimai-reading-voice-${lang}`,
-  );
-
-  const stopSpeech = (message: string = labels.stopped) => {
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-    segmentIndexRef.current = 0;
-    setPreviewingVoice(false);
-    setSpeechState("idle");
-    setStatus(message);
-  };
-
-  const speakNext = () => {
-    if (!("speechSynthesis" in window)) {
-      setStatus(labels.unsupported);
-      return;
-    }
-
-    const segment = segmentsRef.current[segmentIndexRef.current];
-    if (!segment) {
-      stopSpeech(labels.complete);
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(segment);
-    utterance.lang = newsContent[lang].locale;
-    utterance.rate = rateRef.current;
-    utterance.pitch = 1;
-    if (selectedVoice) utterance.voice = selectedVoice;
-    utterance.onend = () => {
-      segmentIndexRef.current += 1;
-      speakNext();
-    };
-    utterance.onerror = () => {
-      setSpeechState("idle");
-      setStatus(labels.stopped);
-    };
-    window.speechSynthesis.speak(utterance);
-  };
-
-  const startSpeech = () => {
-    if (!("speechSynthesis" in window)) {
-      setStatus(labels.unsupported);
-      return;
-    }
-
-    const article = document.getElementById("article-body");
-    if (!article) return;
-    segmentsRef.current = Array.from(
-      article.querySelectorAll("h1, h2, p, li"),
-    )
-      .map((element) => element.textContent?.trim() ?? "")
-      .filter(Boolean);
-    segmentIndexRef.current = 0;
-    window.speechSynthesis.cancel();
-    setPreviewingVoice(false);
-    setSpeechState("playing");
-    setStatus(labels.playing);
-    speakNext();
-  };
-
-  const previewSelectedVoice = () => {
-    if (!("speechSynthesis" in window) || !selectedVoice) return;
-    window.speechSynthesis.cancel();
-    segmentIndexRef.current = 0;
-    setSpeechState("idle");
-    setPreviewingVoice(true);
-    const sample = lang === "zh"
-      ? "清楚、自然的声音，让阅读更轻松。"
-      : "A calm, confident voice makes focused reading easier.";
-    const utterance = new SpeechSynthesisUtterance(sample);
-    utterance.lang = newsContent[lang].locale;
-    utterance.voice = selectedVoice;
-    utterance.rate = lang === "zh" ? 0.92 : 0.96;
-    utterance.pitch = 1;
-    utterance.onend = () => {
-      setPreviewingVoice(false);
-      setStatus(labels.voiceReady);
-    };
-    utterance.onerror = () => setPreviewingVoice(false);
-    window.speechSynthesis.speak(utterance);
-    setStatus(labels.previewingVoice);
-  };
-
-  const changeVoice = (nextVoiceId: string) => {
-    window.speechSynthesis?.cancel();
-    segmentIndexRef.current = 0;
-    setSpeechState("idle");
-    setPreviewingVoice(false);
-    chooseVoice(nextVoiceId);
-    setStatus(labels.voiceReady);
-  };
-
-  const togglePause = () => {
-    if (!("speechSynthesis" in window)) return;
-    if (speechState === "playing") {
-      window.speechSynthesis.pause();
-      setSpeechState("paused");
-      setStatus(labels.paused);
-    } else if (speechState === "paused") {
-      window.speechSynthesis.resume();
-      setSpeechState("playing");
-      setStatus(labels.playing);
-    }
-  };
-
-  const changeRate = (nextRate: (typeof SPEEDS)[number]) => {
-    rateRef.current = nextRate;
-    setRate(nextRate);
-    localStorage.setItem(`${storagePrefix}-rate`, String(nextRate));
-    if (speechState !== "idle" && "speechSynthesis" in window) {
-      const wasPaused = speechState === "paused";
-      window.speechSynthesis.cancel();
-      speakNext();
-      if (wasPaused) {
-        window.setTimeout(() => window.speechSynthesis.pause(), 80);
-      }
-    }
-  };
+  const [, setStatus] = useState<string>(labels.idle);
 
   useEffect(() => {
     // The article reader is visual-only. Stop any speech left running by an
@@ -166,9 +33,6 @@ export default function ReadingTools({
       const savedFont = Number(
         localStorage.getItem(`${storagePrefix}-font`) ?? "1",
       );
-      const savedRate = Number(
-        localStorage.getItem(`${storagePrefix}-rate`) ?? "1",
-      );
       const savedTheme =
         localStorage.getItem(`${storagePrefix}-theme`) === "dark";
       if (
@@ -177,10 +41,6 @@ export default function ReadingTools({
         savedFont < FONT_SCALES.length
       ) {
         setFontIndex(savedFont);
-      }
-      if (SPEEDS.includes(savedRate as (typeof SPEEDS)[number])) {
-        rateRef.current = savedRate;
-        setRate(savedRate as (typeof SPEEDS)[number]);
       }
       setDarkMode(savedTheme);
 

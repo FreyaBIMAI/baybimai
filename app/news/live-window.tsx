@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import {
+  BAYBIMAI_VOICES,
+  isBAYBIMAIVoice,
+  useElevenLabsVoice,
+  useVoicePreference,
+} from "../use-elevenlabs-voice";
 import styles from "./news.module.css";
 
 const labels = {
@@ -9,12 +15,17 @@ const labels = {
   body: "An English briefing on the BIM, VDC, estimating, and construction AI developments that matter this week.",
   schedule: "Updated weekly · Pacific Time",
   ready: "This week's English briefing is ready",
+  loading: "Preparing the selected studio voice",
   playing: "Professor is presenting",
+  previewing: "Previewing the selected voice",
   paused: "Broadcast paused",
+  error: "Voice is temporarily unavailable. Please try again.",
   start: "Play in English",
+  preview: "Preview voice",
   pause: "Pause",
   resume: "Resume",
   stop: "Stop",
+  voice: "Studio voice",
   close: "Collapse professor live",
   expand: "Open professor live",
 };
@@ -31,64 +42,67 @@ const englishBriefing = [
 
 export default function LiveWindow({ lang: _lang }: { lang: "zh" | "en" }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [state, setState] = useState<"idle" | "playing" | "paused">("idle");
-  const segments = useRef<string[]>([]);
-  const index = useRef(0);
-
-  const speakNext = () => {
-    if (!("speechSynthesis" in window)) return;
-    const text = segments.current[index.current];
-    if (!text) {
-      setState("idle");
-      index.current = 0;
-      return;
-    }
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 0.94;
-    const voice = window.speechSynthesis
-      .getVoices()
-      .find((item) => item.lang.toLowerCase().startsWith("en"));
-    if (voice) utterance.voice = voice;
-    utterance.onend = () => {
-      index.current += 1;
-      speakNext();
-    };
-    window.speechSynthesis.speak(utterance);
-  };
+  const [mode, setMode] = useState<"briefing" | "preview" | null>(null);
+  const [error, setError] = useState(false);
+  const { voiceId, chooseVoice } = useVoicePreference();
+  const {
+    state,
+    speak,
+    pause,
+    resume,
+    stop: stopVoice,
+  } = useElevenLabsVoice();
 
   const start = () => {
-    if (!("speechSynthesis" in window)) return;
-    segments.current = englishBriefing;
-    index.current = 0;
-    window.speechSynthesis.cancel();
-    setState("playing");
-    speakNext();
+    setError(false);
+    setMode("briefing");
+    void speak(englishBriefing.join(" "), voiceId, {
+      rate: 0.94,
+      onEnded: () => setMode(null),
+      onError: () => {
+        setMode(null);
+        setError(true);
+      },
+    });
   };
 
   const togglePause = () => {
-    if (!("speechSynthesis" in window)) return;
     if (state === "playing") {
-      window.speechSynthesis.pause();
-      setState("paused");
+      pause();
     } else if (state === "paused") {
-      window.speechSynthesis.resume();
-      setState("playing");
+      void resume();
     }
   };
 
   const stop = () => {
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    index.current = 0;
-    setState("idle");
+    stopVoice();
+    setMode(null);
+    setError(false);
   };
 
-  useEffect(() => {
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    return () => {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    };
-  }, []);
+  const preview = () => {
+    setError(false);
+    setMode("preview");
+    void speak("Welcome to BAYBIMAI Weekly. Here is your construction technology briefing.", voiceId, {
+      rate: 0.96,
+      onEnded: () => setMode(null),
+      onError: () => {
+        setMode(null);
+        setError(true);
+      },
+    });
+  };
+
+  const changeVoice = (nextVoiceId: string) => {
+    if (!isBAYBIMAIVoice(nextVoiceId)) return;
+    stop();
+    chooseVoice(nextVoiceId);
+  };
+
+  const collapse = () => {
+    stop();
+    setCollapsed(true);
+  };
 
   if (collapsed) {
     return (
@@ -98,15 +112,25 @@ export default function LiveWindow({ lang: _lang }: { lang: "zh" | "en" }) {
     );
   }
 
-  const status = state === "playing" ? labels.playing : state === "paused" ? labels.paused : labels.ready;
+  const status = error
+    ? labels.error
+    : state === "loading"
+      ? labels.loading
+      : state === "paused"
+        ? labels.paused
+        : state === "playing" && mode === "preview"
+          ? labels.previewing
+          : state === "playing"
+            ? labels.playing
+            : labels.ready;
 
   return (
-    <aside className={`${styles.liveWindow} ${state === "playing" ? styles.isBroadcasting : ""}`} aria-label={labels.eyebrow}>
+    <aside className={`${styles.liveWindow} ${state === "playing" && mode === "briefing" ? styles.isBroadcasting : ""}`} aria-label={labels.eyebrow}>
       <div className={styles.liveStage}>
         <img className={styles.professorImage} src="/baybimai-professor-host.png" alt="BAYBIMAI professor news host" />
         <div className={styles.liveTopline}>
           <span className={styles.liveBadge}><span className={styles.liveDot} /> LIVE</span>
-          <button type="button" className={styles.liveClose} onClick={() => setCollapsed(true)} aria-label={labels.close}>−</button>
+          <button type="button" className={styles.liveClose} onClick={collapse} aria-label={labels.close}>−</button>
         </div>
         <div className={styles.liveOffline}>
           <span className={styles.soundBars} aria-hidden="true"><i /><i /><i /><i /></span>
@@ -118,9 +142,18 @@ export default function LiveWindow({ lang: _lang }: { lang: "zh" | "en" }) {
         <p className={styles.liveEyebrow}>{labels.eyebrow}</p>
         <h2>{labels.title}</h2>
         <p className={styles.liveBody}>{labels.body}</p>
+        <label className={styles.liveVoiceControl}>
+          <span>{labels.voice}</span>
+          <select value={voiceId} onChange={(event) => changeVoice(event.target.value)}>
+            {BAYBIMAI_VOICES.map((voice) => (
+              <option value={voice.id} key={voice.id}>{voice.name}</option>
+            ))}
+          </select>
+        </label>
         <div className={styles.broadcastControls}>
           {state === "idle" ? <button type="button" onClick={start}>{labels.start} ▶</button> : null}
-          {state !== "idle" ? <button type="button" onClick={togglePause}>{state === "paused" ? labels.resume : labels.pause}</button> : null}
+          {state === "idle" ? <button type="button" onClick={preview}>{labels.preview}</button> : null}
+          {state === "playing" || state === "paused" ? <button type="button" onClick={togglePause}>{state === "paused" ? labels.resume : labels.pause}</button> : null}
           {state !== "idle" ? <button type="button" onClick={stop}>{labels.stop}</button> : null}
         </div>
         <div className={styles.liveFooter}><span>{labels.schedule}</span><strong>WEEKLY · 08</strong></div>
