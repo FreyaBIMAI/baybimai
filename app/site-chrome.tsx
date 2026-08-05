@@ -8,12 +8,16 @@ export function SiteNav({
   languageHref: languageHrefOverride,
 }: {
   lang: Lang;
-  active?: "news" | "careers" | "radar" | "daily";
+  active?: "course" | "news" | "careers" | "radar" | "daily";
   languageHref?: string;
 }) {
   const dict = dictionaries[lang];
   const languageHref =
-    languageHrefOverride ?? (active === "news"
+    languageHrefOverride ?? (active === "course"
+      ? lang === "zh"
+        ? "/en/course"
+        : "/course"
+      : active === "news"
       ? lang === "zh"
         ? "/en/news"
         : "/news"
@@ -39,6 +43,13 @@ export function SiteNav({
       <div className="nav-meta">
         <p>{dict.nav.tagline}</p>
         <Link
+          className="nav-link nav-link-course"
+          href={lang === "zh" ? "/course" : "/en/course"}
+          aria-current={active === "course" ? "page" : undefined}
+        >
+          {dict.nav.courseLabel}
+        </Link>
+        <Link
           className="nav-link nav-link-news"
           href={lang === "zh" ? "/news" : "/en/news"}
           aria-current={active === "news" ? "page" : undefined}
@@ -46,25 +57,11 @@ export function SiteNav({
           {dict.nav.newsLabel}
         </Link>
         <Link
-          className="nav-link nav-link-careers"
-          href={lang === "zh" ? "/careers" : "/en/careers"}
-          aria-current={active === "careers" ? "page" : undefined}
-        >
-          {dict.nav.careersLabel}
-        </Link>
-        <Link
           className="nav-link nav-link-radar"
           href={lang === "zh" ? "/radar" : "/en/radar"}
           aria-current={active === "radar" ? "page" : undefined}
         >
           {dict.nav.radarLabel}
-        </Link>
-        <Link
-          className="nav-link nav-link-daily"
-          href={lang === "zh" ? "/daily" : "/en/daily"}
-          aria-current={active === "daily" ? "page" : undefined}
-        >
-          {dict.nav.dailyLabel}
         </Link>
         <LanguageToggle lang={lang} href={languageHref} />
       </div>

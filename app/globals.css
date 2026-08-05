@@ -1268,12 +1268,15 @@ footer .brand {
 }
 
 @media (max-width: 680px) {
+  .nav {
+    padding-inline: 16px;
+  }
+
   .nav-meta {
     gap: 10px;
   }
 
-  .nav-link-news,
-  .nav-link-careers {
+  .nav-meta > p {
     display: none;
   }
 
@@ -1284,12 +1287,22 @@ footer .brand {
 }
 
 @media (max-width: 500px) {
-  .nav-link-radar {
-    display: none;
+  .nav {
+    padding-inline: 12px;
+  }
+
+  .brand {
+    font-size: 1rem;
   }
 
   .nav-meta {
     gap: 8px;
+  }
+
+  .nav-link {
+    min-width: 44px;
+    justify-content: center;
+    letter-spacing: 0.04em;
   }
 
   .lang-toggle {

@@ -24,8 +24,14 @@ test("ships Chinese and English news routes", async () => {
   ]);
   assert.match(chrome, /\/news/);
   assert.match(chrome, /\/en\/news/);
-  assert.match(dictionaries, /newsLabel: "新闻"/);
+  assert.match(chrome, /nav-link-course/);
+  assert.match(chrome, /nav-link-news/);
+  assert.match(chrome, /nav-link-radar/);
+  assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
+  assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
+  assert.match(dictionaries, /courseLabel: "Course"/);
   assert.match(dictionaries, /newsLabel: "News"/);
+  assert.match(dictionaries, /radarLabel: "Radar"/);
 });
 
 test("includes verified report content and official sources", async () => {
@@ -85,22 +91,30 @@ test("news live and Founder Daily offer only the approved ElevenLabs Mark and Ko
   assert.match(dailyContent, /voice: "Reading voice"/);
 });
 
-test("ships bilingual Bay Area AEC careers routes in the primary navigation", async () => {
+test("protects bilingual Careers routes and removes them from public navigation", async () => {
   await Promise.all([
     access(new URL("app/careers/page.tsx", root)),
     access(new URL("app/en/careers/page.tsx", root)),
   ]);
 
-  const [chrome, dictionaries, newsShell] = await Promise.all([
+  const [chrome, dictionaries, newsShell, zhPage, enPage, ownerAccess] = await Promise.all([
     source("app/site-chrome.tsx"),
     source("app/dictionaries.ts"),
     source("app/news/news-shell.tsx"),
+    source("app/careers/page.tsx"),
+    source("app/en/careers/page.tsx"),
+    source("app/owner-access.ts"),
   ]);
 
-  assert.match(chrome, /\/careers/);
-  assert.match(chrome, /\/en\/careers/);
-  assert.match(dictionaries, /careersLabel: "湾区求职"/);
-  assert.match(dictionaries, /careersLabel: "Bay Area Careers"/);
+  assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
+  assert.match(dictionaries, /careersLabel: "Careers"/);
+  assert.match(zhPage, /requireOwner\("\/careers"\)/);
+  assert.match(enPage, /requireOwner\("\/en\/careers"\)/);
+  assert.match(zhPage, /index: false, follow: false/);
+  assert.match(enPage, /index: false, follow: false/);
+  assert.match(ownerAccess, /OWNER_EMAIL/);
+  assert.match(ownerAccess, /oai-authenticated-user-email/);
+  assert.match(ownerAccess, /cf-access-authenticated-user-email/);
   assert.match(newsShell, /SiteNav/);
 });
 
@@ -136,7 +150,7 @@ test("careers page includes accessible controls and interview preparation resour
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);
 });
 
-test("ships bilingual Global BIM Radar routes in primary and news navigation", async () => {
+test("ships bilingual Radar routes in primary and news navigation", async () => {
   await Promise.all([
     access(new URL("app/radar/page.tsx", root)),
     access(new URL("app/en/radar/page.tsx", root)),
@@ -150,8 +164,7 @@ test("ships bilingual Global BIM Radar routes in primary and news navigation", a
 
   assert.match(chrome, /\/radar/);
   assert.match(chrome, /\/en\/radar/);
-  assert.match(dictionaries, /radarLabel: "全球BIM雷达"/);
-  assert.match(dictionaries, /radarLabel: "Global BIM Radar"/);
+  assert.match(dictionaries, /radarLabel: "Radar"/);
   assert.match(newsShell, /SiteNav/);
 });
 
@@ -210,20 +223,25 @@ test("radar ships optimized local portraits for all builder profiles", async () 
   ]);
 });
 
-test("ships bilingual Founder Daily routes in the primary navigation", async () => {
+test("protects bilingual Founder Daily routes and removes them from public navigation", async () => {
   await Promise.all([
     access(new URL("app/daily/page.tsx", root)),
     access(new URL("app/en/daily/page.tsx", root)),
   ]);
 
-  const [chrome, dictionaries] = await Promise.all([
+  const [chrome, dictionaries, zhPage, enPage] = await Promise.all([
     source("app/site-chrome.tsx"),
     source("app/dictionaries.ts"),
+    source("app/daily/page.tsx"),
+    source("app/en/daily/page.tsx"),
   ]);
 
-  assert.match(chrome, /\/daily/);
-  assert.match(chrome, /\/en\/daily/);
+  assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
   assert.match(dictionaries, /dailyLabel: "Founder Daily"/);
+  assert.match(zhPage, /requireOwner\("\/daily"\)/);
+  assert.match(enPage, /requireOwner\("\/en\/daily"\)/);
+  assert.match(zhPage, /index: false, follow: false/);
+  assert.match(enPage, /index: false, follow: false/);
 });
 
 test("Founder Daily includes a complete 28-day founder-English curriculum", async () => {
@@ -253,6 +271,9 @@ test("Founder Daily protects one-a-day progress and offers accessible practice t
   assert.match(reader, /aria-live="polite"/);
   assert.match(reader, /aria-expanded=/);
   assert.match(reader, /disabled=\{!ready \|\| isLessonComplete \|\| allComplete\}/);
+  assert.match(reader, /copy: DailyCopy/);
+  assert.match(reader, /lessons: DailyLesson\[\]/);
+  assert.doesNotMatch(reader, /import \{ dailyCopy, dailyLessons/);
   assert.match(styles, /min-height:\s*44px/);
   assert.match(styles, /@media \(max-width:\s*430px\)/);
   assert.match(styles, /prefers-reduced-motion:\s*reduce/);

@@ -20,6 +20,7 @@ type Dictionary = {
     ariaLabel: string;
     brandAria: string;
     tagline: string;
+    courseLabel: string;
     newsLabel: string;
     careersLabel: string;
     radarLabel: string;
@@ -102,9 +103,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ariaLabel: "主导航",
       brandAria: "BAYBIMAI 首页",
       tagline: "BIM Consulting",
-      newsLabel: "新闻",
-      careersLabel: "湾区求职",
-      radarLabel: "全球BIM雷达",
+      courseLabel: "Course",
+      newsLabel: "News",
+      careersLabel: "Careers",
+      radarLabel: "Radar",
       dailyLabel: "Founder Daily",
     },
     hero: {
@@ -188,9 +190,10 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ariaLabel: "Main navigation",
       brandAria: "BAYBIMAI home",
       tagline: "BIM Consulting",
+      courseLabel: "Course",
       newsLabel: "News",
-      careersLabel: "Bay Area Careers",
-      radarLabel: "Global BIM Radar",
+      careersLabel: "Careers",
+      radarLabel: "Radar",
       dailyLabel: "Founder Daily",
     },
     hero: {

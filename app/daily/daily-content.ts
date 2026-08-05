@@ -674,3 +674,5 @@ export const dailyCopy = {
     localNote: "Progress stays in this browser. No account required.",
   },
 } as const;
+
+export type DailyCopy = (typeof dailyCopy)[DailyLang];

@@ -29,7 +29,7 @@ export default function ServiceDetailView({
         {dict.skipLink}
       </a>
       <main id="main-content" tabIndex={-1}>
-        <SiteNav lang={lang} />
+        <SiteNav lang={lang} active={service === "course" ? "course" : undefined} />
 
         <div className={THEME_BY_SERVICE[service]}>
           <section className="service-hero">

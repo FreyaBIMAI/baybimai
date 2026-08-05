@@ -1,5 +1,5 @@
 import { SiteFooter, SiteNav } from "../site-chrome";
-import { dailyCopy, type DailyLang } from "./daily-content";
+import { dailyCopy, dailyLessons, type DailyLang } from "./daily-content";
 import DailyReader from "./daily-reader";
 import styles from "./daily.module.css";
 
@@ -29,7 +29,7 @@ export default function DailyPage({ lang }: { lang: DailyLang }) {
           </div>
         </section>
 
-        <DailyReader lang={lang} />
+        <DailyReader lang={lang} copy={copy} lessons={dailyLessons} />
       </main>
       <SiteFooter lang={lang} />
     </div>

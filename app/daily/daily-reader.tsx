@@ -7,7 +7,7 @@ import {
   useElevenLabsVoice,
   useVoicePreference,
 } from "../use-elevenlabs-voice";
-import { dailyCopy, dailyLessons, type DailyLang } from "./daily-content";
+import type { DailyCopy, DailyLang, DailyLesson } from "./daily-content";
 import styles from "./daily.module.css";
 
 const STORAGE_KEY = "baybimai-founder-daily-v1";
@@ -30,7 +30,7 @@ function dateBefore(date: string, days: number) {
   return localDate(value);
 }
 
-function sanitizeProgress(value: unknown): StoredProgress {
+function sanitizeProgress(value: unknown, lessonCount: number): StoredProgress {
   if (!value || typeof value !== "object") return EMPTY_PROGRESS;
   const candidate = value as Partial<StoredProgress>;
   const completed = Array.isArray(candidate.completed)
@@ -39,7 +39,7 @@ function sanitizeProgress(value: unknown): StoredProgress {
           Boolean(entry) &&
           Number.isInteger(entry.lessonId) &&
           entry.lessonId >= 1 &&
-          entry.lessonId <= dailyLessons.length &&
+          entry.lessonId <= lessonCount &&
           typeof entry.date === "string" &&
           /^\d{4}-\d{2}-\d{2}$/.test(entry.date),
       )
@@ -67,8 +67,15 @@ function calculateStreak(completed: Completion[], today: string) {
   return streak;
 }
 
-export default function DailyReader({ lang }: { lang: DailyLang }) {
-  const copy = dailyCopy[lang];
+export default function DailyReader({
+  lang,
+  copy,
+  lessons,
+}: {
+  lang: DailyLang;
+  copy: DailyCopy;
+  lessons: DailyLesson[];
+}) {
   const [progress, setProgress] = useState<StoredProgress>(EMPTY_PROGRESS);
   const [ready, setReady] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
@@ -91,7 +98,7 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
     const frame = window.requestAnimationFrame(() => {
       try {
         const saved = window.localStorage.getItem(STORAGE_KEY);
-        if (saved) setProgress(sanitizeProgress(JSON.parse(saved)));
+        if (saved) setProgress(sanitizeProgress(JSON.parse(saved), lessons.length));
       } catch {
         setProgress(EMPTY_PROGRESS);
       } finally {
@@ -99,22 +106,22 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, []);
+  }, [lessons.length]);
 
   const completedIds = useMemo(
     () => new Set(progress.completed.map((entry) => entry.lessonId)),
     [progress.completed],
   );
   const completedToday = progress.completed.find((entry) => entry.date === today);
-  const nextLesson = dailyLessons.find((lesson) => !completedIds.has(lesson.id));
+  const nextLesson = lessons.find((lesson) => !completedIds.has(lesson.id));
   const lesson = completedToday
-    ? dailyLessons.find((item) => item.id === completedToday.lessonId) ?? dailyLessons[0]
-    : nextLesson ?? dailyLessons[dailyLessons.length - 1];
+    ? lessons.find((item) => item.id === completedToday.lessonId) ?? lessons[0]
+    : nextLesson ?? lessons[lessons.length - 1];
   const isLessonComplete = completedIds.has(lesson.id);
-  const allComplete = progress.completed.length >= dailyLessons.length;
+  const allComplete = progress.completed.length >= lessons.length;
   const streak = calculateStreak(progress.completed, today);
   const draft = progress.drafts[String(lesson.id)] ?? "";
-  const progressPercent = Math.round((progress.completed.length / dailyLessons.length) * 100);
+  const progressPercent = Math.round((progress.completed.length / lessons.length) * 100);
 
   function persist(next: StoredProgress) {
     setProgress(next);
@@ -138,7 +145,7 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
     });
     stopVoice();
     setSpeechMode(null);
-    setStatus(lesson.id === dailyLessons.length ? copy.roundComplete : copy.doneToday);
+    setStatus(lesson.id === lessons.length ? copy.roundComplete : copy.doneToday);
   }
 
   function listen() {
@@ -335,7 +342,7 @@ export default function DailyReader({ lang }: { lang: DailyLang }) {
               <p>{copy.week.replace("{week}", String(week))}</p>
               <h3>{copy.weekNames[week - 1]}</h3>
               <div className={styles.dayGrid} aria-label={copy.weekNames[week - 1]}>
-                {dailyLessons.filter((item) => item.week === week).map((item) => {
+                {lessons.filter((item) => item.week === week).map((item) => {
                   const state = completedIds.has(item.id) ? "completed" : item.id === lesson.id ? "current" : "future";
                   return <span key={item.id} data-state={state} aria-label={`${copy.day} ${item.id}: ${state}`}>{String(item.id).padStart(2, "0")}</span>;
                 })}
