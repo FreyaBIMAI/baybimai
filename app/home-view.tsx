@@ -26,9 +26,12 @@ export default function HomeView({ lang }: { lang: Lang }) {
         <section className="hero" id="top">
           <div className="hero-halo" aria-hidden="true">
             <div className="halo-glow" />
+            <div className="halo-ring" />
             {heroStars.map((star) => (
               <span className={`halo-star halo-star-${star}`} key={star} />
             ))}
+            <span className="shooting-star" />
+            <span className="shooting-star shooting-star-b" />
           </div>
 
           <div className="star-field" aria-hidden="true">
