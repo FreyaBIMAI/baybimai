@@ -29,9 +29,9 @@ test("ships Chinese and English news routes", async () => {
   assert.match(chrome, /nav-link-radar/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
-  assert.match(dictionaries, /courseLabel: "Course"/);
-  assert.match(dictionaries, /newsLabel: "News"/);
-  assert.match(dictionaries, /radarLabel: "Radar"/);
+  assert.match(dictionaries, /courseLabel: "COURSE"/);
+  assert.match(dictionaries, /newsLabel: "NEWS"/);
+  assert.match(dictionaries, /radarLabel: "HOTSPOT/);
 });
 
 test("includes verified report content and official sources", async () => {
@@ -170,7 +170,7 @@ test("ships bilingual Radar routes in primary and news navigation", async () => 
 
   assert.match(chrome, /\/radar/);
   assert.match(chrome, /\/en\/radar/);
-  assert.match(dictionaries, /radarLabel: "Radar"/);
+  assert.match(dictionaries, /radarLabel: "HOTSPOT/);
   assert.match(newsShell, /SiteNav/);
 });
 
