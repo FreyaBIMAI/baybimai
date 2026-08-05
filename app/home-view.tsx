@@ -2,6 +2,8 @@ import Link from "next/link";
 import AutoScrollIntro from "./auto-scroll-intro";
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
+import RadarSections from "./radar/radar-sections";
+import radarStyles from "./radar/radar.module.css";
 import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
@@ -22,6 +24,14 @@ export default function HomeView({ lang }: { lang: Lang }) {
       <main id="main-content" tabIndex={-1}>
         <AutoScrollIntro />
         <SiteNav lang={lang} active="home" />
+
+        <nav className="home-quicknav" aria-label={dict.quickNavAria}>
+          {dict.quickNav.map((item) => (
+            <a href={item.href} key={item.href}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
 
         <section className="hero" id="top">
           <div className="hero-halo" aria-hidden="true">
@@ -84,6 +94,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
             {dict.offers.map((offer, index) => (
               <Reveal delay={index * 90} key={offer.title}>
                 <article
+                  id={offer.id}
                   className={`card card-${offer.theme} ${offer.featured ? "featured" : ""}`}
                 >
                   <div className="card-top">
@@ -119,6 +130,10 @@ export default function HomeView({ lang }: { lang: Lang }) {
             ))}
           </div>
         </section>
+
+        <div className={radarStyles.radarRoot} id="radar">
+          <RadarSections lang={lang} />
+        </div>
 
         <SiteFooter lang={lang} />
       </main>
