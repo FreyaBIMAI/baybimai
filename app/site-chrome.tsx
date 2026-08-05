@@ -5,13 +5,15 @@ import { dictionaries, type Lang } from "./dictionaries";
 export function SiteNav({
   lang,
   active,
+  languageHref: languageHrefOverride,
 }: {
   lang: Lang;
   active?: "news" | "careers" | "radar" | "daily";
+  languageHref?: string;
 }) {
   const dict = dictionaries[lang];
   const languageHref =
-    active === "news"
+    languageHrefOverride ?? (active === "news"
       ? lang === "zh"
         ? "/en/news"
         : "/news"
@@ -27,7 +29,7 @@ export function SiteNav({
             ? lang === "zh"
               ? "/en/daily"
               : "/daily"
-          : undefined;
+            : undefined);
 
   return (
     <nav className="nav" aria-label={dict.nav.ariaLabel}>

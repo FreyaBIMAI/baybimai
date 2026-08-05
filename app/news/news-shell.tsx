@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SiteNav } from "../site-chrome";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
@@ -22,28 +23,7 @@ export default function NewsShell({
         {content.skip}
       </a>
       <header className={styles.header}>
-        <nav className={styles.nav} aria-label={content.navAria}>
-          <a
-            className={styles.brand}
-            href={content.homePath}
-            aria-label={content.brandAria}
-          >
-            BAY<span>BIM</span>AI
-          </a>
-          <div className={styles.navLinks}>
-            <a href={content.homePath}>{content.navHome}</a>
-            <a href={content.newsPath} aria-current="page">
-              {content.navNews}
-            </a>
-            <a className={styles.careersLink} href={content.careersPath}>
-              {content.navCareers}
-            </a>
-            <a href={content.radarPath}>{content.navRadar}</a>
-            <a className={styles.languageLink} href={switchPath}>
-              {content.switchLabel}
-            </a>
-          </div>
-        </nav>
+        <SiteNav lang={lang} active="news" languageHref={switchPath} />
       </header>
       {children}
       <footer className={styles.footer}>
