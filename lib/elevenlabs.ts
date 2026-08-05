@@ -141,10 +141,16 @@ export async function createSpeech(
     // fully drained gets buffered entirely in memory by the runtime, which
     // was crashing the Worker on longer (larger) audio. waitUntil lets the
     // client stream and the cache write drain concurrently instead.
-    const putPromise = cache.put(key, audio.clone()).catch((error) => {
-      console.error("Unable to cache ElevenLabs speech", error);
-    });
-    getRequestExecutionContext()?.waitUntil(putPromise);
+    // Caching is best-effort — a failure here (e.g. clone() on a stream in
+    // an unexpected state) must never take down the actual audio response.
+    try {
+      const putPromise = cache.put(key, audio.clone()).catch((error) => {
+        console.error("Unable to cache ElevenLabs speech", error);
+      });
+      getRequestExecutionContext()?.waitUntil(putPromise);
+    } catch (error) {
+      console.error("Unable to schedule ElevenLabs speech cache write", error);
+    }
   }
   return audio;
 }

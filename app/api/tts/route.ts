@@ -16,7 +16,11 @@ export async function POST(request: Request) {
       return Response.json({ error: "Voice is not available." }, { status: 400 });
     }
 
-    return createSpeech(request, text, voiceId);
+    // Must be awaited, not just returned: a bare `return createSpeech(...)`
+    // hands back the promise without letting this try/catch observe a
+    // rejection, so any internal failure would crash the Worker with a raw
+    // platform error page instead of the JSON response below.
+    return await createSpeech(request, text, voiceId);
   } catch (error) {
     if (error instanceof SyntaxError) {
       return Response.json({ error: "Invalid request body." }, { status: 400 });
