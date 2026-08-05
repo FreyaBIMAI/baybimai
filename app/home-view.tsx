@@ -1,9 +1,14 @@
 import Link from "next/link";
+import AutoScrollIntro from "./auto-scroll-intro";
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
 import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
+
+// Fixed star count/positions for the hero halo background (see .halo-star-N
+// in globals.css) — kept static so server and client markup always match.
+const heroStars = Array.from({ length: 16 }, (_, index) => index + 1);
 
 export default function HomeView({ lang }: { lang: Lang }) {
   const dict = dictionaries[lang];
@@ -15,9 +20,17 @@ export default function HomeView({ lang }: { lang: Lang }) {
         {dict.skipLink}
       </a>
       <main id="main-content" tabIndex={-1}>
-        <SiteNav lang={lang} />
+        <AutoScrollIntro />
+        <SiteNav lang={lang} active="home" />
 
         <section className="hero" id="top">
+          <div className="hero-halo" aria-hidden="true">
+            <div className="halo-glow" />
+            {heroStars.map((star) => (
+              <span className={`halo-star halo-star-${star}`} key={star} />
+            ))}
+          </div>
+
           <div className="star-field" aria-hidden="true">
             {terms.map((term, index) => (
               <span className={`float-term term-${index + 1}`} key={term}>

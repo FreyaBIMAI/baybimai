@@ -19,7 +19,7 @@ type Dictionary = {
   nav: {
     ariaLabel: string;
     brandAria: string;
-    tagline: string;
+    homeLabel: string;
     courseLabel: string;
     newsLabel: string;
     careersLabel: string;
@@ -102,7 +102,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     nav: {
       ariaLabel: "主导航",
       brandAria: "BAYBIMAI 首页",
-      tagline: "BIM Consulting",
+      homeLabel: "HOME",
       courseLabel: "Course",
       newsLabel: "News",
       careersLabel: "Careers",
@@ -189,7 +189,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     nav: {
       ariaLabel: "Main navigation",
       brandAria: "BAYBIMAI home",
-      tagline: "BIM Consulting",
+      homeLabel: "HOME",
       courseLabel: "Course",
       newsLabel: "News",
       careersLabel: "Careers",

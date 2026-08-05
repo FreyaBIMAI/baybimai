@@ -8,7 +8,7 @@ export function SiteNav({
   languageHref: languageHrefOverride,
 }: {
   lang: Lang;
-  active?: "course" | "news" | "careers" | "radar" | "daily";
+  active?: "home" | "course" | "news" | "careers" | "radar" | "daily";
   languageHref?: string;
 }) {
   const dict = dictionaries[lang];
@@ -41,7 +41,13 @@ export function SiteNav({
         BAY<span>BIM</span>AI
       </Link>
       <div className="nav-meta">
-        <p>{dict.nav.tagline}</p>
+        <Link
+          className="nav-link nav-link-home"
+          href={lang === "zh" ? "/" : "/en"}
+          aria-current={active === "home" ? "page" : undefined}
+        >
+          {dict.nav.homeLabel}
+        </Link>
         <Link
           className="nav-link nav-link-course"
           href={lang === "zh" ? "/course" : "/en/course"}

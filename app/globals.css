@@ -127,14 +127,6 @@ main:focus {
   text-shadow: 0 0 28px #8b5cf644;
 }
 
-.nav p {
-  margin: 0;
-  color: var(--quiet);
-  font-size: 0.64rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-}
-
 .nav-meta {
   display: flex;
   align-items: center;
@@ -236,6 +228,94 @@ main:focus {
   mask-image: radial-gradient(circle at 78% 43%, #000, transparent 34%);
   opacity: 0.65;
 }
+
+.hero-halo {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.halo-glow {
+  position: absolute;
+  top: -14%;
+  right: -8%;
+  width: min(46vw, 640px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #a78bfa4d 0%,
+    #8b5cf62e 34%,
+    #a5773a20 58%,
+    transparent 74%
+  );
+  animation: halo-breathe 9s ease-in-out infinite;
+}
+
+.halo-glow::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px solid #d8c6ff40;
+  animation: halo-breathe 9s ease-in-out infinite reverse;
+}
+
+@keyframes halo-breathe {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+.halo-star {
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 1px #d8c6ffb3;
+  animation: star-twinkle 3.4s ease-in-out infinite;
+}
+
+@keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.halo-star-1 { top: 4%; left: 58%; animation-delay: 0s; }
+.halo-star-2 { top: 9%; left: 84%; animation-delay: 0.6s; width: 3.5px; height: 3.5px; }
+.halo-star-3 { top: 15%; left: 68%; animation-delay: 1.2s; }
+.halo-star-4 { top: 12%; left: 96%; animation-delay: 1.9s; width: 2px; height: 2px; }
+.halo-star-5 { top: 22%; left: 55%; animation-delay: 0.3s; }
+.halo-star-6 { top: 26%; left: 91%; animation-delay: 2.4s; width: 3px; height: 3px; }
+.halo-star-7 { top: 32%; left: 76%; animation-delay: 1.5s; }
+.halo-star-8 { top: 37%; left: 61%; animation-delay: 0.9s; width: 2px; height: 2px; }
+.halo-star-9 { top: 40%; left: 87%; animation-delay: 2.1s; }
+.halo-star-10 { top: 6%; left: 71%; animation-delay: 2.7s; width: 3px; height: 3px; }
+.halo-star-11 { top: 46%; left: 66%; animation-delay: 0.15s; }
+.halo-star-12 { top: 45%; left: 97%; animation-delay: 1.05s; width: 2px; height: 2px; }
+.halo-star-13 { top: 19%; left: 99%; animation-delay: 1.65s; }
+.halo-star-14 { top: 29%; left: 52%; animation-delay: 2.55s; width: 2px; height: 2px; }
+.halo-star-15 { top: 2%; left: 90%; animation-delay: 0.75s; width: 3px; height: 3px; }
+.halo-star-16 { top: 50%; left: 80%; animation-delay: 1.35s; }
 
 .star-field {
   position: absolute;
@@ -1200,10 +1280,6 @@ footer .brand {
     padding: 0 20px;
   }
 
-  .nav p {
-    display: none;
-  }
-
   .hero {
     min-height: 560px;
     padding: 84px 20px 76px;
@@ -1236,6 +1312,11 @@ footer .brand {
     right: -46vw;
     top: 270px;
     opacity: 0.42;
+  }
+
+  .hero-halo {
+    width: 100%;
+    opacity: 0.55;
   }
 
   .float-term {
@@ -1283,10 +1364,6 @@ footer .brand {
 
   .nav-meta {
     gap: 10px;
-  }
-
-  .nav-meta > p {
-    display: none;
   }
 
   .nav-link {
