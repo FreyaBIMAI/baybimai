@@ -1,16 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap");
 
 .newsRoot {
-  --news-bg: #f2e7cc;
-  --news-paper: #f9f1dc;
-  --news-ink: #2b2114;
-  --news-muted: #6d5c40;
-  --news-line: #ddcb9c;
-  --news-soft: #ece0bc;
-  --news-accent: #7c4fd8;
-  --news-gold: #9c7226;
+  --news-bg: #f1e9fb;
+  --news-paper: #fbf8fe;
+  --news-ink: #251a3d;
+  --news-muted: #5c4f78;
+  --news-line: #cdbce4;
+  --news-soft: #e9defa;
+  --news-accent: #6d3fc9;
+  --news-gold: #a5773a;
   min-height: 100vh;
-  background: var(--news-bg);
+  background:
+    radial-gradient(circle at 50% -10%, #c7a6f55c, transparent 34rem),
+    var(--news-bg);
   color: var(--news-ink);
   font-family:
     "Inter",
@@ -191,7 +193,8 @@
   gap: 28px;
   border: 1px solid var(--news-line);
   background: var(--news-paper);
-  box-shadow: 0 1px 0 var(--news-line) inset;
+  border-radius: 22px;
+  box-shadow: 0 24px 70px #2a1a4a17;
 }
 
 .featuredGrid h2 {
@@ -329,11 +332,11 @@
 
 .readerShell {
   --reader-scale: 1;
-  --reader-bg: #f2e7cc;
-  --reader-paper: #f9f1dc;
-  --reader-ink: #2b2114;
-  --reader-muted: #6d5c40;
-  --reader-line: #ddcb9c;
+  --reader-bg: #f1e9fb;
+  --reader-paper: #fbf8fe;
+  --reader-ink: #251a3d;
+  --reader-muted: #5c4f78;
+  --reader-line: #cdbce4;
   min-height: 100vh;
   padding-top: 1px;
   background: var(--reader-bg);
@@ -635,11 +638,11 @@
 }
 
 .darkMode {
-  --reader-bg: #16130d;
-  --reader-paper: #1e1a12;
-  --reader-ink: #ede2c6;
-  --reader-muted: #b6a582;
-  --reader-line: #3a3220;
+  --reader-bg: #151020;
+  --reader-paper: #21172f;
+  --reader-ink: #f2ecfb;
+  --reader-muted: #b9acd0;
+  --reader-line: #47375f;
 }
 
 .progressTrack {
