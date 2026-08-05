@@ -264,7 +264,7 @@ export const newsContent = {
     reader: {
       progressLabel: "Article reading progress",
       listen: "Listen",
-      loading: "Preparing Mark…",
+      loading: "Preparing the selected voice…",
       pause: "Pause",
       resume: "Resume",
       stop: "Stop",
@@ -283,7 +283,7 @@ export const newsContent = {
       stopped: "Reading stopped",
       complete: "Reading complete",
       unsupported: "Speech reading is temporarily unavailable",
-      error: "Mark is temporarily unavailable. Please try again.",
+      error: "The selected voice is temporarily unavailable. Please try again.",
       restored: "Your previous reading position was restored",
     },
     article: {
