@@ -59,7 +59,7 @@ test("includes accessible visual reading controls and local preferences", async 
   assert.match(styles, /\.darkMode/);
 });
 
-test("news live and Founder Daily offer only the approved ElevenLabs Mark and Korina voices", async () => {
+test("news live and Founder Daily show only Adam and Hope while retaining Mark server-side", async () => {
   const [voiceHook, voiceRoute, voiceServer, newsLive, newsReader, dailyReader, dailyContent] = await Promise.all([
     source("app/use-elevenlabs-voice.ts"),
     source("app/api/tts/route.ts"),
@@ -70,13 +70,19 @@ test("news live and Founder Daily offer only the approved ElevenLabs Mark and Ko
     source("app/daily/daily-content.ts"),
   ]);
 
-  assert.match(voiceHook, /UgBBYS2sOqTuMpoF3BR0/);
-  assert.match(voiceHook, /ZiK4vToL7fv1vROW8pbA/);
-  assert.match(voiceHook, /Mark · Natural Conversations/);
-  assert.match(voiceHook, /Korina · Calm and Friendly/);
+  assert.match(voiceHook, /zKTOd8cxZlIf5EKC5Giv/);
+  assert.match(voiceHook, /uYXf8XasLslADfZ2MB4u/);
+  assert.match(voiceHook, /Adam · Conversational/);
+  assert.match(voiceHook, /Hope · Bubbly, Gossipy and Girly/);
+  assert.doesNotMatch(voiceHook, /UgBBYS2sOqTuMpoF3BR0|Mark · Natural Conversations/);
+  assert.doesNotMatch(voiceHook, /ZiK4vToL7fv1vROW8pbA|Korina · Calm and Friendly/);
   assert.match(voiceHook, /fetch\("\/api\/tts"/);
   assert.match(voiceRoute, /createSpeech/);
   assert.match(voiceServer, /ELEVENLABS_API_KEY/);
+  assert.match(voiceServer, /UgBBYS2sOqTuMpoF3BR0/);
+  assert.match(voiceServer, /zKTOd8cxZlIf5EKC5Giv/);
+  assert.match(voiceServer, /uYXf8XasLslADfZ2MB4u/);
+  assert.doesNotMatch(voiceServer, /ZiK4vToL7fv1vROW8pbA/);
   assert.match(voiceServer, /eleven_multilingual_v2/);
   assert.match(voiceServer, /text-to-speech/);
   assert.match(newsLive, /useElevenLabsVoice/);

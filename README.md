@@ -33,7 +33,7 @@ npm run dev
 - `STRIPE_PRICE_ID`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
-- `ELEVENLABS_API_KEY`（仅在服务端使用，用于 Mark / Korina 语音朗读）
+- `ELEVENLABS_API_KEY`（仅在服务端使用；新闻与 Founder Daily 显示 Adam / Hope，Mark 留作后续课程配音）
 
 ## 构建与部署
 

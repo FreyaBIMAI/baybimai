@@ -80,7 +80,7 @@ export const newsContent = {
     reader: {
       progressLabel: "文章阅读进度",
       listen: "朗读",
-      loading: "生成 Mark 朗读…",
+      loading: "正在生成所选声音…",
       pause: "暂停",
       resume: "继续",
       stop: "停止",
@@ -99,7 +99,7 @@ export const newsContent = {
       stopped: "朗读已停止",
       complete: "朗读完成",
       unsupported: "语音朗读暂不可用",
-      error: "Mark 语音暂不可用，请稍后再试",
+      error: "所选声音暂不可用，请稍后再试",
       restored: "已恢复上次阅读位置",
     },
     article: {

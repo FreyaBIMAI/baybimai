@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export const MARK_VOICE_ID = "UgBBYS2sOqTuMpoF3BR0";
-export const KORINA_VOICE_ID = "ZiK4vToL7fv1vROW8pbA";
+export const ADAM_VOICE_ID = "zKTOd8cxZlIf5EKC5Giv";
+export const HOPE_VOICE_ID = "uYXf8XasLslADfZ2MB4u";
 
 export const BAYBIMAI_VOICES = [
-  { id: MARK_VOICE_ID, name: "Mark · Natural Conversations" },
-  { id: KORINA_VOICE_ID, name: "Korina · Calm and Friendly" },
+  { id: ADAM_VOICE_ID, name: "Adam · Conversational" },
+  { id: HOPE_VOICE_ID, name: "Hope · Bubbly, Gossipy and Girly" },
 ] as const;
 
 export type ElevenLabsVoiceId = (typeof BAYBIMAI_VOICES)[number]["id"];
@@ -68,7 +68,7 @@ export function splitSpeechText(text: string) {
 }
 
 export function useVoicePreference() {
-  const [voiceId, setVoiceId] = useState<ElevenLabsVoiceId>(MARK_VOICE_ID);
+  const [voiceId, setVoiceId] = useState<ElevenLabsVoiceId>(ADAM_VOICE_ID);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(VOICE_STORAGE_KEY);

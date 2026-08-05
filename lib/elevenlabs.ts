@@ -1,9 +1,16 @@
 import { env } from "cloudflare:workers";
 
 export const MARK_VOICE_ID = "UgBBYS2sOqTuMpoF3BR0";
-export const KORINA_VOICE_ID = "ZiK4vToL7fv1vROW8pbA";
+export const ADAM_VOICE_ID = "zKTOd8cxZlIf5EKC5Giv";
+export const HOPE_VOICE_ID = "uYXf8XasLslADfZ2MB4u";
 
-export const ELEVENLABS_VOICE_IDS = [MARK_VOICE_ID, KORINA_VOICE_ID] as const;
+// Mark stays available server-side for future course narration, but is not
+// exposed in the current news or Founder Daily voice selectors.
+export const ELEVENLABS_VOICE_IDS = [
+  ADAM_VOICE_ID,
+  HOPE_VOICE_ID,
+  MARK_VOICE_ID,
+] as const;
 export type ElevenLabsVoiceId = (typeof ELEVENLABS_VOICE_IDS)[number];
 
 const ELEVENLABS_MODEL_ID = "eleven_multilingual_v2";
