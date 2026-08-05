@@ -130,7 +130,14 @@ main:focus {
 .nav-meta {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
+}
+
+.nav-separator {
+  color: var(--quiet);
+  font-size: 0.68rem;
+  line-height: 1;
+  user-select: none;
 }
 
 .nav-link {
@@ -1037,6 +1044,23 @@ h1 em {
   letter-spacing: 0.08em;
 }
 
+.card-subscribe-link {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  transition:
+    border-color 180ms var(--ease),
+    background 180ms var(--ease),
+    color 180ms var(--ease);
+}
+
+.card-subscribe-link:hover {
+  border-color: currentColor;
+  background: #ffffffa6;
+}
+
 .card h3 {
   margin: 76px 0 20px;
   font-size: clamp(1.55rem, 2.35vw, 2.2rem);
@@ -1114,6 +1138,45 @@ h1 em {
   margin: 10px 0 0 !important;
   color: var(--danger) !important;
   font-size: 0.74rem;
+}
+
+.subscribe-area {
+  margin-top: 8px;
+}
+
+.subscribe-plan-toggle {
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.subscribe-plan-toggle button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold-deep);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+
+.subscribe-plan-toggle button.active {
+  color: #ffffff;
+  background: linear-gradient(120deg, #6d3fc9, #8b5cf6 45%, #a5773a 100%);
+  border-color: transparent;
+}
+
+.subscribe-button {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 12px 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.86rem;
 }
 
 .checkout-result {
@@ -1440,7 +1503,7 @@ footer .brand {
   }
 
   .nav-meta {
-    gap: 10px;
+    gap: 7px;
   }
 
   .nav-link {
@@ -1459,13 +1522,17 @@ footer .brand {
   }
 
   .nav-meta {
-    gap: 8px;
+    gap: 5px;
   }
 
   .nav-link {
-    min-width: 44px;
+    min-width: 0;
     justify-content: center;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.055em;
+  }
+
+  .nav-separator {
+    font-size: 0.58rem;
   }
 
   .lang-toggle {

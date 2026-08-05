@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import ServiceDetailView from "../service-detail-view";
-import PurchaseButton from "../purchase-button";
+import CourseCatalog from "../course-catalog";
 
 export const metadata: Metadata = {
-  title: "Revit 闪电入门课 | BAYBIMAI",
+  title: "BIM 课程路径：入门、进阶与拓展 | BAYBIMAI",
   description:
-    "面向零基础学习者，用最短路径掌握 Revit 基础建模与常用工作流程。$59 一次性购买，永久访问。",
+    "从 7 天 Revit 闪电入门，到 Revit 族、BIM 项目 PPT Presentation 与 Dynamo 入门的分阶段课程路径。",
   alternates: {
     canonical: "https://baybimai.org/course",
     languages: {
@@ -17,11 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function CoursePage() {
-  return (
-    <ServiceDetailView
-      lang="zh"
-      service="course"
-      cta={<PurchaseButton lang="zh" />}
-    />
-  );
+  return <CourseCatalog lang="zh" />;
 }

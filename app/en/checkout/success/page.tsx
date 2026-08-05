@@ -27,7 +27,7 @@ export default function EnglishCheckoutSuccessPage() {
           <h1>Thank you. We’ve received your payment.</h1>
           <p>
             Stripe is confirming the payment. Once complete, we’ll send access
-            instructions for the Revit Fast-Start Course to your payment email.
+            instructions to your payment email.
           </p>
           <Link className="return-link" href="/en">
             Return to BAYBIMAI

@@ -45,6 +45,14 @@ export const newsContent = {
       titleAfter: "与资本周期",
       intro:
         "不追逐泛泛的技术热词，只追踪真正改变模型、造价、项目控制与交付方式的产品变化。",
+      membership: {
+        label: "MEMBER BRIEFING",
+        title: "每周一，一份可执行的 BIM 情报。",
+        body: "获取头条深度报告、三条关键信号和完整历史归档。按月或按年订阅，随时可取消。",
+        price: "$5.9 / 月 · $59 / 年",
+        cta: "查看订阅说明",
+        href: "/news/subscribe",
+      },
       featuredLabel: "本周 BIM 深度报告",
       featuredTitle: "从 Forma 70+ 项更新到 Procore 融资：施工 AI 进入落地周",
       featuredSummary:
@@ -89,6 +97,8 @@ export const newsContent = {
       previewVoice: "试听",
       previewingVoice: "试听中…",
       voiceReady: "声音已选择，可以开始朗读",
+      cloudVoice: "高质量云端",
+      browserVoice: "浏览器朗读",
       fontSmaller: "字号－",
       fontLarger: "字号＋",
       dark: "深色阅读",
@@ -99,6 +109,7 @@ export const newsContent = {
       stopped: "朗读已停止",
       complete: "朗读完成",
       unsupported: "语音朗读暂不可用",
+      fallback: "云端朗读暂不可用，已切换到浏览器朗读",
       error: "所选声音暂不可用，请稍后再试",
       restored: "已恢复上次阅读位置",
     },
@@ -227,6 +238,14 @@ export const newsContent = {
       titleAfter: "",
       intro:
         "No generic tech hype—only product shifts that change how models, estimating, project controls, and delivery actually work.",
+      membership: {
+        label: "MEMBER BRIEFING",
+        title: "One actionable BIM intelligence brief, every Monday.",
+        body: "Get the lead story, three key signals, and the full archive. Subscribe monthly or yearly and cancel any time.",
+        price: "$5.9 / mo · $59 / yr",
+        cta: "View membership",
+        href: "/en/news/subscribe",
+      },
       featuredLabel: "Weekly BIM Intelligence · #001",
       featuredTitle:
         "From China’s urban-renewal wave to Singapore’s CORENET X mandate",
@@ -273,6 +292,8 @@ export const newsContent = {
       previewVoice: "Preview",
       previewingVoice: "Previewing…",
       voiceReady: "Voice selected. Ready to read.",
+      cloudVoice: "Studio voice",
+      browserVoice: "Browser voice",
       fontSmaller: "Text −",
       fontLarger: "Text +",
       dark: "Dark reading",
@@ -283,6 +304,7 @@ export const newsContent = {
       stopped: "Reading stopped",
       complete: "Reading complete",
       unsupported: "Speech reading is temporarily unavailable",
+      fallback: "Studio voice is unavailable. Switched to your browser voice.",
       error: "The selected voice is temporarily unavailable. Please try again.",
       restored: "Your previous reading position was restored",
     },

@@ -4,18 +4,64 @@ import {
   type CSSProperties,
   type ReactNode,
   useEffect,
+  useRef,
   useState,
 } from "react";
+import {
+  BAYBIMAI_VOICES,
+  isBAYBIMAIVoice,
+  useElevenLabsVoice,
+  useVoicePreference,
+} from "../use-elevenlabs-voice";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
 const FONT_SCALES = [0.94, 1, 1.1, 1.2] as const;
+const BROWSER_CHUNK_LENGTH = 260;
+
+function splitBrowserSpeechText(text: string) {
+  const sentences = text
+    .replace(/\s+/g, " ")
+    .trim()
+    .match(/[^.!?。！？]+[.!?。！？]+|[^.!?。！？]+$/g) ?? [];
+  const chunks: string[] = [];
+  let current = "";
+
+  const append = (part: string) => {
+    const normalized = part.trim();
+    if (!normalized) return;
+    if (normalized.length > BROWSER_CHUNK_LENGTH) {
+      if (current) {
+        chunks.push(current);
+        current = "";
+      }
+      for (let index = 0; index < normalized.length; index += BROWSER_CHUNK_LENGTH) {
+        chunks.push(normalized.slice(index, index + BROWSER_CHUNK_LENGTH));
+      }
+      return;
+    }
+    if (!current) {
+      current = normalized;
+    } else if (current.length + normalized.length + 1 <= BROWSER_CHUNK_LENGTH) {
+      current += ` ${normalized}`;
+    } else {
+      chunks.push(current);
+      current = normalized;
+    }
+  };
+
+  sentences.forEach(append);
+  if (current) chunks.push(current);
+  return chunks;
+}
 
 export default function ReadingTools({
   lang,
+  speechText,
   children,
 }: {
   lang: NewsLang;
+  speechText: string;
   children: ReactNode;
 }) {
   const labels = newsContent[lang].reader;
@@ -23,12 +69,102 @@ export default function ReadingTools({
   const [progress, setProgress] = useState(0);
   const [fontIndex, setFontIndex] = useState(1);
   const [darkMode, setDarkMode] = useState(false);
-  const [, setStatus] = useState<string>(labels.idle);
+  const [status, setStatus] = useState<string>(labels.idle);
+  const [speechMode, setSpeechMode] = useState<"cloud" | "browser" | null>(null);
+  const [nativePaused, setNativePaused] = useState(false);
+  const [cloudAvailable, setCloudAvailable] = useState<boolean | null>(null);
+  const nativeUtterance = useRef<SpeechSynthesisUtterance | null>(null);
+  const nativeSession = useRef(0);
+  const { voiceId, chooseVoice } = useVoicePreference();
+  const {
+    state: cloudState,
+    speak,
+    pause: pauseCloud,
+    resume: resumeCloud,
+    stop: stopCloud,
+  } = useElevenLabsVoice();
+
+  const stopNative = () => {
+    nativeSession.current += 1;
+    nativeUtterance.current = null;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    setNativePaused(false);
+  };
+
+  const startBrowserSpeech = (isFallback = false) => {
+    if (
+      !("speechSynthesis" in window) ||
+      typeof window.SpeechSynthesisUtterance === "undefined" ||
+      !speechText.trim()
+    ) {
+      setSpeechMode(null);
+      setStatus(labels.unsupported);
+      return;
+    }
+
+    const session = nativeSession.current + 1;
+    nativeSession.current = session;
+    const chunks = splitBrowserSpeechText(speechText);
+    if (!chunks.length) {
+      setSpeechMode(null);
+      setStatus(labels.unsupported);
+      return;
+    }
+
+    const speakChunk = (index: number) => {
+      if (nativeSession.current !== session) return;
+      const utterance = new SpeechSynthesisUtterance(chunks[index]);
+      utterance.lang = lang === "zh" ? "zh-CN" : "en-US";
+      utterance.rate = 0.96;
+      utterance.onstart = () => {
+        if (nativeSession.current === session) {
+          setSpeechMode("browser");
+          setStatus(labels.playing);
+        }
+      };
+      utterance.onend = () => {
+        if (nativeSession.current !== session) return;
+        if (index + 1 < chunks.length) {
+          speakChunk(index + 1);
+          return;
+        }
+        setSpeechMode(null);
+        setNativePaused(false);
+        setStatus(labels.complete);
+      };
+      utterance.onerror = () => {
+        if (nativeSession.current === session) {
+          setSpeechMode(null);
+          setNativePaused(false);
+          setStatus(labels.unsupported);
+        }
+      };
+      nativeUtterance.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    };
+
+    setSpeechMode("browser");
+    setStatus(isFallback ? labels.fallback : labels.playing);
+    window.speechSynthesis.cancel();
+    speakChunk(0);
+  };
 
   useEffect(() => {
-    // The article reader is visual-only. Stop any speech left running by an
-    // older deployment or another tab as soon as this page opens.
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    const controller = new AbortController();
+    void fetch("/api/tts", { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return false;
+        const payload = (await response.json()) as { available?: unknown };
+        return payload.available === true;
+      })
+      .then((available) => setCloudAvailable(available))
+      .catch(() => {
+        if (!controller.signal.aborted) setCloudAvailable(false);
+      });
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
     const initializePreferences = window.setTimeout(() => {
       const savedFont = Number(
         localStorage.getItem(`${storagePrefix}-font`) ?? "1",
@@ -85,8 +221,11 @@ export default function ReadingTools({
       window.removeEventListener("resize", updateProgress);
       window.clearTimeout(initializePreferences);
       if (frame) window.cancelAnimationFrame(frame);
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      stopNative();
+      stopCloud();
     };
+  // stopNative and stopCloud both intentionally run only at page teardown.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [labels.restored, storagePrefix]);
 
   const changeFont = (direction: -1 | 1) => {
@@ -109,6 +248,68 @@ export default function ReadingTools({
       return !current;
     });
   };
+
+  const startReading = () => {
+    if (speechMode === "browser" && nativePaused) {
+      window.speechSynthesis.resume();
+      setNativePaused(false);
+      setStatus(labels.playing);
+      return;
+    }
+    if (cloudState === "paused") {
+      void resumeCloud();
+      setStatus(labels.playing);
+      return;
+    }
+
+    // Starting native speech synchronously preserves the click activation that
+    // mobile browsers require. Cloud speech remains the preferred route once
+    // its configuration has been confirmed by the server.
+    if (cloudAvailable !== true) {
+      startBrowserSpeech();
+      return;
+    }
+
+    stopNative();
+    setSpeechMode("cloud");
+    setStatus(labels.loading);
+    void speak(speechText, voiceId, {
+      rate: 0.96,
+      onEnded: () => {
+        setSpeechMode(null);
+        setStatus(labels.complete);
+      },
+      onError: () => startBrowserSpeech(true),
+    });
+  };
+
+  const pauseReading = () => {
+    if (speechMode === "browser") {
+      window.speechSynthesis.pause();
+      setNativePaused(true);
+    } else {
+      pauseCloud();
+    }
+    setStatus(labels.paused);
+  };
+
+  const stopReading = () => {
+    stopNative();
+    stopCloud();
+    setSpeechMode(null);
+    setStatus(labels.stopped);
+  };
+
+  const changeVoice = (nextVoiceId: string) => {
+    if (!isBAYBIMAIVoice(nextVoiceId)) return;
+    stopReading();
+    chooseVoice(nextVoiceId);
+    setStatus(labels.voiceReady);
+  };
+
+  const active = speechMode === "browser" || cloudState === "playing" || cloudState === "paused";
+  const paused = speechMode === "browser" ? nativePaused : cloudState === "paused";
+  const loading = speechMode === "cloud" && cloudState === "loading";
 
   const readerStyle = {
     "--reader-scale": FONT_SCALES[fontIndex],
@@ -134,6 +335,19 @@ export default function ReadingTools({
         <div className={styles.readerActions}>
           <button
             type="button"
+            onClick={startReading}
+            disabled={loading}
+          >
+            {loading ? labels.loading : paused ? labels.resume : labels.listen}
+          </button>
+          {active && !paused ? (
+            <button type="button" onClick={pauseReading}>{labels.pause}</button>
+          ) : null}
+          {active || loading ? (
+            <button type="button" onClick={stopReading}>{labels.stop}</button>
+          ) : null}
+          <button
+            type="button"
             onClick={() => changeFont(-1)}
             disabled={fontIndex === 0}
           >
@@ -154,6 +368,25 @@ export default function ReadingTools({
             {darkMode ? labels.light : labels.dark}
           </button>
         </div>
+        <label className={styles.voiceControl}>
+          <span className={styles.voiceLabel}>{labels.voice}</span>
+          <select
+            aria-label={labels.voice}
+            value={voiceId}
+            onChange={(event) => changeVoice(event.target.value)}
+            disabled={active || loading}
+          >
+            {BAYBIMAI_VOICES.map((voice) => (
+              <option value={voice.id} key={voice.id}>{voice.name}</option>
+            ))}
+          </select>
+          <span className={styles.fixedVoice}>
+            {speechMode === "browser" || cloudAvailable === false
+              ? labels.browserVoice
+              : labels.cloudVoice}
+          </span>
+        </label>
+        <p className={styles.readerStatus} role="status" aria-live="polite">{status}</p>
       </aside>
       {children}
     </div>

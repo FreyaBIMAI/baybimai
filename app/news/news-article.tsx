@@ -1,18 +1,24 @@
 import NewsShell from "./news-shell";
 import ReadingTools from "./reading-tools";
-import LiveWindow from "./live-window";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
 export default function NewsArticle({ lang }: { lang: NewsLang }) {
   const content = newsContent[lang];
   const article = content.article;
+  const speechText = [
+    article.title,
+    article.deck,
+    article.intro,
+    ...article.sections.flatMap((section) => [section.title, ...section.paragraphs]),
+    article.takeawayTitle,
+    ...article.takeaways,
+  ].join(" ");
 
   return (
     <NewsShell lang={lang} article>
       <main id="news-main" tabIndex={-1}>
-        <ReadingTools lang={lang}>
-          <LiveWindow lang={lang} />
+        <ReadingTools lang={lang} speechText={speechText}>
           <article id="article-body" className={styles.article}>
             <header className={styles.articleHeader}>
               <a className={styles.backLink} href={content.newsPath}>

@@ -1,8 +1,17 @@
 import {
   createSpeech,
   isElevenLabsVoiceId,
+  isElevenLabsConfigured,
   MARK_VOICE_ID,
 } from "../../../lib/elevenlabs";
+
+// The browser reader checks this once after mount. If studio speech has not
+// been configured, it can start the native browser voice inside the user's
+// click gesture instead of waiting for a failed network request (which Safari
+// and some mobile browsers may block from starting audio afterwards).
+export function GET() {
+  return Response.json({ available: isElevenLabsConfigured() });
+}
 
 export async function POST(request: Request) {
   try {

@@ -6,6 +6,9 @@ type StripeBindings = {
   STRIPE_WEBHOOK_SECRET?: string;
   STRIPE_PRICE_ID?: string;
   STRIPE_PRODUCT_ID?: string;
+  STRIPE_NEWS_PRODUCT_ID?: string;
+  STRIPE_NEWS_MONTHLY_PRICE_ID?: string;
+  STRIPE_NEWS_YEARLY_PRICE_ID?: string;
   SITE_URL?: string;
 };
 
@@ -35,6 +38,22 @@ export function getStripeConfig() {
   return {
     priceId: current.STRIPE_PRICE_ID,
     productId: current.STRIPE_PRODUCT_ID,
+    siteUrl: (current.SITE_URL || "https://baybimai.org").replace(/\/+$/, ""),
+    webhookSecret: current.STRIPE_WEBHOOK_SECRET,
+  };
+}
+
+export function getNewsSubscriptionConfig() {
+  const current = bindings();
+
+  if (!current.STRIPE_NEWS_MONTHLY_PRICE_ID || !current.STRIPE_NEWS_YEARLY_PRICE_ID) {
+    throw new Error("News membership Stripe configuration is incomplete.");
+  }
+
+  return {
+    monthlyPriceId: current.STRIPE_NEWS_MONTHLY_PRICE_ID,
+    yearlyPriceId: current.STRIPE_NEWS_YEARLY_PRICE_ID,
+    productId: current.STRIPE_NEWS_PRODUCT_ID,
     siteUrl: (current.SITE_URL || "https://baybimai.org").replace(/\/+$/, ""),
     webhookSecret: current.STRIPE_WEBHOOK_SECRET,
   };

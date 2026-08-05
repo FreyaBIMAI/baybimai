@@ -75,10 +75,17 @@ export const weeklyMetadata: Metadata = {
 };
 
 export default function WeeklyBimIntelligence001() {
+  const speechText = [
+    "The renovation economy is changing what BIM expertise is worth.",
+    "Five signals across urban renewal, openBIM regulation, AI, technical delivery, and the BIM career market.",
+    "This week’s central idea: as software output becomes cheaper, reliable project judgment becomes more valuable.",
+    ...sections.flatMap((section) => [section.title, ...section.paragraphs]),
+  ].join(" ");
+
   return (
     <NewsShell lang="en" article>
       <main id="news-main" tabIndex={-1}>
-        <ReadingTools lang="en">
+        <ReadingTools lang="en" speechText={speechText}>
           <article id="article-body" className={styles.article}>
             <header className={styles.articleHeader}>
               <a className={styles.backLink} href="/en/news">

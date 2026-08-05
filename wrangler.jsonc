@@ -4,10 +4,16 @@
   "assets": {
     "directory": "./dist"
   },
+  "triggers": {
+    "crons": ["0 16 * * 1"]
+  },
   "vars": {
     "SITE_URL": "https://baybimai.org",
     "STRIPE_PRODUCT_ID": "prod_UwwriUKoYty5aU",
-    "STRIPE_PRICE_ID": "price_1Tx2xp0q1azuHcKoncjOFTPl"
+    "STRIPE_PRICE_ID": "price_1Tx2xp0q1azuHcKoncjOFTPl",
+    "STRIPE_NEWS_PRODUCT_ID": "prod_V18I8JZwOwl4Gx",
+    "STRIPE_NEWS_MONTHLY_PRICE_ID": "price_1U161c0q1azuHcKo0gh5la88",
+    "STRIPE_NEWS_YEARLY_PRICE_ID": "price_1U161c0q1azuHcKoWgPxxuk0"
   },
   "routes": [
     {

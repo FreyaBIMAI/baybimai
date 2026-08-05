@@ -88,7 +88,14 @@ export default function HomeView({ lang }: { lang: Lang }) {
                 >
                   <div className="card-top">
                     <span className="card-index">0{index + 1}</span>
-                    <span className="card-tag">{offer.tag}</span>
+                    {offer.action ? (
+                      <Link className="card-tag card-subscribe-link" href={offer.action.href}>
+                        {offer.action.label}
+                        <span aria-hidden="true">↗</span>
+                      </Link>
+                    ) : (
+                      <span className="card-tag">{offer.tag}</span>
+                    )}
                   </div>
                   <h3>{offer.title}</h3>
                   <p>{offer.copy}</p>

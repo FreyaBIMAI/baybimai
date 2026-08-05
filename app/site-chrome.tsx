@@ -48,20 +48,15 @@ export function SiteNav({
         >
           {dict.nav.homeLabel}
         </Link>
+        <span className="nav-separator" aria-hidden="true">｜</span>
         <Link
-          className="nav-link nav-link-course"
-          href={lang === "zh" ? "/course" : "/en/course"}
-          aria-current={active === "course" ? "page" : undefined}
-        >
-          {dict.nav.courseLabel}
-        </Link>
-        <Link
-          className="nav-link nav-link-news"
+          className="nav-link nav-link-hotspot"
           href={lang === "zh" ? "/news" : "/en/news"}
           aria-current={active === "news" ? "page" : undefined}
         >
-          {dict.nav.newsLabel}
+          {dict.nav.hotspotLabel}
         </Link>
+        <span className="nav-separator" aria-hidden="true">｜</span>
         <Link
           className="nav-link nav-link-radar"
           href={lang === "zh" ? "/radar" : "/en/radar"}

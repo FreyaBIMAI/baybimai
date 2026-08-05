@@ -20,3 +20,23 @@ export const orders = sqliteTable("orders", {
   fulfilledAt: text("fulfilled_at").notNull(),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
+
+export const newsPublications = sqliteTable("news_publications", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  language: text("language").notNull(),
+  issueDate: text("issue_date").notNull(),
+  headline: text("headline").notNull(),
+  summary: text("summary").notNull(),
+  signals: text("signals").notNull(),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const newsFeedback = sqliteTable("news_feedback", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  language: text("language").notNull(),
+  issueDate: text("issue_date").notNull(),
+  signal: text("signal").notNull(),
+  note: text("note"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});

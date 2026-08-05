@@ -25,6 +25,13 @@ function bindings(): ElevenLabsBindings {
   return env as unknown as ElevenLabsBindings;
 }
 
+// Keep this check server-side. The reader uses it only to decide whether it
+// should begin with the browser voice, so the API key itself never reaches the
+// client.
+export function isElevenLabsConfigured() {
+  return Boolean(bindings().ELEVENLABS_API_KEY);
+}
+
 function allowedOrigins(request: Request) {
   const current = bindings();
   const requestOrigin = new URL(request.url).origin;

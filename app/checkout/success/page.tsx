@@ -14,7 +14,7 @@ export default function CheckoutSuccessPage() {
         <h1>谢谢，付款信息已收到。</h1>
         <p>
           Stripe 正在确认这笔付款。确认完成后，我们会通过你的付款邮箱发送
-          Revit 闪电入门课的开通说明。
+          开通说明。
         </p>
         <Link className="return-link" href="/">
           返回 BAYBIMAI 首页

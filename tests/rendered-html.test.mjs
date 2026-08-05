@@ -12,10 +12,12 @@ test("ships Chinese and English news routes", async () => {
   await Promise.all([
     access(new URL("app/news/page.tsx", root)),
     access(new URL("app/news/construction-ai-agents-2026/page.tsx", root)),
+    access(new URL("app/news/subscribe/page.tsx", root)),
     access(new URL("app/en/news/page.tsx", root)),
     access(
       new URL("app/en/news/construction-ai-agents-2026/page.tsx", root),
     ),
+    access(new URL("app/en/news/subscribe/page.tsx", root)),
   ]);
 
   const [chrome, dictionaries] = await Promise.all([
@@ -24,14 +26,15 @@ test("ships Chinese and English news routes", async () => {
   ]);
   assert.match(chrome, /\/news/);
   assert.match(chrome, /\/en\/news/);
-  assert.match(chrome, /nav-link-course/);
-  assert.match(chrome, /nav-link-news/);
+  assert.match(chrome, /nav-link-hotspot/);
   assert.match(chrome, /nav-link-radar/);
+  assert.match(chrome, /nav-separator/);
+  assert.doesNotMatch(chrome, /nav-link-course/);
+  assert.doesNotMatch(chrome, /nav-link-news/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
   assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
-  assert.match(dictionaries, /courseLabel: "COURSE"/);
-  assert.match(dictionaries, /newsLabel: "NEWS"/);
-  assert.match(dictionaries, /radarLabel: "HOTSPOT/);
+  assert.match(dictionaries, /hotspotLabel: "HOTSPOT"/);
+  assert.match(dictionaries, /radarLabel: "RADAR"/);
 });
 
 test("includes verified report content and official sources", async () => {
@@ -59,12 +62,11 @@ test("includes accessible visual reading controls and local preferences", async 
   assert.match(styles, /\.darkMode/);
 });
 
-test("news live and Founder Daily show only Adam and Hope while retaining Mark server-side", async () => {
-  const [voiceHook, voiceRoute, voiceServer, newsLive, newsReader, dailyReader, dailyContent] = await Promise.all([
+test("News and Founder Daily provide reliable ElevenLabs voice playback", async () => {
+  const [voiceHook, voiceRoute, voiceServer, newsReader, dailyReader, dailyContent] = await Promise.all([
     source("app/use-elevenlabs-voice.ts"),
     source("app/api/tts/route.ts"),
     source("lib/elevenlabs.ts"),
-    source("app/news/live-window.tsx"),
     source("app/news/reading-tools.tsx"),
     source("app/daily/daily-reader.tsx"),
     source("app/daily/daily-content.ts"),
@@ -85,16 +87,40 @@ test("news live and Founder Daily show only Adam and Hope while retaining Mark s
   assert.doesNotMatch(voiceServer, /ZiK4vToL7fv1vROW8pbA/);
   assert.match(voiceServer, /eleven_multilingual_v2/);
   assert.match(voiceServer, /text-to-speech/);
-  assert.match(newsLive, /useElevenLabsVoice/);
-  assert.match(newsLive, /const preview/);
-  assert.match(newsLive, /BAYBIMAI_VOICES/);
-  assert.doesNotMatch(newsLive, /useNaturalVoice|SpeechSynthesisUtterance/);
-  assert.doesNotMatch(newsReader, /useNaturalVoice|SpeechSynthesisUtterance/);
+  assert.match(newsReader, /useElevenLabsVoice/);
+  assert.match(newsReader, /BAYBIMAI_VOICES/);
+  assert.match(newsReader, /SpeechSynthesisUtterance/);
+  assert.match(newsReader, /labels\.fallback/);
   assert.match(dailyReader, /useElevenLabsVoice/);
   assert.match(dailyReader, /function previewVoice/);
   assert.match(dailyReader, /BAYBIMAI_VOICES/);
   assert.doesNotMatch(dailyReader, /useNaturalVoice|speechSynthesis/);
   assert.match(dailyContent, /voice: "Reading voice"/);
+});
+
+test("HOTSPOT has subscription, Monday refresh, and a reader-feedback loop", async () => {
+  const [index, subscribe, feedback, feedbackRoute, worker, wrangler, reader, ttsRoute] = await Promise.all([
+    source("app/news/news-index.tsx"),
+    source("app/news/subscribe-view.tsx"),
+    source("app/news/news-feedback.tsx"),
+    source("app/api/news/feedback/route.ts"),
+    source("worker/index.ts"),
+    source("wrangler.jsonc"),
+    source("app/news/reading-tools.tsx"),
+    source("app/api/tts/route.ts"),
+  ]);
+
+  assert.match(index, /NewsFeedback/);
+  assert.match(subscribe, /\$5\.9/);
+  assert.match(subscribe, /\$59/);
+  assert.match(feedback, /PRODUCT LOOP/);
+  assert.match(feedback, /\/api\/news\/feedback/);
+  assert.match(feedbackRoute, /newsFeedback/);
+  assert.match(worker, /refreshMondayNews/);
+  assert.match(wrangler, /0 16 \* \* 1/);
+  assert.match(reader, /splitBrowserSpeechText/);
+  assert.match(reader, /cloudAvailable !== true/);
+  assert.match(ttsRoute, /isElevenLabsConfigured/);
 });
 
 test("protects bilingual Careers routes and removes them from public navigation", async () => {
@@ -170,7 +196,8 @@ test("ships bilingual Radar routes in primary and news navigation", async () => 
 
   assert.match(chrome, /\/radar/);
   assert.match(chrome, /\/en\/radar/);
-  assert.match(dictionaries, /radarLabel: "HOTSPOT/);
+  assert.match(dictionaries, /hotspotLabel: "HOTSPOT"/);
+  assert.match(dictionaries, /radarLabel: "RADAR"/);
   assert.match(newsShell, /SiteNav/);
 });
 

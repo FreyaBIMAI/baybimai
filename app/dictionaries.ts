@@ -9,6 +9,10 @@ export type Offer = {
   note: string;
   featured: boolean;
   detailHref: string;
+  action?: {
+    label: string;
+    href: string;
+  };
   theme: OfferTheme;
 };
 
@@ -20,8 +24,7 @@ type Dictionary = {
     ariaLabel: string;
     brandAria: string;
     homeLabel: string;
-    courseLabel: string;
-    newsLabel: string;
+    hotspotLabel: string;
     careersLabel: string;
     radarLabel: string;
     dailyLabel: string;
@@ -103,10 +106,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ariaLabel: "主导航",
       brandAria: "BAYBIMAI 首页",
       homeLabel: "HOME",
-      courseLabel: "COURSE",
-      newsLabel: "NEWS",
+      hotspotLabel: "HOTSPOT",
       careersLabel: "Careers",
-      radarLabel: "HOTSPOT ｜ RADAR",
+      radarLabel: "RADAR",
       dailyLabel: "Founder Daily",
     },
     hero: {
@@ -137,7 +139,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     offers: [
       {
         tag: "TO C · 主线",
-        title: "Revit 闪电入门课",
+        title: "7 天 Revit 闪电入门课",
         copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
         note: "$59 · 一次性购买",
         featured: true,
@@ -147,10 +149,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         tag: "新闻 · 观察",
         title: "BIM 新闻与深度报告",
-        copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化，仿古纸阅读页面，支持语音朗读。",
-        note: "每周更新 · 支持语音朗读",
+        copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化。每周一自动发布头条和关键信号总结。",
+        note: "每周一更新 · $5.9/月 或 $59/年",
         featured: false,
         detailHref: "/news",
+        action: {
+          label: "订阅 NEWS",
+          href: "/news/subscribe",
+        },
         theme: "paper",
       },
       {
@@ -190,10 +196,9 @@ export const dictionaries: Record<Lang, Dictionary> = {
       ariaLabel: "Main navigation",
       brandAria: "BAYBIMAI home",
       homeLabel: "HOME",
-      courseLabel: "COURSE",
-      newsLabel: "NEWS",
+      hotspotLabel: "HOTSPOT",
       careersLabel: "Careers",
-      radarLabel: "HOTSPOT ｜ RADAR",
+      radarLabel: "RADAR",
       dailyLabel: "Founder Daily",
     },
     hero: {
@@ -227,7 +232,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     offers: [
       {
         tag: "TO C · FLAGSHIP",
-        title: "Revit Fast-Start Course",
+        title: "7-Day Revit Fast-Start",
         copy: "For complete beginners — get fluent in core Revit modeling and everyday workflows, fast. Learn on your own schedule, apply it immediately.",
         note: "$59 · one-time purchase",
         featured: true,
@@ -237,10 +242,14 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         tag: "NEWS · FIELD NOTES",
         title: "BIM News & Deep Dives",
-        copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A parchment reading page with read-aloud support.",
-        note: "Updated weekly · Listen mode available",
+        copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A new headline and signal roundup lands every Monday.",
+        note: "Mondays · $5.9/mo or $59/yr",
         featured: false,
         detailHref: "/en/news",
+        action: {
+          label: "SUBSCRIBE",
+          href: "/en/news/subscribe",
+        },
         theme: "paper",
       },
       {
