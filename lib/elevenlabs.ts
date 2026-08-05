@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { getRequestExecutionContext } from "vinext/shims/request-context";
 
 export const MARK_VOICE_ID = "UgBBYS2sOqTuMpoF3BR0";
 export const ADAM_VOICE_ID = "zKTOd8cxZlIf5EKC5Giv";
@@ -131,6 +132,16 @@ export async function createSpeech(
     },
   });
 
-  if (cache) await cache.put(key, audio.clone());
+  if (cache) {
+    // Write to cache in the background instead of awaiting it: a teed
+    // ReadableStream branch that isn't actively read while its sibling is
+    // fully drained gets buffered entirely in memory by the runtime, which
+    // was crashing the Worker on longer (larger) audio. waitUntil lets the
+    // client stream and the cache write drain concurrently instead.
+    const putPromise = cache.put(key, audio.clone()).catch((error) => {
+      console.error("Unable to cache ElevenLabs speech", error);
+    });
+    getRequestExecutionContext()?.waitUntil(putPromise);
+  }
   return audio;
 }
