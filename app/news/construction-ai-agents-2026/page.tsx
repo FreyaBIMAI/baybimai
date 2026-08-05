@@ -3,9 +3,9 @@ import NewsArticle from "../news-article";
 import { ARTICLE_SLUG } from "../news-content";
 
 export const metadata: Metadata = {
-  title: "施工 AI 开始执行企业流程 | BAYBIMAI 深度报告",
+  title: "本周施工 AI：Forma、Procore 与 Trimble | BAYBIMAI",
   description:
-    "解读 Procore Digital Coworker、Trimble AI Takeoff 与 Autodesk Forma 对 BIM/VDC、造价、项目控制和求职方向的影响。",
+    "截至 2026 年 8 月 5 日的 BIM、VDC、造价与施工 AI 周报，解读 Autodesk Forma、Procore 与 Trimble 的最新动作。",
   alternates: {
     canonical: `/news/${ARTICLE_SLUG}`,
     languages: {
@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "article",
-    publishedTime: "2026-07-27",
+    publishedTime: "2026-08-05",
+    modifiedTime: "2026-08-05",
   },
 };
 

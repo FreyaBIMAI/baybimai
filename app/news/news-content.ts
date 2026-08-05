@@ -11,6 +11,12 @@ const sources = {
     "https://news.trimble.com/2026-07-20-Trimble-Launches-New-Financial-Management-System-for-Small-business-Contractors",
   autodesk:
     "https://adsknews.autodesk.com/en/news/autodesk-construction-cloud-is-now-autodesk-forma/",
+  autodeskJuly:
+    "https://www.autodesk.com/blogs/construction/july-autodesk-forma-construction-releases-built-for-whats-next/",
+  procoreNotes:
+    "https://investors.procore.com/news/news-details/2026/Procore-Technologies-Inc--Announces-Proposed-Private-Placement-of-750-0-Million-of-Convertible-Senior-Notes/default.aspx",
+  trimbleWebinar:
+    "https://www.trimble.com/en/events",
 };
 
 export const newsContent = {
@@ -33,40 +39,40 @@ export const newsContent = {
     skip: "跳到主要内容",
     footer: "BIM、施工科技与职业能力的独立观察。",
     index: {
-      eyebrow: "BAYBIMAI FIELD NOTES · 2026.07.27",
-      titleBefore: "BIM 正在进入",
-      titleEm: "可执行的 AI",
-      titleAfter: "时代",
+      eyebrow: "BAYBIMAI WEEKLY · 2026.08.05",
+      titleBefore: "本周施工科技：",
+      titleEm: "AI 开始进入真实流程",
+      titleAfter: "与资本周期",
       intro:
         "不追逐泛泛的技术热词，只追踪真正改变模型、造价、项目控制与交付方式的产品变化。",
       featuredLabel: "本周 BIM 深度报告",
-      featuredTitle: "施工 AI 不再只回答问题：它开始执行公司的流程",
+      featuredTitle: "从 Forma 70+ 项更新到 Procore 融资：施工 AI 进入落地周",
       featuredSummary:
-        "从 Procore Digital Coworker、Trimble AI Takeoff 到 Autodesk Forma，施工软件正在从“提供工具”转向“理解标准、执行流程、连接结果”。",
+        "Autodesk 把 AI 放进模型、RFI 与成本流程，Procore 为下一阶段扩张准备资本，Trimble 则把 AI Takeoff 推向估算团队的实际培训场景。",
       readArticle: "阅读全文",
       readTime: "约 9 分钟",
       signalTitle: "本周三个关键信号",
       signals: [
         {
           company: "PROCORE",
-          date: "2026.07.23",
-          title: "Digital Coworker 扩展到 20 个施工 AI Agents",
-          copy: "Starter、Pro、Enterprise 三档产品把搜索、RFI、日志、进度、变更和安全工作流带入同一套代理体系。",
-          href: sources.procore,
+          date: "2026.08.03",
+          title: "Procore 提出发行 7.5 亿美元可转换优先票据",
+          copy: "这不是单一产品更新，但它说明施工软件的 AI 竞赛已经同时进入产品、基础设施投入与资本配置阶段。",
+          href: sources.procoreNotes,
         },
         {
           company: "TRIMBLE",
-          date: "2026.06.30 — 07.20",
-          title: "AI Takeoff 与施工财务开始形成连续数据链",
-          copy: "MEP 图纸识别减少算量前置操作，Financials 则把预算、实际成本和项目盈利放进施工专用财务视图。",
-          href: sources.trimbleFinancials,
+          date: "2026.08.18 · UPCOMING",
+          title: "Trimble 把电气 AI Takeoff 带进估算实操",
+          copy: "即将举行的线上演示聚焦对话式 AI 与自动化如何兼顾投标速度和算量准确性，落点非常明确：更快赢得更有利润的工作。",
+          href: sources.trimbleWebinar,
         },
         {
           company: "AUTODESK",
-          date: "2026.03.24",
-          title: "Autodesk Construction Cloud 正式并入 Forma",
-          copy: "设计、施工与运营被放进一个 AI 原生行业云方向，数据连续性正在成为平台竞争的核心。",
-          href: sources.autodesk,
+          date: "2026.07.22",
+          title: "Autodesk Forma 一次发布 70+ 项施工更新",
+          copy: "AI 房间识别、手机端 AI RFI、成本与时间自动设置，以及跨项目模板共享，开始把智能能力嵌入项目日常。",
+          href: sources.autodeskJuly,
         },
       ],
       sourceLabel: "查看官方来源",
@@ -99,39 +105,39 @@ export const newsContent = {
     article: {
       back: "返回新闻首页",
       category: "BIM 深度报告",
-      date: "2026 年 7 月 27 日",
-      readTime: "约 9 分钟阅读",
-      title: "施工 AI 不再只回答问题：它开始执行公司的流程",
+      date: "2026 年 8 月 5 日",
+      readTime: "约 8 分钟阅读",
+      title: "从 Forma 70+ 项更新到 Procore 融资：施工 AI 进入落地周",
       deck:
-        "Procore、Trimble 与 Autodesk 最近的产品动作指向同一个变化：AI 正从聊天入口进入施工公司的标准、数据链与日常执行。",
+        "本周最重要的不是又出现一个聊天助手，而是 AI 同时进入模型定位、RFI、成本、估算培训与平台资本配置。施工科技正在从功能展示走向规模化执行。",
       intro:
-        "过去两年，施工软件谈 AI 时最常见的画面，是在平台右侧增加一个对话框。到了 2026 年中，这个画面正在变化。最新一批产品不再满足于“帮你找到答案”，而是试图理解公司的项目标准、执行多步骤工作流，并把模型、算量、成本和现场记录连接起来。",
+        "截至 8 月 5 日，最近两周的官方动作给出了一个清晰信号：施工 AI 的竞争已经不只看模型会不会回答问题，而是看它能否进入高频工作流、被团队采用，并获得持续投入。",
       sections: [
         {
           number: "01",
-          title: "从 Copilot 到 Digital Coworker",
+          title: "Forma 的 70+ 项更新，把 AI 塞进每天要做的事",
           paragraphs: [
-            "7 月 23 日，Procore 发布三档 Digital Coworker 产品包。Starter 提供 5 个预构建代理，覆盖深度搜索、送审资料审查、RFI、每日施工日志和合同审查；Pro 扩展到 20 个代理；Enterprise 则增加 Agent Studio 和更深入的企业定制能力。",
-            "这组产品最值得注意的，不是代理数量，而是工作范围。安全、进度、变更、投标与质量等流程开始被拆成可执行任务。AI 的位置由“平台里的问答助手”变成“平台里的工作参与者”。",
-            "Procore 同时提供 Control Tower，让管理员查看不同代理、项目和成员的使用情况。施工 AI 一旦真正进入业务流程，治理、权限和成本可见性就不再是附加项，而是能否规模化使用的前提。",
+            "Autodesk 7 月施工版本一次列出 70 多项更新。最值得关注的是 AI 房间与区域识别、手机端 AI 快速创建 RFI，以及成本管理中依据成本与时间自动设置资源日期。",
+            "这些功能没有要求项目团队离开原有流程。AI 直接出现在 Location、RFI 和 Cost Management 里，这比独立聊天窗口更容易形成真实使用频率。",
+            "跨 Hub 共享项目模板同样关键。企业标准能否跨项目复制，决定 AI 和自动化究竟是一次性演示，还是组织能力。",
           ],
         },
         {
           number: "02",
-          title: "公司的标准，开始变成 AI 的执行规则",
+          title: "Procore 的 7.5 亿美元融资动作，是资本层面的信号",
           paragraphs: [
-            "Procore 预告的 Skills 更接近一个组织能力层。企业可以通过自然语言提示或公司的标准作业程序、项目标准等文件，把自己的做事方式交给 AI，使代理在不同项目上持续应用相同要求。",
-            "对 BIM/VDC 团队来说，这比通用模型“懂不懂 Revit”更重要。真正决定交付质量的，往往是命名规则、模型拆分、LOD 边界、碰撞关闭条件、RFI 升级路径和审查责任。过去这些规则分散在 BEP、模板、检查表与资深员工经验里；现在平台开始尝试把它们变成可执行的数字规则。",
-            "这也意味着 BIM 管理岗位不会简单消失。相反，能够把模糊经验转译成清晰标准、验证 AI 结果并设计例外处理的人，会成为代理系统能否可靠运行的关键。",
+            "8 月 3 日，Procore 宣布拟发行 7.5 亿美元可转换优先票据。官方文件属于资本市场动作，不等于这笔资金会全部投入 AI，但它发生在 Digital Coworker 与 20 个预构建代理发布之后。",
+            "可以合理推断，头部施工 SaaS 的竞争正在变得更重：模型推理、数据治理、企业定制、销售与客户采用都需要持续资金。",
+            "对从业者而言，这意味着 AI 功能不会停留在插件阶段。平台会更积极地把它们打包、定价并嵌入企业采购。",
           ],
         },
         {
           number: "03",
-          title: "Trimble 把 AI Takeoff 接向成本与经营结果",
+          title: "Trimble 把 AI Takeoff 从发布带到估算团队培训",
           paragraphs: [
-            "Trimble 在 6 月 30 日发布新的 MEP AI Takeoff 能力，通过施工图中的对象识别，减少算量前的重复设置并自动化部分识别工作。它解决的是估算团队最直接的瓶颈：在投标量增加时，如何减少人工描图与重复录入。",
-            "7 月 20 日，Trimble 又宣布在美国提供 Trimble Financials。这套面向小型承包商的施工财务与 Job Costing 系统，可以按项目、阶段与成本类型追踪费用，并在仪表板中呈现估算与实际成本、项目状态和盈利情况。",
-            "官方信息显示 Financials 可与 Trimble 的估算和绩效追踪方案连接。由此可以看出一个明确方向：AI Takeoff 的价值不只在于“算得更快”，而在于算量结果是否能够继续进入报价、成本、进度与利润判断。数据链越连续，BIM 与造价的边界就越薄。",
+            "Trimble 将在 8 月 18 日举行电气算量线上演示，主题直接指向对话式 AI、自动化、准确性与投标盈利。",
+            "这说明产品发布后的下一步是用户教育：估算师要知道 AI 识别了什么、哪里需要复核，以及速度提升是否真正转化成更多有效投标。",
+            "BIM 和造价人员最值得练习的能力，是建立一套可量化的复核流程：识别率、漏项、人工修订时间、报价偏差和中标率。",
           ],
         },
         {
@@ -162,9 +168,21 @@ export const newsContent = {
         "学习路径应从单软件熟练度升级为模型、数据、流程和商业结果的连接能力。",
       ],
       note:
-        "本文基于截至 2026 年 7 月 27 日的官方产品信息撰写。对行业影响的判断属于 BAYBIMAI 编辑分析，不代表相关公司的承诺或产品路线保证。",
+        "本文基于截至 2026 年 8 月 5 日的官方信息撰写。对资本用途和行业影响的判断属于 BAYBIMAI 编辑分析，不代表相关公司的承诺或产品路线保证。",
       sourcesTitle: "官方资料",
       sources: [
+        {
+          label: "Autodesk — 2026 年 7 月 Forma 施工产品更新",
+          href: sources.autodeskJuly,
+        },
+        {
+          label: "Procore — 7.5 亿美元可转换优先票据公告",
+          href: sources.procoreNotes,
+        },
+        {
+          label: "Trimble — 2026 年 8 月 AI Takeoff 线上活动",
+          href: sources.trimbleWebinar,
+        },
         {
           label: "Procore — Digital Coworker、AI Agents 与 Skills",
           href: sources.procore,
