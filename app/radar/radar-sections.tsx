@@ -7,19 +7,29 @@ import styles from "./radar.module.css";
 // plus their own jump-nav, shared between the standalone /radar page and the
 // homepage embed. Deliberately excludes the Radar hero, awards section, and
 // editorial-note aside — those stay specific to the standalone page.
-export default function RadarSections({ lang }: { lang: RadarLang }) {
+// showAnchorNav defaults to true for the standalone page; the homepage embed
+// passes false since those same jumps already live in the HOME nav dropdown.
+export default function RadarSections({
+  lang,
+  showAnchorNav = true,
+}: {
+  lang: RadarLang;
+  showAnchorNav?: boolean;
+}) {
   const content = radarContent[lang];
 
   return (
     <>
-      <nav className={styles.anchorNav} aria-label="Page sections">
-        {content.anchors.map(([href, label], index) => (
-          <a href={href} key={href}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            {label}
-          </a>
-        ))}
-      </nav>
+      {showAnchorNav ? (
+        <nav className={styles.anchorNav} aria-label="Page sections">
+          {content.anchors.map(([href, label], index) => (
+            <a href={href} key={href}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {label}
+            </a>
+          ))}
+        </nav>
+      ) : null}
 
       <section
         className={`${styles.section} ${styles.eventsSection}`}

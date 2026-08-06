@@ -12,6 +12,32 @@ export function SiteNav({
   languageHref?: string;
 }) {
   const dict = dictionaries[lang];
+  const homePath = lang === "zh" ? "" : "/en";
+  const homeLinks = lang === "zh"
+    ? [
+        { href: `${homePath}/#contact`, label: "联系我们" },
+        { href: `${homePath}/#home-course`, label: "课程探索" },
+        { href: `${homePath}/#home-news`, label: "订阅 NEWS" },
+        { href: `${homePath}/#home-audit`, label: "BIM 咨询" },
+        { href: `${homePath}/#home-training`, label: "企业 BIM 培训" },
+        { href: `${homePath}/#events`, label: "01 活动" },
+        { href: `${homePath}/#regions`, label: "02 区域进展" },
+        { href: `${homePath}/#standards`, label: "03 规则手册" },
+        { href: `${homePath}/#research`, label: "04 论文" },
+        { href: `${homePath}/#people`, label: "05 人物路径" },
+      ]
+    : [
+        { href: `${homePath}/#contact`, label: "Contact Us" },
+        { href: `${homePath}/#home-course`, label: "Explore Courses" },
+        { href: `${homePath}/#home-news`, label: "Subscribe NEWS" },
+        { href: `${homePath}/#home-audit`, label: "BIM Consulting" },
+        { href: `${homePath}/#home-training`, label: "Enterprise Training" },
+        { href: `${homePath}/#events`, label: "01 Events" },
+        { href: `${homePath}/#regions`, label: "02 Regional progress" },
+        { href: `${homePath}/#standards`, label: "03 Rulebooks" },
+        { href: `${homePath}/#research`, label: "04 Research" },
+        { href: `${homePath}/#people`, label: "05 Builder paths" },
+      ];
   const courseLinks = lang === "zh"
     ? [
         { href: "/course#foundation", label: "入门" },
@@ -52,13 +78,33 @@ export function SiteNav({
         BAY<span>BIM</span>AI
       </Link>
       <div className="nav-meta">
-        <Link
-          className="nav-link nav-link-home"
-          href={lang === "zh" ? "/" : "/en"}
-          aria-current={active === "home" ? "page" : undefined}
-        >
-          {dict.nav.homeLabel}
-        </Link>
+        <details className={`nav-course-menu ${active === "home" ? "nav-course-current" : ""}`}>
+          <summary
+            className="nav-link nav-link-home"
+            aria-current={active === "home" ? "page" : undefined}
+            aria-label={lang === "zh" ? "首页板块" : "Home sections"}
+          >
+            {dict.nav.homeLabel}
+            <span className="nav-course-chevron" aria-hidden="true">⌄</span>
+          </summary>
+          <div className="nav-course-popover nav-home-popover">
+            <Link href={lang === "zh" ? "/" : "/en"}>
+              {lang === "zh" ? "首页" : "Home"}
+            </Link>
+            <span className="nav-popover-divider" aria-hidden="true" />
+            {homeLinks.slice(0, 5).map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+            <span className="nav-popover-divider" aria-hidden="true" />
+            {homeLinks.slice(5).map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </details>
         <span className="nav-separator" aria-hidden="true">｜</span>
         <details className={`nav-course-menu ${active === "course" ? "nav-course-current" : ""}`}>
           <summary

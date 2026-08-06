@@ -13,26 +13,9 @@ import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
 const heroStars = Array.from({ length: 16 }, (_, index) => index + 1);
 
 // Anchor ids for the 4 offer cards, in the same fixed order as dict.offers
-// (Course, HOTSPOT/News, Audit, Training) — used by the quick-nav strip
-// below the header.
+// (Course, HOTSPOT/News, Audit, Training) — jumped to from the HOME nav
+// dropdown in site-chrome.tsx.
 const offerAnchorIds = ["home-course", "home-news", "home-audit", "home-training"];
-
-const quickNavCopy: Record<Lang, { contact: string; course: string; news: string; audit: string; training: string }> = {
-  zh: {
-    contact: "联系我们",
-    course: "课程探索",
-    news: "订阅 NEWS",
-    audit: "BIM 咨询",
-    training: "企业 BIM 培训",
-  },
-  en: {
-    contact: "Contact Us",
-    course: "Explore Courses",
-    news: "Subscribe NEWS",
-    audit: "BIM Consulting",
-    training: "Enterprise Training",
-  },
-};
 
 export default function HomeView({ lang }: { lang: Lang }) {
   const dict = dictionaries[lang];
@@ -46,14 +29,6 @@ export default function HomeView({ lang }: { lang: Lang }) {
       <main id="main-content" tabIndex={-1}>
         <AutoScrollIntro />
         <SiteNav lang={lang} active="home" />
-
-        <nav className="home-quick-nav" aria-label={lang === "zh" ? "快速导航" : "Quick navigation"}>
-          <a href="#contact">{quickNavCopy[lang].contact}</a>
-          <a href={`#${offerAnchorIds[0]}`}>{quickNavCopy[lang].course}</a>
-          <a href={`#${offerAnchorIds[1]}`}>{quickNavCopy[lang].news}</a>
-          <a href={`#${offerAnchorIds[2]}`}>{quickNavCopy[lang].audit}</a>
-          <a href={`#${offerAnchorIds[3]}`}>{quickNavCopy[lang].training}</a>
-        </nav>
 
         <section className="hero" id="top">
           <div className="hero-halo" aria-hidden="true">
@@ -154,7 +129,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
         </section>
 
         <div className={radarStyles.radarRoot}>
-          <RadarSections lang={lang} />
+          <RadarSections lang={lang} showAnchorNav={false} />
         </div>
 
         <SiteFooter lang={lang} />
