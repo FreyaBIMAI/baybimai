@@ -98,11 +98,16 @@ export function SiteNav({
               </Link>
             ))}
             <span className="nav-popover-divider" aria-hidden="true" />
-            {homeLinks.slice(5).map((item) => (
-              <Link href={item.href} key={item.href}>
-                {item.label}
-              </Link>
-            ))}
+            <p className="nav-popover-group-label">
+              {lang === "zh" ? "行业 Radar" : "Industry Radar"}
+            </p>
+            <div className="nav-popover-radar-group">
+              {homeLinks.slice(5).map((item) => (
+                <Link href={item.href} key={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </details>
         <span className="nav-separator" aria-hidden="true">｜</span>
@@ -130,14 +135,6 @@ export function SiteNav({
           aria-current={active === "news" ? "page" : undefined}
         >
           {dict.nav.hotspotLabel}
-        </Link>
-        <span className="nav-separator" aria-hidden="true">｜</span>
-        <Link
-          className="nav-link nav-link-radar"
-          href={lang === "zh" ? "/radar" : "/en/radar"}
-          aria-current={active === "radar" ? "page" : undefined}
-        >
-          {dict.nav.radarLabel}
         </Link>
         <LanguageToggle lang={lang} href={languageHref} />
       </div>

@@ -27,7 +27,8 @@ test("ships Chinese and English news routes", async () => {
   assert.match(chrome, /\/news/);
   assert.match(chrome, /\/en\/news/);
   assert.match(chrome, /nav-link-hotspot/);
-  assert.match(chrome, /nav-link-radar/);
+  assert.doesNotMatch(chrome, /nav-link-radar/);
+  assert.match(chrome, /nav-popover-radar-group/);
   assert.match(chrome, /nav-separator/);
   assert.match(chrome, /nav-link-course/);
   assert.match(chrome, /course#foundation/);
