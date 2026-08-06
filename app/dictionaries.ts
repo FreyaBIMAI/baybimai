@@ -3,6 +3,7 @@ export type Lang = "zh" | "en";
 export type OfferTheme = "green" | "blue" | "purple" | "paper";
 
 export type Offer = {
+  id: string;
   tag: string;
   title: string;
   copy: string;
@@ -14,6 +15,11 @@ export type Offer = {
     href: string;
   };
   theme: OfferTheme;
+};
+
+export type QuickNavLink = {
+  href: string;
+  label: string;
 };
 
 type Dictionary = {
@@ -55,6 +61,8 @@ type Dictionary = {
     detailLabel: string;
   };
   offers: Offer[];
+  quickNav: QuickNavLink[];
+  quickNavAria: string;
   purchase: {
     cta: string;
     loading: string;
@@ -138,6 +146,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     offers: [
       {
+        id: "course",
         tag: "TO C · 主线",
         title: "7 天 Revit 闪电入门课",
         copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
@@ -147,6 +156,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "green",
       },
       {
+        id: "news",
         tag: "新闻 · 观察",
         title: "BIM 新闻与深度报告",
         copy: "追踪真正影响 BIM、造价与项目控制的施工科技变化。每天自动发布头条和关键信号总结。",
@@ -160,6 +170,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "paper",
       },
       {
+        id: "audit",
         tag: "TO B · 专项",
         title: "BIM 审计",
         copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
@@ -169,6 +180,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "purple",
       },
       {
+        id: "training",
         tag: "TO B · 企业",
         title: "企业 BIM 培训",
         copy: "围绕团队现状、项目类型和交付目标定制课程，让培训直接服务于正在发生的项目。",
@@ -177,6 +189,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
         detailHref: "/training",
         theme: "blue",
       },
+    ],
+    quickNavAria: "快捷导航",
+    quickNav: [
+      { href: "#top", label: "联系我们" },
+      { href: "#course", label: "H1 课程探索" },
+      { href: "#news", label: "H2 订阅 NEWS" },
+      { href: "#audit", label: "H3 BIM 咨询" },
+      { href: "#training", label: "H4 企业 BIM 培训" },
+      { href: "#events", label: "R1 Events" },
+      { href: "#regions", label: "R2 Regional progress" },
+      { href: "#standards", label: "R3 Rulebooks" },
+      { href: "#research", label: "R4 Research" },
+      { href: "#people", label: "R5 Builder paths" },
     ],
     purchase: {
       cta: "立即购买",
@@ -231,6 +256,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     offers: [
       {
+        id: "course",
         tag: "TO C · FLAGSHIP",
         title: "7-Day Revit Fast-Start",
         copy: "For complete beginners — get fluent in core Revit modeling and everyday workflows, fast. Learn on your own schedule, apply it immediately.",
@@ -240,6 +266,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "green",
       },
       {
+        id: "news",
         tag: "NEWS · FIELD NOTES",
         title: "BIM News & Deep Dives",
         copy: "Tracking the construction-tech shifts that actually change modeling, estimating, and project control. A new headline and signal roundup lands every day.",
@@ -253,6 +280,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "paper",
       },
       {
+        id: "audit",
         tag: "TO B · SPECIALIZED",
         title: "BIM Audit",
         copy: "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
@@ -262,6 +290,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         theme: "purple",
       },
       {
+        id: "training",
         tag: "TO B · ENTERPRISE",
         title: "Enterprise BIM Training",
         copy: "Curriculum built around your team's current tools, project types, and delivery goals — training that serves the work already underway.",
@@ -270,6 +299,19 @@ export const dictionaries: Record<Lang, Dictionary> = {
         detailHref: "/en/training",
         theme: "blue",
       },
+    ],
+    quickNavAria: "Quick navigation",
+    quickNav: [
+      { href: "#top", label: "Contact us" },
+      { href: "#course", label: "H1 Explore courses" },
+      { href: "#news", label: "H2 Subscribe to NEWS" },
+      { href: "#audit", label: "H3 BIM Consulting" },
+      { href: "#training", label: "H4 Enterprise BIM Training" },
+      { href: "#events", label: "R1 Events" },
+      { href: "#regions", label: "R2 Regional progress" },
+      { href: "#standards", label: "R3 Rulebooks" },
+      { href: "#research", label: "R4 Research" },
+      { href: "#people", label: "R5 Builder paths" },
     ],
     purchase: {
       cta: "Buy Now",
