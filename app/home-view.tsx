@@ -2,6 +2,8 @@ import Link from "next/link";
 import AutoScrollIntro from "./auto-scroll-intro";
 import ContactForm from "./contact-form";
 import PurchaseButton from "./purchase-button";
+import RadarSections from "./radar/radar-sections";
+import radarStyles from "./radar/radar.module.css";
 import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
@@ -9,6 +11,28 @@ import { dictionaries, floatingTerms, type Lang } from "./dictionaries";
 // Fixed star count/positions for the hero halo background (see .halo-star-N
 // in globals.css) — kept static so server and client markup always match.
 const heroStars = Array.from({ length: 16 }, (_, index) => index + 1);
+
+// Anchor ids for the 4 offer cards, in the same fixed order as dict.offers
+// (Course, HOTSPOT/News, Audit, Training) — used by the quick-nav strip
+// below the header.
+const offerAnchorIds = ["home-course", "home-news", "home-audit", "home-training"];
+
+const quickNavCopy: Record<Lang, { contact: string; course: string; news: string; audit: string; training: string }> = {
+  zh: {
+    contact: "联系我们",
+    course: "课程探索",
+    news: "订阅 NEWS",
+    audit: "BIM 咨询",
+    training: "企业 BIM 培训",
+  },
+  en: {
+    contact: "Contact Us",
+    course: "Explore Courses",
+    news: "Subscribe NEWS",
+    audit: "BIM Consulting",
+    training: "Enterprise Training",
+  },
+};
 
 export default function HomeView({ lang }: { lang: Lang }) {
   const dict = dictionaries[lang];
@@ -22,6 +46,14 @@ export default function HomeView({ lang }: { lang: Lang }) {
       <main id="main-content" tabIndex={-1}>
         <AutoScrollIntro />
         <SiteNav lang={lang} active="home" />
+
+        <nav className="home-quick-nav" aria-label={lang === "zh" ? "快速导航" : "Quick navigation"}>
+          <a href="#contact">{quickNavCopy[lang].contact}</a>
+          <a href={`#${offerAnchorIds[0]}`}>{quickNavCopy[lang].course}</a>
+          <a href={`#${offerAnchorIds[1]}`}>{quickNavCopy[lang].news}</a>
+          <a href={`#${offerAnchorIds[2]}`}>{quickNavCopy[lang].audit}</a>
+          <a href={`#${offerAnchorIds[3]}`}>{quickNavCopy[lang].training}</a>
+        </nav>
 
         <section className="hero" id="top">
           <div className="hero-halo" aria-hidden="true">
@@ -42,7 +74,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
             ))}
           </div>
 
-          <Reveal className="hero-copy">
+          <Reveal className="hero-copy" id="contact">
             <div className="eyebrow">
               <span />
               {dict.hero.eyebrow}
@@ -84,6 +116,7 @@ export default function HomeView({ lang }: { lang: Lang }) {
             {dict.offers.map((offer, index) => (
               <Reveal delay={index * 90} key={offer.title}>
                 <article
+                  id={offerAnchorIds[index]}
                   className={`card card-${offer.theme} ${offer.featured ? "featured" : ""}`}
                 >
                   <div className="card-top">
@@ -119,6 +152,10 @@ export default function HomeView({ lang }: { lang: Lang }) {
             ))}
           </div>
         </section>
+
+        <div className={radarStyles.radarRoot}>
+          <RadarSections lang={lang} />
+        </div>
 
         <SiteFooter lang={lang} />
       </main>

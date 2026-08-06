@@ -263,6 +263,41 @@ main:focus {
   outline-offset: 2px;
 }
 
+.home-quick-nav {
+  position: sticky;
+  z-index: 10;
+  top: 88px;
+  min-height: 52px;
+  padding: 0 clamp(20px, 5vw, 80px);
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  background: #faf7fdcc;
+  backdrop-filter: blur(18px);
+}
+
+.home-quick-nav a {
+  min-height: 52px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: color 180ms var(--ease), background 180ms var(--ease);
+}
+
+.home-quick-nav a:last-child {
+  border-right: 1px solid var(--line);
+}
+
+.home-quick-nav a:hover {
+  color: var(--purple-light);
+  background: #8b5cf60c;
+}
+
 .hero {
   position: relative;
   min-height: 580px;

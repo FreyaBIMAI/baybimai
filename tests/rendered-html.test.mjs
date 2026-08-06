@@ -238,22 +238,24 @@ test("radar uses official sources and distinguishes confirmed dates from watch i
 });
 
 test("radar includes events, standards, papers, builder paths, and accessible responsive rules", async () => {
-  const [page, content, styles] = await Promise.all([
+  const [page, sections, content, styles] = await Promise.all([
     source("app/radar/radar-page.tsx"),
+    source("app/radar/radar-sections.tsx"),
     source("app/radar/radar-content.ts"),
     source("app/radar/radar.module.css"),
   ]);
 
-  assert.match(page, /id="events"/);
-  assert.match(page, /id="regions"/);
-  assert.match(page, /id="standards"/);
-  assert.match(page, /id="research"/);
-  assert.match(page, /id="people"/);
-  assert.match(page, /from "next\/image"/);
-  assert.match(page, /card\.imageAlt/);
-  assert.match(page, /loading="lazy"/);
-  assert.match(page, /unoptimized/);
+  assert.match(sections, /id="events"/);
+  assert.match(sections, /id="regions"/);
+  assert.match(sections, /id="standards"/);
+  assert.match(sections, /id="research"/);
+  assert.match(sections, /id="people"/);
+  assert.match(sections, /from "next\/image"/);
+  assert.match(sections, /card\.imageAlt/);
+  assert.match(sections, /loading="lazy"/);
+  assert.match(sections, /unoptimized/);
   assert.match(page, /content\.awards\.steps/);
+  assert.match(page, /RadarSections/);
   assert.match(content, /\/people\/rebecca-de-cicco\.webp/);
   assert.match(content, /\/people\/kimon-onuma\.webp/);
   assert.match(content, /\/people\/keith-bentley\.webp/);
