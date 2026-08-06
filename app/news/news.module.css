@@ -1209,6 +1209,25 @@
   line-height: 1.8;
 }
 
+.word {
+  border-radius: 3px;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.activeWord {
+  padding: 0 2px;
+  margin: 0 -2px;
+  color: var(--news-accent);
+  background: color-mix(in srgb, var(--news-gold) 28%, var(--news-soft));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--news-accent) 30%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    transition: none;
+  }
+}
+
 .articleSection {
   max-width: 100%;
   margin: clamp(48px, 7vw, 72px) auto 0;

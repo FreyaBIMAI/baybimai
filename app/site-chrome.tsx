@@ -91,7 +91,7 @@ export function SiteNav({
             ))}
             <span className="nav-popover-divider" aria-hidden="true" />
             <p className="nav-popover-group-label">
-              {lang === "zh" ? "行业 Radar" : "Industry Radar"}
+              {lang === "zh" ? "行业雷达" : "Industry Radar"}
             </p>
             <div className="nav-popover-radar-group">
               {homeLinks.slice(3).map((item) => (

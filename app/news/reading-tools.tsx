@@ -4,20 +4,44 @@ import {
   type CSSProperties,
   type ReactNode,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import {
   BAYBIMAI_VOICES,
+  HOPE_VOICE_ID,
   isBAYBIMAIVoice,
   useElevenLabsVoice,
   useVoicePreference,
 } from "../use-elevenlabs-voice";
+import { ReadingCursorContext } from "../reading-cursor";
 import { newsContent, type NewsLang } from "./news-content";
 import styles from "./news.module.css";
 
 const FONT_SCALES = [0.94, 1, 1.1, 1.2] as const;
 const BROWSER_CHUNK_LENGTH = 260;
+
+// speechSynthesis voices rarely expose gender directly, so the browser
+// fallback (used when studio TTS is unavailable) matches on the "male"/
+// "female" wording most engines put in voice names, plus a short list of
+// well-known per-OS voice names, so the Adam/Hope choice still means
+// something even when it can't reach ElevenLabs.
+const FEMALE_VOICE_HINTS = /female|women|girl|samantha|victoria|karen|moira|tessa|susan|zira|ting-?ting|mei-?jia/i;
+const MALE_VOICE_HINTS = /\bmale\b|\bmen\b|\bman\b|alex|daniel|fred|thomas|oliver|arthur|yannick|zhiwei|aaron/i;
+
+function pickBrowserVoice(lang: NewsLang, wantsFemale: boolean) {
+  if (!("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+
+  const langPrefix = lang === "zh" ? "zh" : "en";
+  const langVoices = voices.filter((voice) => voice.lang.toLowerCase().startsWith(langPrefix));
+  const pool = langVoices.length ? langVoices : voices;
+  const hints = wantsFemale ? FEMALE_VOICE_HINTS : MALE_VOICE_HINTS;
+  const matched = pool.find((voice) => hints.test(voice.name));
+  return matched ?? pool.find((voice) => voice.default) ?? pool[0] ?? null;
+}
 
 function splitBrowserSpeechText(text: string) {
   const sentences = text
@@ -73,6 +97,7 @@ export default function ReadingTools({
   const [speechMode, setSpeechMode] = useState<"cloud" | "browser" | null>(null);
   const [nativePaused, setNativePaused] = useState(false);
   const [cloudAvailable, setCloudAvailable] = useState<boolean | null>(null);
+  const [browserCharIndex, setBrowserCharIndex] = useState(0);
   const nativeUtterance = useRef<SpeechSynthesisUtterance | null>(null);
   const nativeSession = useRef(0);
   const { voiceId, chooseVoice } = useVoicePreference();
@@ -82,6 +107,7 @@ export default function ReadingTools({
     pause: pauseCloud,
     resume: resumeCloud,
     stop: stopCloud,
+    charIndex: cloudCharIndex,
   } = useElevenLabsVoice();
 
   const stopNative = () => {
@@ -111,15 +137,40 @@ export default function ReadingTools({
       return;
     }
 
+    // Map each chunk back to its start offset in the original speechText so
+    // the read-along cursor lines up the same way it does on the studio
+    // (ElevenLabs) path.
+    const offsets: number[] = [];
+    let searchFrom = 0;
+    for (const chunk of chunks) {
+      const found = speechText.indexOf(chunk, searchFrom);
+      const start = found >= 0 ? found : searchFrom;
+      offsets.push(start);
+      searchFrom = start + chunk.length;
+    }
+
+    // Best-effort: the system voice picker has no real "Adam"/"Hope", so at
+    // least match the gender of whichever studio voice is selected instead
+    // of always falling back to the OS default (often female for en/zh).
+    const matchedVoice = pickBrowserVoice(lang, voiceId === HOPE_VOICE_ID);
+
     const speakChunk = (index: number) => {
       if (nativeSession.current !== session) return;
       const utterance = new SpeechSynthesisUtterance(chunks[index]);
       utterance.lang = lang === "zh" ? "zh-CN" : "en-US";
       utterance.rate = 0.96;
+      if (matchedVoice) utterance.voice = matchedVoice;
       utterance.onstart = () => {
         if (nativeSession.current === session) {
           setSpeechMode("browser");
           setStatus(labels.playing);
+          setBrowserCharIndex(offsets[index] ?? 0);
+        }
+      };
+      utterance.onboundary = (event) => {
+        if (nativeSession.current !== session) return;
+        if (typeof event.charIndex === "number") {
+          setBrowserCharIndex((offsets[index] ?? 0) + event.charIndex);
         }
       };
       utterance.onend = () => {
@@ -310,6 +361,11 @@ export default function ReadingTools({
   const active = speechMode === "browser" || cloudState === "playing" || cloudState === "paused";
   const paused = speechMode === "browser" ? nativePaused : cloudState === "paused";
   const loading = speechMode === "cloud" && cloudState === "loading";
+  const cursorCharIndex = speechMode === "browser" ? browserCharIndex : cloudCharIndex;
+  const cursorValue = useMemo(
+    () => ({ active, charIndex: cursorCharIndex }),
+    [active, cursorCharIndex],
+  );
 
   const readerStyle = {
     "--reader-scale": FONT_SCALES[fontIndex],
@@ -388,7 +444,9 @@ export default function ReadingTools({
         </label>
         <p className={styles.readerStatus} role="status" aria-live="polite">{status}</p>
       </aside>
-      {children}
+      <ReadingCursorContext.Provider value={cursorValue}>
+        {children}
+      </ReadingCursorContext.Provider>
     </div>
   );
 }
