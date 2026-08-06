@@ -161,7 +161,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       {
         tag: "TO B · 专项",
-        title: "BIM 审计",
+        title: "BIM 咨询",
         copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
         note: "适合项目节点与交付前审查",
         featured: false,

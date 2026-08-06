@@ -68,7 +68,7 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
     audit: {
       backLabel: "返回首页",
       eyebrow: "TO B · 专项",
-      title: "BIM 审计",
+      title: "BIM 咨询",
       intro:
         "独立检查模型质量、标准执行与交付完整性，在验收或关键节点前提前发现问题。",
       sections: [
@@ -85,7 +85,7 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
           body: "一份结构化的审计报告，列出发现的问题、影响程度与具体修改建议，帮助团队在验收前完成整改。",
         },
       ],
-      ctaHeading: "预约 BIM 审计",
+      ctaHeading: "预约 BIM 咨询",
       ctaIntro: "告诉我们项目情况和时间节点，我们会尽快联系你安排审计范围。",
     },
   },
