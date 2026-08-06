@@ -84,6 +84,33 @@ export const newsContent = {
         },
       ],
       sourceLabel: "查看官方来源",
+      researchers: {
+        eyebrow: "延伸关注",
+        title: "值得关注的 BIM 行业研究者",
+        intro:
+          "长期公开写作、做行业分析或参与标准研究的几个账号，在 X（Twitter）上追踪施工科技与 BIM 的最新进展。BAYBIMAI 与以下账号均无合作关系，仅作编辑推荐。",
+        followLabel: "在 X 上关注",
+        people: [
+          {
+            name: "Aarni Heiskanen",
+            handle: "@aarnih",
+            role: "AEC Business 创始人，长期跟踪 BIM 与施工科技的行业分析师（芬兰）。",
+            href: "https://x.com/aarnih",
+          },
+          {
+            name: "Randy Deutsch",
+            handle: "@randydeutsch",
+            role: "FAIA，伊利诺伊大学教授，《BIM and Integrated Design》作者。",
+            href: "https://x.com/randydeutsch",
+          },
+          {
+            name: "BIMe Initiative",
+            handle: "@BIMexcellence",
+            role: "Bilal Succar 主导的 BIM 成熟度与研究框架项目。",
+            href: "https://x.com/bimexcellence",
+          },
+        ],
+      },
     },
     reader: {
       progressLabel: "文章阅读进度",
@@ -279,6 +306,33 @@ export const newsContent = {
         },
       ],
       sourceLabel: "Open official source",
+      researchers: {
+        eyebrow: "FURTHER READING",
+        title: "BIM researchers worth following",
+        intro:
+          "A short list of people who publish research, analysis, or standards work in public, tracked on X (Twitter) for construction-tech and BIM developments. BAYBIMAI has no partnership with any account listed here — these are editorial picks.",
+        followLabel: "Follow on X",
+        people: [
+          {
+            name: "Aarni Heiskanen",
+            handle: "@aarnih",
+            role: "Founder of AEC Business; long-running construction-tech and BIM industry analyst (Finland).",
+            href: "https://x.com/aarnih",
+          },
+          {
+            name: "Randy Deutsch",
+            handle: "@randydeutsch",
+            role: "FAIA, professor at the University of Illinois, author of BIM and Integrated Design.",
+            href: "https://x.com/randydeutsch",
+          },
+          {
+            name: "BIMe Initiative",
+            handle: "@BIMexcellence",
+            role: "Bilal Succar's BIM-maturity and research-framework project.",
+            href: "https://x.com/bimexcellence",
+          },
+        ],
+      },
     },
     reader: {
       progressLabel: "Article reading progress",

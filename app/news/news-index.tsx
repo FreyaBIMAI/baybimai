@@ -100,6 +100,34 @@ export default async function NewsIndex({ lang }: { lang: NewsLang }) {
           </div>
         </section>
 
+        <section className={styles.signals} aria-labelledby="researchers-title">
+          <div className={styles.sectionHeading}>
+            <p>{index.researchers.eyebrow}</p>
+            <h2 id="researchers-title">{index.researchers.title}</h2>
+          </div>
+          <p className={styles.followIntro}>{index.researchers.intro}</p>
+          <div className={styles.signalGrid}>
+            {index.researchers.people.map((person) => (
+              <article className={styles.signalCard} key={person.handle}>
+                <div className={styles.signalMeta}>
+                  <span>{person.handle}</span>
+                </div>
+                <h3>{person.name}</h3>
+                <p>{person.role}</p>
+                <a
+                  href={person.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${index.researchers.followLabel}: ${person.name}`}
+                >
+                  {index.researchers.followLabel}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <NewsFeedback lang={lang} issueDate={feedbackIssueDate} />
       </main>
     </NewsShell>

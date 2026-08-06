@@ -457,6 +457,15 @@
   line-height: 1.2;
 }
 
+.followIntro {
+  max-width: 620px;
+  margin: 14px auto 0;
+  color: var(--news-muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
 .signalGrid {
   margin-top: 44px;
   display: grid;
