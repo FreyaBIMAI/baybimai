@@ -16,10 +16,8 @@ export function SiteNav({
   const homeLinks = lang === "zh"
     ? [
         { href: `${homePath}/#contact`, label: "联系我们" },
-        { href: `${homePath}/#home-course`, label: "课程探索" },
-        { href: `${homePath}/#home-news`, label: "订阅 NEWS" },
-        { href: `${homePath}/#home-audit`, label: "BIM 咨询" },
-        { href: `${homePath}/#home-training`, label: "企业 BIM 培训" },
+        { href: `${homePath}/#home-course`, label: "课程与订阅" },
+        { href: `${homePath}/#home-audit`, label: "BIM 咨询和企业培训" },
         { href: `${homePath}/#events`, label: "01 活动" },
         { href: `${homePath}/#regions`, label: "02 区域进展" },
         { href: `${homePath}/#standards`, label: "03 规则手册" },
@@ -28,10 +26,8 @@ export function SiteNav({
       ]
     : [
         { href: `${homePath}/#contact`, label: "Contact Us" },
-        { href: `${homePath}/#home-course`, label: "Explore Courses" },
-        { href: `${homePath}/#home-news`, label: "Subscribe NEWS" },
-        { href: `${homePath}/#home-audit`, label: "BIM Consulting" },
-        { href: `${homePath}/#home-training`, label: "Enterprise Training" },
+        { href: `${homePath}/#home-course`, label: "Courses & Subscription" },
+        { href: `${homePath}/#home-audit`, label: "BIM Consulting & Enterprise Training" },
         { href: `${homePath}/#events`, label: "01 Events" },
         { href: `${homePath}/#regions`, label: "02 Regional progress" },
         { href: `${homePath}/#standards`, label: "03 Rulebooks" },
@@ -88,21 +84,7 @@ export function SiteNav({
             <span className="nav-course-chevron" aria-hidden="true">⌄</span>
           </summary>
           <div className="nav-course-popover nav-home-popover">
-            <Link href={homeLinks[0].href}>{homeLinks[0].label}</Link>
-            <span className="nav-popover-divider" aria-hidden="true" />
-            <p className="nav-popover-group-label">
-              {lang === "zh" ? "课程与订阅" : "Courses & Subscription"}
-            </p>
-            {homeLinks.slice(1, 3).map((item) => (
-              <Link href={item.href} key={item.href}>
-                {item.label}
-              </Link>
-            ))}
-            <span className="nav-popover-divider" aria-hidden="true" />
-            <p className="nav-popover-group-label">
-              {lang === "zh" ? "BIM 咨询和企业培训" : "BIM Consulting & Enterprise Training"}
-            </p>
-            {homeLinks.slice(3, 5).map((item) => (
+            {homeLinks.slice(0, 3).map((item) => (
               <Link href={item.href} key={item.href}>
                 {item.label}
               </Link>
@@ -112,7 +94,7 @@ export function SiteNav({
               {lang === "zh" ? "行业 Radar" : "Industry Radar"}
             </p>
             <div className="nav-popover-radar-group">
-              {homeLinks.slice(5).map((item) => (
+              {homeLinks.slice(3).map((item) => (
                 <Link href={item.href} key={item.href}>
                   {item.label}
                 </Link>
