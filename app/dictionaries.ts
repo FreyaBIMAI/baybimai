@@ -254,7 +254,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       },
       {
         tag: "TO B · SPECIALIZED",
-        title: "BIM Audit",
+        title: "BIM Consulting",
         copy: "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
         note: "For project milestones & pre-delivery review",
         featured: false,

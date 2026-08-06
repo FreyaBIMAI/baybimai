@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "BAYBIMAI",
-    description: "Courses · Enterprise Training · BIM Audits",
+    description: "Courses · Enterprise Training · BIM Consulting",
     url: "https://baybimai.org/en",
     siteName: "BAYBIMAI",
     images: [{ url: "/og-v2.png", width: 1200, height: 630 }],

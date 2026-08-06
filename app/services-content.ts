@@ -139,7 +139,7 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
     audit: {
       backLabel: "Back to home",
       eyebrow: "TO B · SPECIALIZED",
-      title: "BIM Audit",
+      title: "BIM Consulting",
       intro:
         "An independent check of model quality, standards compliance, and delivery completeness — catching issues before a handover or a key milestone.",
       sections: [
