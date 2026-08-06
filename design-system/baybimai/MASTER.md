@@ -8,7 +8,7 @@ BAYBIMAI brand direction.
 
 ## Direction
 
-- Product: BIM course sales, enterprise training, and BIM audit services.
+- Product: BIM course sales, enterprise training, and BIM consulting services.
 - Style: premium dark technology with exaggerated minimalism.
 - Variance: 3/10 — centered and restrained.
 - Motion: 3/10 — micro-interactions only; decorative BIM terms remain static.

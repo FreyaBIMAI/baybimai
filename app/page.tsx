@@ -4,7 +4,7 @@ import HomeView from "./home-view";
 export const metadata: Metadata = {
   title: "BAYBIMAI — 把 BIM 学到真正能用",
   description:
-    "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 审计服务。",
+    "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 咨询服务。",
   alternates: {
     canonical: "https://baybimai.org/",
     languages: {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "BAYBIMAI",
-    description: "课程包 · 企业培训 · BIM 审计",
+    description: "课程包 · 企业培训 · BIM 咨询",
     url: "https://baybimai.org/",
     siteName: "BAYBIMAI",
     images: [{ url: "/og-v2.png", width: 1200, height: 630 }],

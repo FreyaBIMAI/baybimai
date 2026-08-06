@@ -68,7 +68,7 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
     audit: {
       backLabel: "返回首页",
       eyebrow: "TO B · 专项",
-      title: "BIM 审计",
+      title: "BIM 咨询",
       intro:
         "独立检查模型质量、标准执行与交付完整性，在验收或关键节点前提前发现问题。",
       sections: [
@@ -77,16 +77,16 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
           body: "需要第三方视角检查模型质量的项目团队，或者需要在交付前确认标准执行情况的项目经理与业主方。",
         },
         {
-          heading: "审计会检查什么",
+          heading: "咨询会检查什么",
           body: "模型的几何与信息准确性、命名与分类标准、跨专业协同冲突，以及是否满足项目 BIM 执行计划（BEP）的要求。",
         },
         {
           heading: "交付什么",
-          body: "一份结构化的审计报告，列出发现的问题、影响程度与具体修改建议，帮助团队在验收前完成整改。",
+          body: "一份结构化的咨询报告，列出发现的问题、影响程度与具体修改建议，帮助团队在验收前完成整改。",
         },
       ],
-      ctaHeading: "预约 BIM 审计",
-      ctaIntro: "告诉我们项目情况和时间节点，我们会尽快联系你安排审计范围。",
+      ctaHeading: "预约 BIM 咨询",
+      ctaIntro: "告诉我们项目情况和时间节点，我们会尽快联系你安排咨询范围。",
     },
   },
   en: {
@@ -139,7 +139,7 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
     audit: {
       backLabel: "Back to home",
       eyebrow: "TO B · SPECIALIZED",
-      title: "BIM Audit",
+      title: "BIM Consulting",
       intro:
         "An independent check of model quality, standards compliance, and delivery completeness — catching issues before a handover or a key milestone.",
       sections: [
@@ -153,11 +153,11 @@ export const servicesContent: Record<Lang, Record<ServiceKey, ServiceContent>> =
         },
         {
           heading: "What you get",
-          body: "A structured audit report listing every issue found, its severity, and concrete recommendations — so your team can resolve them before sign-off.",
+          body: "A structured consulting report listing every issue found, its severity, and concrete recommendations — so your team can resolve them before sign-off.",
         },
       ],
-      ctaHeading: "Request a BIM audit",
-      ctaIntro: "Tell us about your project and timeline, and we'll follow up to scope the audit.",
+      ctaHeading: "Request BIM consulting",
+      ctaIntro: "Tell us about your project and timeline, and we'll follow up to scope the engagement.",
     },
   },
 };

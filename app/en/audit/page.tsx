@@ -3,7 +3,7 @@ import ServiceDetailView from "../../service-detail-view";
 import ContactForm from "../../contact-form";
 
 export const metadata: Metadata = {
-  title: "BIM Audit | BAYBIMAI",
+  title: "BIM Consulting | BAYBIMAI",
   description:
     "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
   alternates: {

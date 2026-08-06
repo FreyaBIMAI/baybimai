@@ -126,7 +126,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       titleAfter: " 学到",
       titleLine2: "真正能用。",
       subtitleLine1: "面向个人的实战课程包，面向企业的定制培训。",
-      subtitleLine2: "需要更严格的项目把关，我们也提供独立 BIM 审计。",
+      subtitleLine2: "需要更严格的项目把关，我们也提供独立 BIM 咨询。",
     },
     form: {
       nameLabel: "姓名（必填）",
@@ -141,7 +141,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     },
     offersSection: {
       eyebrow: "发现课程",
-      heading: "学习、培训、审计、新闻，一条清晰的能力路径。",
+      heading: "学习、培训、咨询、新闻，一条清晰的能力路径。",
       detailLabel: "了解详情",
     },
     offers: [
@@ -172,7 +172,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         id: "audit",
         tag: "TO B · 专项",
-        title: "BIM 审计",
+        title: "BIM 咨询",
         copy: "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
         note: "适合项目节点与交付前审查",
         featured: false,
@@ -235,7 +235,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       subtitleLine1:
         "Hands-on courses for individuals, tailored training for teams.",
       subtitleLine2:
-        "Need tighter project oversight? We also offer independent BIM audits.",
+        "Need tighter project oversight? We also offer independent BIM consulting.",
     },
     form: {
       nameLabel: "Name (required)",
@@ -251,7 +251,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
     offersSection: {
       eyebrow: "DISCOVER COURSES",
       heading:
-        "Learn, train, audit, and stay informed — one clear path to real capability.",
+        "Learn, train, consult, and stay informed — one clear path to real capability.",
       detailLabel: "Learn more",
     },
     offers: [
@@ -282,7 +282,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
       {
         id: "audit",
         tag: "TO B · SPECIALIZED",
-        title: "BIM Audit",
+        title: "BIM Consulting",
         copy: "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
         note: "For project milestones & pre-delivery review",
         featured: false,

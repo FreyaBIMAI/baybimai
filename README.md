@@ -3,7 +3,7 @@
 [BAYBIMAI.org](https://baybimai.org) 是一个面向 BIM 学习与企业服务的落地页，包含：
 
 - Revit 闪电入门课（Stripe 一次性支付）
-- 企业 BIM 培训与 BIM 审计介绍
+- 企业 BIM 培训与 BIM 咨询介绍
 - 线索收集表单
 - Stripe Checkout、签名 Webhook 与 D1 订单记录
 - HOTSPOT 周报订阅（$5.9/月或 $59/年）、每周一自动更新与匿名读者反馈闭环
