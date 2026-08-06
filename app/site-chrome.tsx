@@ -88,11 +88,21 @@ export function SiteNav({
             <span className="nav-course-chevron" aria-hidden="true">⌄</span>
           </summary>
           <div className="nav-course-popover nav-home-popover">
-            <Link href={lang === "zh" ? "/" : "/en"}>
-              {lang === "zh" ? "首页" : "Home"}
-            </Link>
+            <Link href={homeLinks[0].href}>{homeLinks[0].label}</Link>
             <span className="nav-popover-divider" aria-hidden="true" />
-            {homeLinks.slice(0, 5).map((item) => (
+            <p className="nav-popover-group-label">
+              {lang === "zh" ? "课程与订阅" : "Courses & Subscription"}
+            </p>
+            {homeLinks.slice(1, 3).map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+            <span className="nav-popover-divider" aria-hidden="true" />
+            <p className="nav-popover-group-label">
+              {lang === "zh" ? "BIM 咨询和企业培训" : "BIM Consulting & Enterprise Training"}
+            </p>
+            {homeLinks.slice(3, 5).map((item) => (
               <Link href={item.href} key={item.href}>
                 {item.label}
               </Link>
