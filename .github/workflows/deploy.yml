@@ -1,0 +1,99 @@
+name: Deploy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  # Every PR gets its own Cloudflare Workers preview version (not a full
+  # deploy — production traffic keeps going to the last `main` deploy).
+  # NOTE: the preview shares the SAME D1 database and Stripe keys as
+  # production, since Workers "versions" don't isolate bindings by default.
+  # Fine for reviewing the free/pre-purchase pages; don't complete a real
+  # Stripe checkout or exercise the webhook against a preview URL.
+  preview:
+    if: github.event_name == 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Upload preview version
+        id: preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # --preview-alias gives a stable, reusable URL per PR (re-pushing
+          # to the same PR updates it rather than minting a new one), but it
+          # only resolves to anything if the account's workers.dev subdomain
+          # is registered — see the fallback message below if it's not.
+          command: >-
+            versions upload
+            --message "PR #${{ github.event.pull_request.number }}"
+            --preview-alias "pr-${{ github.event.pull_request.number }}"
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `${{ steps.preview.outputs.command-output }}`;
+            const match = output.match(/https:\/\/\S+\.workers\.dev\S*/);
+            const url = match ? match[0] : null;
+            const body = url
+              ? [
+                  `🔍 **Preview:** ${url}`,
+                  "",
+                  "⚠️ Shares the production D1 database and Stripe keys — safe to click around,",
+                  "but don't complete a real Stripe checkout or trigger the webhook from here.",
+                ].join("\n")
+              : [
+                  "⚠️ No preview URL — this Cloudflare account likely doesn't have a `workers.dev`",
+                  "subdomain registered yet (Workers & Pages → your worker → Settings → Domains &",
+                  "Routes → enable workers.dev). Once enabled, `--preview-alias` will resolve.",
+                  "Until then, check the workflow log for the uploaded Version ID.",
+                ].join("\n");
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
