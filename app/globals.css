@@ -124,7 +124,7 @@ main:focus {
 
 .brand span {
   color: var(--purple-light);
-  text-shadow: 0 0 28px #8b5cf644;
+  text-shadow: 0 0 14px #8b5cf62a;
 }
 
 .nav-meta {
@@ -321,9 +321,9 @@ main:focus {
   border-bottom: 1px solid var(--line);
   isolation: isolate;
   background:
-    radial-gradient(circle at 79% 30%, #cda75e2e 0, transparent 18rem),
-    radial-gradient(circle at 72% 44%, #8b5cf63d 0, transparent 24rem),
-    radial-gradient(circle at 25% 78%, #7c4fd930 0, transparent 28rem),
+    radial-gradient(circle at 90% 12%, #cda75e1c 0, transparent 14rem),
+    radial-gradient(circle at 72% 44%, #8b5cf630 0, transparent 24rem),
+    radial-gradient(circle at 25% 78%, #7c4fd924 0, transparent 28rem),
     linear-gradient(145deg, #f6f0fc 0%, #eee2fa 48%, #f3ecfb 100%);
 }
 
@@ -376,10 +376,9 @@ main:focus {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    #a78bfa4d 0%,
-    #8b5cf62e 34%,
-    #a5773a20 58%,
-    transparent 74%
+    #a78bfa42 0%,
+    #8b5cf624 40%,
+    transparent 72%
   );
   animation: halo-breathe 9s ease-in-out infinite;
 }
@@ -591,7 +590,7 @@ h1 {
 h1 em {
   color: var(--purple-light);
   font-style: normal;
-  text-shadow: 0 0 46px #8b5cf63d;
+  text-shadow: 0 0 22px #8b5cf624;
 }
 
 .subtitle {
@@ -674,21 +673,20 @@ h1 em {
 .purchase-button {
   position: relative;
   overflow: hidden;
-  border: 1px solid transparent;
+  border: 1px solid #b99a6040;
   border-radius: var(--radius-sm);
-  background:
-    linear-gradient(120deg, #6d3fc9, #8b5cf6 45%, #a5773a 100%) padding-box,
-    linear-gradient(120deg, #d7bd82, #8c7448 56%, #7452a9) border-box;
+  background: linear-gradient(160deg, #7c4fd8 0%, #5f34ad 100%);
   color: #ffffff;
   font: inherit;
   font-weight: 700;
   box-shadow:
-    inset 0 1px 0 #ffffff30,
-    0 14px 34px #6d3fc93d;
+    inset 0 1px 0 #ffffff26,
+    0 14px 34px #4a2c9330;
   transition:
     color 200ms var(--ease),
     box-shadow 200ms var(--ease),
-    filter 200ms var(--ease);
+    filter 200ms var(--ease),
+    border-color 200ms var(--ease);
 }
 
 .lead-form button::before,
@@ -1287,8 +1285,8 @@ h1 em {
 
 .subscribe-plan-toggle button.active {
   color: #ffffff;
-  background: linear-gradient(120deg, #6d3fc9, #8b5cf6 45%, #a5773a 100%);
-  border-color: transparent;
+  background: linear-gradient(160deg, #7c4fd8 0%, #5f34ad 100%);
+  border-color: #b99a6040;
 }
 
 .subscribe-button {

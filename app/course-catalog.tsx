@@ -10,6 +10,7 @@ type Course = {
   summary: string;
   meta: string;
   state?: "available" | "comingSoon";
+  syllabusHref?: string;
 };
 
 type CourseGroup = {
@@ -31,6 +32,7 @@ const catalog: Record<Lang, {
   available: string;
   comingSoon: string;
   browseNews: string;
+  viewSyllabus: string;
 }> = {
   zh: {
     eyebrow: "BAYBIMAI LEARNING PATH",
@@ -49,6 +51,7 @@ const catalog: Record<Lang, {
             summary: "7 天建立界面、建模、视图、出图与协同的完整起点；每一步都对应真实工作场景。",
             meta: "$59 · 一次性购买 · 永久访问",
             state: "available",
+            syllabusHref: "/course/revit-fast-start",
           },
         ],
       },
@@ -90,6 +93,7 @@ const catalog: Record<Lang, {
     available: "立即开始",
     comingSoon: "即将上线",
     browseNews: "查看本周 HOTSPOT",
+    viewSyllabus: "查看完整大纲",
   },
   en: {
     eyebrow: "BAYBIMAI LEARNING PATH",
@@ -108,6 +112,7 @@ const catalog: Record<Lang, {
             summary: "Build your first complete workflow in seven days: interface, modeling, views, sheets, and coordination — grounded in real project situations.",
             meta: "$59 · one-time purchase · lifetime access",
             state: "available",
+            syllabusHref: "/en/course/revit-fast-start",
           },
         ],
       },
@@ -149,6 +154,7 @@ const catalog: Record<Lang, {
     available: "Start learning",
     comingSoon: "Coming soon",
     browseNews: "Explore this week's HOTSPOT",
+    viewSyllabus: "View full syllabus",
   },
 };
 
@@ -199,6 +205,12 @@ export default function CourseCatalog({ lang }: { lang: Lang }) {
                       </div>
                       {course.state === "available" ? (
                         <div className={styles.coursePurchase}>
+                          {course.syllabusHref ? (
+                            <Link className={styles.syllabusLink} href={course.syllabusHref}>
+                              {copy.viewSyllabus}
+                              <span aria-hidden="true">→</span>
+                            </Link>
+                          ) : null}
                           <PurchaseButton lang={lang} />
                         </div>
                       ) : (

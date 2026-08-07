@@ -1,0 +1,126 @@
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 30px 0 0;
+}
+
+.stat {
+  padding: 9px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.body {
+  width: min(880px, 100%);
+  margin: 0 auto;
+  padding: clamp(56px, 8vw, 92px) clamp(20px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 36px);
+}
+
+.module {
+  padding: clamp(22px, 3vw, 30px) clamp(20px, 3.4vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.moduleHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.moduleNumber {
+  color: var(--gold-deep);
+  font: 0.78rem ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.moduleHead h2 {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lessons {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.lesson {
+  padding: 12px 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  background: var(--surface-2);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.lessonCode {
+  flex: 0 0 auto;
+  min-width: 44px;
+  color: var(--quiet);
+  font: 0.72rem ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+}
+
+.lessonTitle {
+  flex: 1 1 auto;
+  color: var(--text);
+}
+
+.lessonMinutes {
+  flex: 0 0 auto;
+  color: var(--quiet);
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.delivery {
+  padding: clamp(20px, 3vw, 26px);
+  border: 1px solid var(--line-gold);
+  border-radius: var(--radius-md);
+  background: #b99a600c;
+}
+
+.delivery h2 {
+  margin: 0 0 8px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+}
+
+.delivery p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 620px) {
+  .lesson {
+    flex-wrap: wrap;
+  }
+
+  .lessonMinutes {
+    margin-left: 56px;
+  }
+}

@@ -143,7 +143,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "面向零基础学习者，快速掌握 Revit 基础建模与常用工作流程。随时学习，学完就能上手。",
         note: "$59 · 一次性购买",
         featured: true,
-        detailHref: "/course",
+        detailHref: "/course/revit-fast-start",
         theme: "green",
       },
       {
@@ -236,7 +236,7 @@ export const dictionaries: Record<Lang, Dictionary> = {
         copy: "For complete beginners — get fluent in core Revit modeling and everyday workflows, fast. Learn on your own schedule, apply it immediately.",
         note: "$59 · one-time purchase",
         featured: true,
-        detailHref: "/en/course",
+        detailHref: "/en/course/revit-fast-start",
         theme: "green",
       },
       {

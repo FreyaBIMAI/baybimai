@@ -148,6 +148,19 @@
   max-width: 290px;
 }
 
+.syllabusLink {
+  min-height: 32px;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--purple-light);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .coursePurchase :global(.purchase-area) {
   margin: 0;
 }
