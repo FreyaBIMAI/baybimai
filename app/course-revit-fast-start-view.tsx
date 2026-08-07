@@ -3,6 +3,7 @@ import PurchaseButton from "./purchase-button";
 import Reveal from "./reveal";
 import { SiteNav, SiteFooter } from "./site-chrome";
 import { revitFastStartSyllabus } from "./course-revit-fast-start-content";
+import { CourseIntroNarration, CourseSyllabusBody } from "./course-lesson-tools";
 import type { Lang } from "./dictionaries";
 import styles from "./course-syllabus.module.css";
 
@@ -38,29 +39,12 @@ export default function CourseRevitFastStartView({ lang }: { lang: Lang }) {
               <span className={styles.stat}>{copy.statsHours}</span>
               <span className={styles.stat}>{copy.statsAccess}</span>
             </div>
+            <CourseIntroNarration lang={lang} text={`${copy.title}。${copy.intro}`} />
           </Reveal>
         </section>
 
         <section className={styles.body} aria-label={copy.title}>
-          {copy.modules.map((module, index) => (
-            <Reveal delay={Math.min(index * 40, 320)} key={module.number}>
-              <section className={styles.module} aria-labelledby={`module-${module.number}`}>
-                <div className={styles.moduleHead}>
-                  <span className={styles.moduleNumber}>{module.number}</span>
-                  <h2 id={`module-${module.number}`}>{module.title}</h2>
-                </div>
-                <ul className={styles.lessons}>
-                  {module.lessons.map((lesson) => (
-                    <li className={styles.lesson} key={`${module.number}-${lesson.code}`}>
-                      <span className={styles.lessonCode}>{lesson.code}</span>
-                      <span className={styles.lessonTitle}>{lesson.title}</span>
-                      <span className={styles.lessonMinutes}>{lesson.minutes} min</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </Reveal>
-          ))}
+          <CourseSyllabusBody lang={lang} modules={copy.modules} />
 
           <Reveal>
             <div className={styles.delivery}>
