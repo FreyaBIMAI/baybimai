@@ -34,9 +34,11 @@ npm run dev
 - `STRIPE_PRICE_ID`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
-- `ELEVENLABS_API_KEY`（仅在服务端使用；新闻与 Founder Daily 显示 Adam / Hope，Mark 留作后续课程配音）
+- `ELEVENLABS_API_KEY`（仅在服务端使用；新闻与 Founder Daily 显示 Adam / Hope；Revit 课程大纲页用 Mark 朗读课程介绍）
 - `STRIPE_NEWS_PRODUCT_ID`、`STRIPE_NEWS_MONTHLY_PRICE_ID`、`STRIPE_NEWS_YEARLY_PRICE_ID`
 - `NEWS_REFRESH_URL`、`NEWS_REFRESH_TOKEN`（周一内容生成/编辑工作流的受保护入口）
+- `BAIDU_NETDISK_APP_KEY`、`BAIDU_NETDISK_SECRET_KEY`、`BAIDU_NETDISK_REFRESH_TOKEN`、`BAIDU_NETDISK_TRANSCRIPT_DIR`
+  （课程文稿功能，见下方「课程文稿」一节；不配置时该功能自动隐藏，不影响其余页面）
 
 ## 构建与部署
 
@@ -61,3 +63,34 @@ npx wrangler deploy
 
 > GitHub 用于保存和协作源码。由于项目包含 Worker API、Stripe Webhook 和 D1，
 > 完整应用继续部署在 Cloudflare，而不是 GitHub Pages。
+
+### 课程文稿（百度网盘）
+
+Revit 闪电入门课的大纲页可以为每一讲显示"文稿"下载链接，文件本身托管在
+讲师自己的百度网盘账号里，网站通过百度网盘开放平台 API 按需读取，不需要每次
+更新讲义都重新部署代码。
+
+**一次性设置（需要账号所有者手动完成，无法自动化）：**
+
+1. 在 <https://pan.baidu.com/union/index> 注册开发者、完成实名认证、创建应用。
+   个人开发者可以申请，但上线前需要百度审核，预留时间。
+2. 用要托管讲义的那个百度账号，走一次 OAuth 授权码流程，拿到 `refresh_token`
+   （有效期约 10 年，不需要每次重新授权）。
+3. 把每一讲的文稿传到网盘同一个文件夹，文件名用课程大纲里的讲次编号命名，
+   例如 `07.md`、`Bonus 01.pdf`（编号对照见
+   `app/course-revit-fast-start-content.ts` 里每讲的 `code` 字段）。
+4. 把 `BAIDU_NETDISK_APP_KEY`、`BAIDU_NETDISK_SECRET_KEY`、
+   `BAIDU_NETDISK_REFRESH_TOKEN` 配置为 Cloudflare Worker Secrets，
+   `BAIDU_NETDISK_TRANSCRIPT_DIR` 设为该文件夹路径（默认
+   `/apps/baybimai/transcripts`）。
+
+配置完成后，之后只要把新文件传到这个网盘文件夹，网站会在下次访问时自动出现
+对应的"文稿"链接，不需要改代码或重新部署。四个变量任意一个没配置，该功能
+会自动隐藏，不影响页面其余部分。
+
+### 部署预览（GitHub Actions）
+
+`.github/workflows/deploy.yml` 会在每个 PR 上传一个 Cloudflare Workers
+预览版本并把预览链接评论到 PR 里，合并到 `main` 后自动跑生产部署。需要在
+仓库 Settings → Secrets 里配置 `CLOUDFLARE_API_TOKEN`（Edit Cloudflare
+Workers 权限）和 `CLOUDFLARE_ACCOUNT_ID`。

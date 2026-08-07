@@ -156,7 +156,10 @@ export function useElevenLabsVoice() {
 
   const speak = useCallback(async (
     text: string,
-    voiceId: ElevenLabsVoiceId,
+    // Omit voiceId to get the server's default voice (see MARK_VOICE_ID in
+    // lib/elevenlabs.ts / app/api/tts/route.ts) — used for course narration,
+    // which deliberately never puts that voice id in client-bundled code.
+    voiceId?: ElevenLabsVoiceId,
     options: SpeakOptions = {},
   ) => {
     stop();
