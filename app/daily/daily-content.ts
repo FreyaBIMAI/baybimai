@@ -2,7 +2,7 @@ export type DailyLang = "zh" | "en";
 
 export type DailyLesson = {
   id: number;
-  week: 1 | 2 | 3 | 4;
+  week: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   category: string;
   title: string;
   article: string[];
@@ -590,11 +590,20 @@ export const dailyCopy = {
     day: "第",
     daySuffix: "天",
     week: "第 {week} 周",
-    weekNames: ["讲清公司", "卖出价值", "理解融资", "领导与连接"],
+    weekNames: [
+      "讲清公司",
+      "卖出价值",
+      "理解融资",
+      "领导与连接",
+      "读懂市场",
+      "诚实谈AI",
+      "竞争定位",
+      "带队穿越变化",
+    ],
     streak: "连续阅读",
     streakUnit: "天",
     completed: "已完成",
-    total: "共 28 天",
+    total: "共 56 天",
     listen: "听英文",
     pause: "暂停",
     resume: "继续",
@@ -614,7 +623,7 @@ export const dailyCopy = {
     draftPlaceholder: "用英文写下你的回答……",
     complete: "完成今天的 6 分钟",
     doneToday: "今天完成。明天回来继续。",
-    roundComplete: "28 天完成。你已经建立了第一轮创业英语肌肉记忆。",
+    roundComplete: "56 天完成。从讲清公司到读懂市场，你已经把创业英语变成了肌肉记忆。",
     speechPlaying: "正在朗读今日英文",
     speechLoading: "正在生成所选声音…",
     speechPaused: "朗读已暂停",
@@ -637,11 +646,20 @@ export const dailyCopy = {
     day: "Day",
     daySuffix: "",
     week: "Week {week}",
-    weekNames: ["Explain the company", "Sell the value", "Understand funding", "Lead and connect"],
+    weekNames: [
+      "Explain the company",
+      "Sell the value",
+      "Understand funding",
+      "Lead and connect",
+      "Reading the Market",
+      "Talking About AI Honestly",
+      "Positioning Against Competitors",
+      "Leading Through Fast Change",
+    ],
     streak: "Reading streak",
     streakUnit: "days",
     completed: "Completed",
-    total: "28 days total",
+    total: "56 days total",
     listen: "Listen",
     pause: "Pause",
     resume: "Resume",
@@ -661,7 +679,7 @@ export const dailyCopy = {
     draftPlaceholder: "Write your answer in English…",
     complete: "Complete today's six minutes",
     doneToday: "Done for today. Return tomorrow for the next lesson.",
-    roundComplete: "All 28 days complete. You have finished your first founder-English cycle.",
+    roundComplete: "All 56 days complete. From explaining the company to reading the market, founder English is now muscle memory.",
     speechPlaying: "Reading today's English aloud",
     speechLoading: "Preparing the selected voice…",
     speechPaused: "Reading paused",

@@ -1,12 +1,12 @@
 /**
  * Founder Daily — Round 2 content ("Reading the Market")
  * ---------------------------------------------------------------
- * This is a NEW 28-day set, meant to run after a learner finishes the
- * Round 1 arc in `daily-content.ts` (Explain the company / Sell the value /
- * Understand funding / Lead and connect).
+ * Weeks 5-8 of the Founder Daily journey (days 29-56), continuing directly
+ * from the Round 1 arc in `daily-content.ts` (weeks 1-4: Explain the
+ * company / Sell the value / Understand funding / Lead and connect).
  *
- * Where Round 1 teaches timeless founder-communication fundamentals,
- * Round 2 teaches the next skill: talking fluently, in English, about a
+ * Where weeks 1-4 teach timeless founder-communication fundamentals,
+ * weeks 5-8 teach the next skill: talking fluently, in English, about a
  * fast-moving AI/BIM/construction-tech market — reading real announcements,
  * discussing AI capability honestly, positioning against competitors, and
  * leading a team through change. Content is grounded in real, dated 2026
@@ -14,18 +14,15 @@
  * Takeoff, Kestrel Labs, enterprise AI-agent adoption data) rather than
  * generic AI hype — see the `sources` block at the bottom for citations.
  *
- * SCOPE NOTE: this file only adds content. It intentionally does NOT touch
- * `daily-content.ts`, `daily-page.tsx`, or `daily-reader.tsx` — wiring up
- * round-switching (when Round 2 unlocks after Round 1's `roundComplete`,
- * how `dailyCopy` week-name labels swap per round, progress-tracking across
- * two rounds) is a separate UI/engineering task, not a content task, and the
- * repo has unrelated in-progress changes on the current branch that this
- * file deliberately avoids touching.
+ * Wired in directly: `daily-page.tsx` concatenates this array after
+ * `dailyLessons` into one continuous 56-day `lessons` list, so the existing
+ * streak/progress/week-grid logic in `daily-reader.tsx` treats it as one
+ * journey rather than a separate "round" a learner switches into.
  *
- * `week` reuses the 1|2|3|4 union from `DailyLesson` to mean "week 1-4 of
- * Round 2," not a continuation of Round 1's week numbers. `id` continues
- * the global sequence (29-56) so ids stay unique if both arrays are ever
- * merged into one list.
+ * `id` continues the global sequence from Round 1 (29-56). `week` continues
+ * Round 1's numbering too (5-8, not reused 1-4) so the route section's week
+ * grid — which groups lessons by `week` — doesn't merge week-5 lessons into
+ * the week-1 card.
  */
 
 import type { DailyLesson } from "./daily-content";
@@ -36,7 +33,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   // ---------------------------------------------------------------
   {
     id: 29,
-    week: 1,
+    week: 5,
     category: "MARKET SIGNAL",
     title: "Tell a real shift from a relabeling",
     article: [
@@ -56,7 +53,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 30,
-    week: 1,
+    week: 5,
     category: "SOURCING",
     title: "Cite a date and a number, not a mood",
     article: [
@@ -76,7 +73,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 31,
-    week: 1,
+    week: 5,
     category: "NUMBERS",
     title: "Use one number responsibly",
     article: [
@@ -96,7 +93,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 32,
-    week: 1,
+    week: 5,
     category: "SUMMARY",
     title: "Summarize a product update in two sentences",
     article: [
@@ -116,7 +113,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 33,
-    week: 1,
+    week: 5,
     category: "FRAMEWORK",
     title: "Sort news into signal and noise",
     article: [
@@ -136,7 +133,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 34,
-    week: 1,
+    week: 5,
     category: "OPINION",
     title: "Form a defensible opinion",
     article: [
@@ -156,7 +153,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 35,
-    week: 1,
+    week: 5,
     category: "REVIEW",
     title: "Pressure-test your read of the market",
     article: [
@@ -180,7 +177,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   // ---------------------------------------------------------------
   {
     id: 36,
-    week: 2,
+    week: 6,
     category: "CAPABILITY",
     title: "Say what it actually does",
     article: [
@@ -200,7 +197,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 37,
-    week: 2,
+    week: 6,
     category: "LIMITS",
     title: "Name the limit before they find it",
     article: [
@@ -220,7 +217,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 38,
-    week: 2,
+    week: 6,
     category: "HUMAN ROLE",
     title: "Explain where a person still decides",
     article: [
@@ -240,7 +237,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 39,
-    week: 2,
+    week: 6,
     category: "TRUST",
     title: "Answer the accuracy question directly",
     article: [
@@ -260,7 +257,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 40,
-    week: 2,
+    week: 6,
     category: "COMPARISON",
     title: "Compare without disparaging",
     article: [
@@ -280,7 +277,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 41,
-    week: 2,
+    week: 6,
     category: "DEMO OF CHANGE",
     title: "Show one before and after that is real",
     article: [
@@ -300,7 +297,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 42,
-    week: 2,
+    week: 6,
     category: "REVIEW",
     title: "Rehearse the hardest AI question",
     article: [
@@ -324,7 +321,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   // ---------------------------------------------------------------
   {
     id: 43,
-    week: 3,
+    week: 7,
     category: "LANDSCAPE",
     title: "Name the category honestly",
     article: [
@@ -344,7 +341,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 44,
-    week: 3,
+    week: 7,
     category: "DIFFERENTIATION",
     title: "Say the one thing only you do",
     article: [
@@ -364,7 +361,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 45,
-    week: 3,
+    week: 7,
     category: "COMPETITOR RESPECT",
     title: "Acknowledge without weakening",
     article: [
@@ -384,7 +381,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 46,
-    week: 3,
+    week: 7,
     category: "PARTNERSHIP",
     title: "Explain why an integration matters",
     article: [
@@ -404,7 +401,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 47,
-    week: 3,
+    week: 7,
     category: "PRICING PRESSURE",
     title: "Respond when a bigger player undercuts",
     article: [
@@ -424,7 +421,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 48,
-    week: 3,
+    week: 7,
     category: "PLATFORM RISK",
     title: "Answer 'what if they build this' calmly",
     article: [
@@ -444,7 +441,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 49,
-    week: 3,
+    week: 7,
     category: "REVIEW",
     title: "Write the one-paragraph competitive answer",
     article: [
@@ -468,7 +465,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   // ---------------------------------------------------------------
   {
     id: 50,
-    week: 4,
+    week: 8,
     category: "ROADMAP",
     title: "Share a roadmap without overpromising",
     article: [
@@ -488,7 +485,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 51,
-    week: 4,
+    week: 8,
     category: "PREDICTION",
     title: "State a prediction with a confidence level",
     article: [
@@ -508,7 +505,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 52,
-    week: 4,
+    week: 8,
     category: "TEAM CHANGE",
     title: "Tell the team why the plan changed",
     article: [
@@ -528,7 +525,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 53,
-    week: 4,
+    week: 8,
     category: "HIRING FOR AI ERA",
     title: "Hire for judgment, not tool fluency",
     article: [
@@ -548,7 +545,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 54,
-    week: 4,
+    week: 8,
     category: "MISTAKES",
     title: "Report a mistake before it's discovered",
     article: [
@@ -568,7 +565,7 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 55,
-    week: 4,
+    week: 8,
     category: "INDUSTRY VOICE",
     title: "Take a position without overreaching",
     article: [
@@ -588,16 +585,16 @@ export const dailyLessonsRound2: DailyLesson[] = [
   },
   {
     id: 56,
-    week: 4,
+    week: 8,
     category: "CLOSING PITCH",
     title: "Tell the founder story, updated",
     article: [
-      "Round one asked you to connect insight, evidence, and ambition. Now update that story with what you have learned about the market itself — what you correctly predicted, what surprised you, and how the company's plan changed in response. A founder story that evolves with real evidence is more convincing than one that never changes.",
-      "End by naming the specific future you believe is coming, based on everything you have practiced saying honestly this round, and the role you are asking the listener to play in it.",
+      "Weeks ago, you built a founder story that connected insight, evidence, and ambition. Now update that story with what you have learned about the market itself — what you correctly predicted, what surprised you, and how the company's plan changed in response. A founder story that evolves with real evidence is more convincing than one that never changes.",
+      "End by naming the specific future you believe is coming, based on everything you have practiced saying honestly these past eight weeks, and the role you are asking the listener to play in it.",
     ],
     translationZh: [
-      "第一轮训练要求你把洞察、证据和野心连接起来。现在，用你对市场本身的新理解来更新这个故事——你准确预测了什么、什么让你意外、公司的计划因此发生了怎样的调整。一个会随真实证据演化的创始人故事，比一个永远不变的故事更有说服力。",
-      "结尾时，基于这一轮你练习诚实表达的一切，说出你相信正在到来的具体未来，以及你希望听众在其中扮演的角色。",
+      "几周前，你已经建立起一个把洞察、证据和野心连接起来的创始人故事。现在，用你对市场本身的新理解来更新这个故事——你准确预测了什么、什么让你意外、公司的计划因此发生了怎样的调整。一个会随真实证据演化的创始人故事，比一个永远不变的故事更有说服力。",
+      "结尾时，基于这八周你练习诚实表达的一切，说出你相信正在到来的具体未来，以及你希望听众在其中扮演的角色。",
     ],
     takeawayEn: "Update your founder story with what you predicted correctly, what surprised you, and how the plan changed.",
     phrase: "What we got right was…; what surprised us was…; here's where that leads next.",
@@ -607,30 +604,6 @@ export const dailyLessonsRound2: DailyLesson[] = [
     promptEn: "Record a 60-second updated founder story: what you got right, what surprised you, and what's next.",
   },
 ];
-
-/**
- * Suggested copy for Round 2 (not wired into `dailyCopy` — see scope note
- * above). Kept here so the strings exist in one place when someone builds
- * the round-switching UI.
- */
-export const round2Meta = {
-  zh: {
-    roundLabel: "第二轮 · 读懂市场",
-    eyebrow: "FOUNDER DAILY · ROUND 2",
-    title: "每天 6 分钟，\n把行业判断力变成英语表达力。",
-    intro:
-      "第一轮练的是讲清公司；这一轮练的是在一个AI每月都在变化的行业里，用英语准确、诚实地谈判断、谈能力边界、谈竞争。",
-    weekNames: ["读懂市场", "诚实谈AI", "竞争定位", "带队穿越变化"],
-  },
-  en: {
-    roundLabel: "Round 2 · Reading the Market",
-    eyebrow: "FOUNDER DAILY · ROUND 2",
-    title: "Six minutes a day.\nTurn market judgment into spoken English.",
-    intro:
-      "Round 1 built the company pitch. Round 2 builds the fluency to talk — accurately and honestly — about a market that changes every month: what's real, what AI can and can't do, and where you stand against competitors.",
-    weekNames: ["Reading the Market", "Talking About AI Honestly", "Positioning Against Competitors", "Leading Through Fast Change"],
-  },
-} as const;
 
 /**
  * Sources used to ground this round's content in real, dated 2026 events

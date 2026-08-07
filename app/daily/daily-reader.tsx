@@ -151,6 +151,10 @@ export default function DailyReader({
   const streak = calculateStreak(progress.completed, today);
   const draft = progress.drafts[String(lesson.id)] ?? "";
   const progressPercent = Math.round((progress.completed.length / lessons.length) * 100);
+  const weeks = useMemo(
+    () => Array.from(new Set(lessons.map((item) => item.week))).sort((a, b) => a - b),
+    [lessons],
+  );
 
   // The spoken string is `${title}. ${article}. ...` — this is where the
   // article body starts within it, so the global charIndex the hook reports
@@ -264,14 +268,14 @@ export default function DailyReader({
       <section className={styles.readingSection} id="today" aria-labelledby="today-title">
         <div className={styles.progressStrip} aria-label={copy.completed}>
           <div><span>{copy.streak}</span><strong>{ready ? streak : "–"} {copy.streakUnit}</strong></div>
-          <div><span>{copy.completed}</span><strong>{ready ? progress.completed.length : "–"} / 28</strong></div>
+          <div><span>{copy.completed}</span><strong>{ready ? progress.completed.length : "–"} / {lessons.length}</strong></div>
           <div className={styles.progressTrackWrap}>
             <span>{copy.total}</span>
             <div
               className={styles.progressTrack}
               role="progressbar"
               aria-valuemin={0}
-              aria-valuemax={28}
+              aria-valuemax={lessons.length}
               aria-valuenow={progress.completed.length}
               aria-label={copy.completed}
             ><span style={{ width: `${progressPercent}%` }} /></div>
@@ -410,7 +414,7 @@ export default function DailyReader({
           <p>{copy.routeIntro}<br />{copy.localNote}</p>
         </div>
         <div className={styles.weekGrid}>
-          {[1, 2, 3, 4].map((week) => (
+          {weeks.map((week) => (
             <article className={styles.weekCard} key={week}>
               <p>{copy.week.replace("{week}", String(week))}</p>
               <h3>{copy.weekNames[week - 1]}</h3>
