@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Founder Daily | BAYBIMAI",
-  description: "A 28-day English sprint for founders: read, listen, speak, and write about positioning, sales, fundraising, and leadership.",
+  description: "A 56-day English sprint for founders: read, listen, speak, and write about positioning, sales, fundraising, leadership, and reading the AI/BIM market.",
   robots: { index: false, follow: false, nocache: true },
 };
 

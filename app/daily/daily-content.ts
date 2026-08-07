@@ -581,7 +581,7 @@ export const dailyLessons: DailyLesson[] = [
 export const dailyCopy = {
   zh: {
     skip: "跳到今日晨读",
-    eyebrow: "FOUNDER DAILY · 28 DAY SPRINT",
+    eyebrow: "FOUNDER DAILY · 56 DAY SPRINT",
     title: "每天 6 分钟，\n把创业英语变成肌肉记忆。",
     intro:
       "不是背单词，也不是收藏文章。每天读一段、听一遍、说一句、写两句。完成今天，明天才出现下一课。",
@@ -631,13 +631,13 @@ export const dailyCopy = {
     speechComplete: "今日朗读完成",
     speechUnsupported: "语音朗读暂不可用",
     speechError: "所选声音暂不可用，请稍后再试",
-    routeTitle: "28 天路线",
+    routeTitle: "56 天路线",
     routeIntro: "漏读不会跳课；下一次回来仍从未完成的一课继续。",
     localNote: "进度只保存在当前浏览器，不需要登录。",
   },
   en: {
     skip: "Skip to today's reading",
-    eyebrow: "FOUNDER DAILY · 28 DAY SPRINT",
+    eyebrow: "FOUNDER DAILY · 56 DAY SPRINT",
     title: "Six minutes a day.\nBuild founder English into muscle memory.",
     intro:
       "No word-list collecting. Read one passage, listen once, say one line, and write two. Finish today; the next lesson arrives tomorrow.",
@@ -687,7 +687,7 @@ export const dailyCopy = {
     speechComplete: "Today's reading is complete",
     speechUnsupported: "Speech is temporarily unavailable",
     speechError: "The selected voice is temporarily unavailable. Please try again.",
-    routeTitle: "The 28-day route",
+    routeTitle: "The 56-day route",
     routeIntro: "Missing a day never skips a lesson. You resume from the next unfinished one.",
     localNote: "Progress stays in this browser. No account required.",
   },
