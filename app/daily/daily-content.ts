@@ -634,6 +634,9 @@ export const dailyCopy = {
     routeTitle: "56 天路线",
     routeIntro: "漏读不会跳课；下一次回来仍从未完成的一课继续。",
     localNote: "进度只保存在当前浏览器，不需要登录。",
+    previewing: "预览模式 · 第",
+    previewingSuffix: "天",
+    backToToday: "回到今天",
   },
   en: {
     skip: "Skip to today's reading",
@@ -690,6 +693,9 @@ export const dailyCopy = {
     routeTitle: "The 56-day route",
     routeIntro: "Missing a day never skips a lesson. You resume from the next unfinished one.",
     localNote: "Progress stays in this browser. No account required.",
+    previewing: "Previewing · Day",
+    previewingSuffix: "",
+    backToToday: "Back to today",
   },
 } as const;
 

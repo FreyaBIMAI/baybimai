@@ -107,6 +107,7 @@ export default function DailyReader({
   const [progress, setProgress] = useState<StoredProgress>(EMPTY_PROGRESS);
   const [ready, setReady] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [viewedLessonId, setViewedLessonId] = useState<number | null>(null);
   const [speechMode, setSpeechMode] = useState<"lesson" | "preview" | null>(null);
   const [speed, setSpeed] = useState(1);
   const [status, setStatus] = useState("");
@@ -143,9 +144,16 @@ export default function DailyReader({
   );
   const completedToday = progress.completed.find((entry) => entry.date === today);
   const nextLesson = lessons.find((lesson) => !completedIds.has(lesson.id));
-  const lesson = completedToday
+  const currentLesson = completedToday
     ? lessons.find((item) => item.id === completedToday.lessonId) ?? lessons[0]
     : nextLesson ?? lessons[lessons.length - 1];
+  // Day-grid buttons in THE ROUTE section let you jump to any lesson to read
+  // it (mainly for reviewing content); that's separate from "today's" lesson,
+  // which still drives the streak/progress logic and the Complete button.
+  const isPreview = viewedLessonId !== null && viewedLessonId !== currentLesson.id;
+  const lesson = isPreview
+    ? lessons.find((item) => item.id === viewedLessonId) ?? currentLesson
+    : currentLesson;
   const isLessonComplete = completedIds.has(lesson.id);
   const allComplete = progress.completed.length >= lessons.length;
   const streak = calculateStreak(progress.completed, today);
@@ -283,6 +291,12 @@ export default function DailyReader({
         </div>
 
         <article className={styles.readingCard} aria-busy={!ready}>
+          {isPreview && (
+            <p className={styles.previewBanner}>
+              <span>{copy.previewing} {lesson.id}{copy.previewingSuffix}</span>
+              <button type="button" onClick={() => setViewedLessonId(null)}>{copy.backToToday}</button>
+            </p>
+          )}
           <header className={styles.lessonHeader}>
             <div>
               <p className={styles.lessonMeta}>{copy.today} · {copy.day} {lesson.id}{copy.daySuffix} · {lesson.category}</p>
@@ -400,8 +414,8 @@ export default function DailyReader({
           </section>
 
           <div className={styles.completionRow}>
-            <button className={styles.completeButton} type="button" disabled={!ready || isLessonComplete || allComplete} onClick={completeLesson}>
-              {isLessonComplete ? (allComplete ? copy.roundComplete : copy.doneToday) : copy.complete}
+            <button className={styles.completeButton} type="button" disabled={!ready || isLessonComplete || allComplete || isPreview} onClick={completeLesson}>
+              {isPreview ? copy.complete : isLessonComplete ? (allComplete ? copy.roundComplete : copy.doneToday) : copy.complete}
             </button>
           </div>
           <p className={styles.liveStatus} role="status" aria-live="polite">{status}</p>
@@ -420,8 +434,23 @@ export default function DailyReader({
               <h3>{copy.weekNames[week - 1]}</h3>
               <div className={styles.dayGrid} aria-label={copy.weekNames[week - 1]}>
                 {lessons.filter((item) => item.week === week).map((item) => {
-                  const state = completedIds.has(item.id) ? "completed" : item.id === lesson.id ? "current" : "future";
-                  return <span key={item.id} data-state={state} aria-label={`${copy.day} ${item.id}: ${state}`}>{String(item.id).padStart(2, "0")}</span>;
+                  const state = completedIds.has(item.id)
+                    ? "completed"
+                    : item.id === lesson.id
+                      ? (isPreview ? "viewing" : "current")
+                      : "future";
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      data-state={state}
+                      aria-label={`${copy.day} ${item.id}: ${state}`}
+                      aria-current={item.id === lesson.id ? "true" : undefined}
+                      onClick={() => setViewedLessonId(item.id === currentLesson.id ? null : item.id)}
+                    >
+                      {String(item.id).padStart(2, "0")}
+                    </button>
+                  );
                 })}
               </div>
             </article>

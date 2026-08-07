@@ -282,6 +282,30 @@
   font-size: 0.68rem;
 }
 
+.previewBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--daily-purple);
+  border-radius: 999px;
+  color: var(--daily-purple);
+  font-size: 0.72rem;
+  width: fit-content;
+}
+
+.previewBanner button {
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .articleCopy {
   max-width: 770px;
   margin: 42px auto 0;
@@ -604,25 +628,38 @@
   gap: 5px;
 }
 
-.dayGrid span {
+.dayGrid button {
   aspect-ratio: 1;
   display: grid;
   place-items: center;
   border: 1px solid var(--daily-line);
   color: var(--daily-quiet);
   font-size: 0.59rem;
+  background: none;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
 }
 
-.dayGrid span[data-state="completed"] {
+.dayGrid button:hover {
+  border-color: var(--daily-purple);
+}
+
+.dayGrid button[data-state="completed"] {
   border-color: var(--daily-purple);
   color: #fff;
   background: var(--daily-purple);
 }
 
-.dayGrid span[data-state="current"] {
+.dayGrid button[data-state="current"] {
   border-color: var(--daily-gold);
   color: #694b20;
   background: #f0dfbf;
+}
+
+.dayGrid button[data-state="viewing"] {
+  border-color: var(--daily-purple);
+  border-width: 2px;
 }
 
 .dailyRoot button:focus-visible,
