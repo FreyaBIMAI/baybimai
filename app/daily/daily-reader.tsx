@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BAYBIMAI_VOICES,
+  HOPE_VOICE_ID,
   isBAYBIMAIVoice,
   useElevenLabsVoice,
   useVoicePreference,
@@ -18,6 +19,60 @@ type StoredProgress = { completed: Completion[]; drafts: Record<string, string> 
 const EMPTY_PROGRESS: StoredProgress = { completed: [], drafts: {} };
 
 type WordToken = { text: string; start: number; end: number; paragraphIndex: number; tokenIndex: number };
+
+const BROWSER_SPEECH_CHUNK_LENGTH = 260;
+const FEMALE_VOICE_HINTS = /female|women|girl|samantha|victoria|karen|moira|tessa|susan|zira|ting-?ting|mei-?jia/i;
+const MALE_VOICE_HINTS = /\bmale\b|\bmen\b|\bman\b|alex|daniel|fred|thomas|oliver|arthur|yannick|zhiwei|aaron/i;
+
+function pickBrowserVoice(wantsFemale: boolean) {
+  if (!("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+
+  const englishVoices = voices.filter((voice) => voice.lang.toLowerCase().startsWith("en"));
+  const pool = englishVoices.length ? englishVoices : voices;
+  const hints = wantsFemale ? FEMALE_VOICE_HINTS : MALE_VOICE_HINTS;
+  return pool.find((voice) => hints.test(voice.name))
+    ?? pool.find((voice) => voice.default)
+    ?? pool[0]
+    ?? null;
+}
+
+function splitBrowserSpeechText(text: string) {
+  const sentences = text
+    .replace(/\s+/g, " ")
+    .trim()
+    .match(/[^.!?。！？]+[.!?。！？]+|[^.!?。！？]+$/g) ?? [];
+  const chunks: string[] = [];
+  let current = "";
+
+  const append = (part: string) => {
+    const normalized = part.trim();
+    if (!normalized) return;
+    if (normalized.length > BROWSER_SPEECH_CHUNK_LENGTH) {
+      if (current) {
+        chunks.push(current);
+        current = "";
+      }
+      for (let index = 0; index < normalized.length; index += BROWSER_SPEECH_CHUNK_LENGTH) {
+        chunks.push(normalized.slice(index, index + BROWSER_SPEECH_CHUNK_LENGTH));
+      }
+      return;
+    }
+    if (!current) {
+      current = normalized;
+    } else if (current.length + normalized.length + 1 <= BROWSER_SPEECH_CHUNK_LENGTH) {
+      current += ` ${normalized}`;
+    } else {
+      chunks.push(current);
+      current = normalized;
+    }
+  };
+
+  sentences.forEach(append);
+  if (current) chunks.push(current);
+  return chunks;
+}
 
 // Tokenizes each paragraph into words with character offsets relative to
 // `paragraphs.join(" ")` — the exact string handed to the TTS hook — so the
@@ -109,8 +164,14 @@ export default function DailyReader({
   const [helpOpen, setHelpOpen] = useState(false);
   const [viewedLessonId, setViewedLessonId] = useState<number | null>(null);
   const [speechMode, setSpeechMode] = useState<"lesson" | "preview" | null>(null);
+  const [nativeActive, setNativeActive] = useState(false);
+  const [nativePaused, setNativePaused] = useState(false);
+  const [cloudAvailable, setCloudAvailable] = useState<boolean | null>(null);
+  const [browserCharIndex, setBrowserCharIndex] = useState(0);
   const [speed, setSpeed] = useState(1);
   const [status, setStatus] = useState("");
+  const nativeUtterance = useRef<SpeechSynthesisUtterance | null>(null);
+  const nativeSession = useRef(0);
   const {
     state: speechState,
     speak,
@@ -121,8 +182,23 @@ export default function DailyReader({
     charIndex,
   } = useElevenLabsVoice();
   const { voiceId, chooseVoice } = useVoicePreference();
-  const previewingVoice = speechMode === "preview" && speechState !== "idle";
+  const previewingVoice = speechMode === "preview" && (nativeActive || speechState !== "idle");
   const today = localDate();
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void fetch("/api/tts", { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return false;
+        const payload = (await response.json()) as { available?: unknown };
+        return payload.available === true;
+      })
+      .then((available) => setCloudAvailable(available))
+      .catch(() => {
+        if (!controller.signal.aborted) setCloudAvailable(false);
+      });
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -164,6 +240,9 @@ export default function DailyReader({
     [lessons],
   );
 
+  const lessonSpeechText = `${lesson.title}. ${lesson.article.join(" ")} ${lesson.phrase}. ${lesson.sayIt}`;
+  const previewSpeechText = "A clear message earns the next conversation.";
+
   // The spoken string is `${title}. ${article}. ...` — this is where the
   // article body starts within it, so the global charIndex the hook reports
   // can be translated into a local offset for word-cursor highlighting.
@@ -173,12 +252,13 @@ export default function DailyReader({
     () => lesson.article.reduce((sum, paragraph) => sum + paragraph.length + 1, -1),
     [lesson.article],
   );
+  const readingPosition = nativeActive ? browserCharIndex : charIndex;
   const showCursor =
     speechMode === "lesson" &&
-    (speechState === "playing" || speechState === "paused") &&
-    charIndex >= articleStart &&
-    charIndex < articleStart + articleLength;
-  const localCharIndex = charIndex - articleStart;
+    (nativeActive || speechState === "playing" || speechState === "paused") &&
+    readingPosition >= articleStart &&
+    readingPosition < articleStart + articleLength;
+  const localCharIndex = readingPosition - articleStart;
   const activeToken = useMemo(() => {
     if (!showCursor) return null;
     let active: WordToken | null = null;
@@ -203,73 +283,235 @@ export default function DailyReader({
     setStatus(copy.saved);
   }
 
+  function stopNative() {
+    nativeSession.current += 1;
+    nativeUtterance.current = null;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    setNativeActive(false);
+    setNativePaused(false);
+  }
+
+  function stopPlayback() {
+    stopNative();
+    stopVoice();
+    setSpeechMode(null);
+  }
+
+  function startBrowserSpeech(
+    text: string,
+    mode: "lesson" | "preview",
+    isFallback: boolean,
+    rate: number,
+  ) {
+    if (
+      !("speechSynthesis" in window) ||
+      typeof window.SpeechSynthesisUtterance === "undefined" ||
+      !text.trim()
+    ) {
+      stopNative();
+      setSpeechMode(null);
+      setStatus(copy.speechUnsupported);
+      return;
+    }
+
+    const chunks = splitBrowserSpeechText(text);
+    if (!chunks.length) {
+      stopNative();
+      setSpeechMode(null);
+      setStatus(copy.speechUnsupported);
+      return;
+    }
+
+    stopVoice();
+    stopNative();
+    const session = nativeSession.current + 1;
+    nativeSession.current = session;
+
+    const offsets: number[] = [];
+    let searchFrom = 0;
+    for (const chunk of chunks) {
+      const found = text.indexOf(chunk, searchFrom);
+      const start = found >= 0 ? found : searchFrom;
+      offsets.push(start);
+      searchFrom = start + chunk.length;
+    }
+
+    const matchedVoice = pickBrowserVoice(voiceId === HOPE_VOICE_ID);
+    const speakChunk = (index: number) => {
+      if (nativeSession.current !== session) return;
+
+      const utterance = new SpeechSynthesisUtterance(chunks[index]);
+      utterance.lang = "en-US";
+      utterance.rate = Math.min(2, Math.max(0.1, rate));
+      if (matchedVoice) utterance.voice = matchedVoice;
+      utterance.onstart = () => {
+        if (nativeSession.current !== session) return;
+        setNativeActive(true);
+        setNativePaused(false);
+        setSpeechMode(mode);
+        setStatus(mode === "preview" ? copy.previewingVoice : copy.speechPlaying);
+        setBrowserCharIndex(offsets[index] ?? 0);
+      };
+      utterance.onboundary = (event) => {
+        if (nativeSession.current !== session) return;
+        if (typeof event.charIndex === "number") {
+          setBrowserCharIndex((offsets[index] ?? 0) + event.charIndex);
+        }
+      };
+      utterance.onend = () => {
+        if (nativeSession.current !== session) return;
+        if (index + 1 < chunks.length) {
+          speakChunk(index + 1);
+          return;
+        }
+        nativeUtterance.current = null;
+        setNativeActive(false);
+        setNativePaused(false);
+        setSpeechMode(null);
+        setStatus(mode === "preview" ? copy.voiceReady : copy.speechComplete);
+      };
+      utterance.onerror = () => {
+        if (nativeSession.current !== session) return;
+        nativeUtterance.current = null;
+        setNativeActive(false);
+        setNativePaused(false);
+        setSpeechMode(null);
+        setStatus(copy.speechUnsupported);
+      };
+
+      nativeUtterance.current = utterance;
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch {
+        nativeUtterance.current = null;
+        setNativeActive(false);
+        setSpeechMode(null);
+        setStatus(copy.speechUnsupported);
+      }
+    };
+
+    setNativeActive(true);
+    setNativePaused(false);
+    setSpeechMode(mode);
+    setStatus(isFallback ? copy.speechFallback : mode === "preview" ? copy.previewingVoice : copy.speechPlaying);
+    window.speechSynthesis.cancel();
+    speakChunk(0);
+  }
+
   function completeLesson() {
     if (isLessonComplete) return;
     persist({
       ...progress,
       completed: [...progress.completed, { lessonId: lesson.id, date: today }],
     });
-    stopVoice();
-    setSpeechMode(null);
+    stopPlayback();
     setStatus(lesson.id === lessons.length ? copy.roundComplete : copy.doneToday);
   }
 
   function listen() {
-    if (speechState === "paused") {
-      void resume();
-      setStatus(copy.speechPlaying);
+    if (speechMode === "lesson" && nativeActive) {
+      if (nativePaused) {
+        window.speechSynthesis.resume();
+        setNativePaused(false);
+        setStatus(copy.speechPlaying);
+      }
       return;
     }
-    const text = `${lesson.title}. ${lesson.article.join(" ")} ${copy.phraseTitle}. ${lesson.phrase}. ${copy.speakTitle}. ${lesson.sayIt}`;
+    if (speechMode === "lesson" && speechState === "paused") {
+      void resume().then((resumed) => {
+        if (resumed) {
+          setStatus(copy.speechPlaying);
+        } else {
+          startBrowserSpeech(lessonSpeechText, "lesson", true, speed);
+        }
+      });
+      return;
+    }
+    if (
+      speechMode === "lesson" &&
+      (speechState === "loading" || speechState === "playing")
+    ) return;
+
+    if (cloudAvailable !== true) {
+      startBrowserSpeech(lessonSpeechText, "lesson", cloudAvailable === false, speed);
+      return;
+    }
+
+    stopNative();
     setSpeechMode("lesson");
     setStatus(copy.speechLoading);
-    void speak(text, voiceId, {
+    void speak(lessonSpeechText, voiceId, {
       rate: speed,
       onEnded: () => {
         setSpeechMode(null);
         setStatus(copy.speechComplete);
       },
-      onError: () => {
-        setSpeechMode(null);
-        setStatus(copy.speechError);
-      },
+      onError: () => startBrowserSpeech(lessonSpeechText, "lesson", true, speed),
     });
   }
 
   function previewVoice() {
+    if (speechMode === "preview" && (nativeActive || speechState !== "idle")) return;
+
+    if (cloudAvailable !== true) {
+      startBrowserSpeech(previewSpeechText, "preview", cloudAvailable === false, 0.96);
+      return;
+    }
+
+    stopNative();
     setSpeechMode("preview");
     setStatus(copy.previewingVoice);
-    void speak("A clear message earns the next conversation.", voiceId, {
+    void speak(previewSpeechText, voiceId, {
       rate: 0.96,
       onEnded: () => {
         setSpeechMode(null);
         setStatus(copy.voiceReady);
       },
-      onError: () => {
-        setSpeechMode(null);
-        setStatus(copy.speechError);
-      },
+      onError: () => startBrowserSpeech(previewSpeechText, "preview", true, 0.96),
     });
   }
 
   function changeVoice(nextVoiceId: string) {
     if (!isBAYBIMAIVoice(nextVoiceId)) return;
-    stopVoice();
-    setSpeechMode(null);
+    stopPlayback();
     chooseVoice(nextVoiceId);
     setStatus(copy.voiceReady);
   }
 
   function pause() {
-    pauseVoice();
+    if (nativeActive) {
+      window.speechSynthesis.pause();
+      setNativePaused(true);
+    } else {
+      pauseVoice();
+    }
     setStatus(copy.speechPaused);
   }
 
   function stop() {
-    stopVoice();
-    setSpeechMode(null);
+    stopPlayback();
     setStatus(copy.speechStopped);
   }
+
+  function selectLesson(nextLessonId: number | null) {
+    stopPlayback();
+    setViewedLessonId(nextLessonId);
+    setStatus("");
+  }
+
+  useEffect(() => () => {
+    nativeSession.current += 1;
+    nativeUtterance.current = null;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  }, []);
+
+  const lessonLoading = speechMode === "lesson" && speechState === "loading";
+  const lessonPaused =
+    speechMode === "lesson" &&
+    (speechState === "paused" || (nativeActive && nativePaused));
+  const lessonPlaying =
+    speechMode === "lesson" &&
+    (speechState === "playing" || (nativeActive && !nativePaused));
 
   return (
     <>
@@ -294,7 +536,7 @@ export default function DailyReader({
           {isPreview && (
             <p className={styles.previewBanner}>
               <span>{copy.previewing} {lesson.id}{copy.previewingSuffix}</span>
-              <button type="button" onClick={() => setViewedLessonId(null)}>{copy.backToToday}</button>
+              <button type="button" onClick={() => selectLesson(null)}>{copy.backToToday}</button>
             </p>
           )}
           <header className={styles.lessonHeader}>
@@ -329,18 +571,25 @@ export default function DailyReader({
           </div>
 
           <div className={styles.audioControls} aria-label={copy.listen}>
-            <button type="button" onClick={listen}>
+            <button
+              type="button"
+              onClick={listen}
+              disabled={lessonLoading || lessonPlaying}
+              aria-busy={lessonLoading}
+            >
               <svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14">
                 <path d="M4 2.8v10.4L13 8 4 2.8Z" fill="currentColor" />
               </svg>
-              {speechMode === "lesson" && speechState === "loading"
+              {lessonLoading
                 ? copy.speechLoading
-                : speechState === "paused"
+                : lessonPaused
                   ? copy.resume
-                  : copy.listen}
+                  : lessonPlaying
+                    ? copy.speechPlaying
+                    : copy.listen}
             </button>
-            {speechState === "playing" && <button type="button" onClick={pause}>{copy.pause}</button>}
-            {speechState !== "idle" && <button type="button" onClick={stop}>{copy.stop}</button>}
+            {(nativeActive || speechState === "playing") && <button type="button" onClick={pause}>{copy.pause}</button>}
+            {(nativeActive || speechState !== "idle") && <button type="button" onClick={stop}>{copy.stop}</button>}
             <label>
               <span>{copy.speed}</span>
               <select value={speed} onChange={(event) => { const next = Number(event.target.value); setSpeed(next); setPlaybackRate(next); }}>
@@ -446,7 +695,7 @@ export default function DailyReader({
                       data-state={state}
                       aria-label={`${copy.day} ${item.id}: ${state}`}
                       aria-current={item.id === lesson.id ? "true" : undefined}
-                      onClick={() => setViewedLessonId(item.id === currentLesson.id ? null : item.id)}
+                      onClick={() => selectLesson(item.id === currentLesson.id ? null : item.id)}
                     >
                       {String(item.id).padStart(2, "0")}
                     </button>

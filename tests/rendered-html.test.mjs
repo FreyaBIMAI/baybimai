@@ -113,7 +113,12 @@ test("News and Founder Daily provide reliable ElevenLabs voice playback", async 
   assert.match(dailyReader, /useElevenLabsVoice/);
   assert.match(dailyReader, /function previewVoice/);
   assert.match(dailyReader, /BAYBIMAI_VOICES/);
-  assert.doesNotMatch(dailyReader, /useNaturalVoice|speechSynthesis/);
+  assert.match(dailyReader, /SpeechSynthesisUtterance/);
+  assert.match(dailyReader, /speechSynthesis/);
+  assert.match(dailyReader, /cloudAvailable/);
+  assert.match(dailyReader, /speechFallback/);
+  assert.match(dailyReader, /selectLesson/);
+  assert.match(voiceHook, /playsinline/);
   assert.match(dailyContent, /voice: "Reading voice"/);
 });
 
@@ -324,7 +329,7 @@ test("Founder Daily protects one-a-day progress and offers accessible practice t
   assert.match(reader, /role="progressbar"/);
   assert.match(reader, /aria-live="polite"/);
   assert.match(reader, /aria-expanded=/);
-  assert.match(reader, /disabled=\{!ready \|\| isLessonComplete \|\| allComplete\}/);
+  assert.match(reader, /disabled=\{!ready \|\| isLessonComplete \|\| allComplete \|\| isPreview\}/);
   assert.match(reader, /copy: DailyCopy/);
   assert.match(reader, /lessons: DailyLesson\[\]/);
   assert.doesNotMatch(reader, /import \{ dailyCopy, dailyLessons/);

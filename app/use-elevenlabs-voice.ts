@@ -216,6 +216,8 @@ export function useElevenLabsVoice() {
         objectUrlRef.current = objectUrl;
         const audio = new Audio(objectUrl);
         audioRef.current = audio;
+        audio.preload = "auto";
+        audio.setAttribute("playsinline", "true");
         audio.playbackRate = rateRef.current;
         audio.onended = () => {
           clearProgressTimer();
@@ -253,11 +255,20 @@ export function useElevenLabsVoice() {
   }, [clearProgressTimer]);
 
   const resume = useCallback(async () => {
-    if (!audioRef.current) return;
-    await audioRef.current.play();
-    setState("playing");
-    startProgressTimer();
-  }, [startProgressTimer]);
+    if (!audioRef.current) return false;
+    try {
+      await audioRef.current.play();
+      setState("playing");
+      startProgressTimer();
+      return true;
+    } catch (error) {
+      console.error("Unable to resume ElevenLabs voice", error);
+      clearProgressTimer();
+      releaseAudio();
+      setState("idle");
+      return false;
+    }
+  }, [clearProgressTimer, releaseAudio, startProgressTimer]);
 
   const setRate = useCallback((rate: number) => {
     rateRef.current = rate;
