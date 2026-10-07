@@ -22,7 +22,7 @@ export default function ServiceDetailView({
 }) {
   const dict = dictionaries[lang];
   const content = servicesContent[lang][service];
-  const homeHref = lang === "zh" ? "/" : "/en";
+  const homeHref = lang === "zh" ? "/zh" : "/";
 
   return (
     <>

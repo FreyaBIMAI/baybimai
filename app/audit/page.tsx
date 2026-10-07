@@ -3,25 +3,25 @@ import ServiceDetailView from "../service-detail-view";
 import ContactForm from "../contact-form";
 
 export const metadata: Metadata = {
-  title: "BIM 咨询 | BAYBIMAI",
+  title: "BIM Consulting | BAYBIMAI",
   description:
-    "独立检查模型质量、标准执行与交付完整性，提前识别影响协同和验收的问题。",
+    "An independent check of model quality, standards compliance, and delivery completeness — catching issues before they affect coordination or sign-off.",
   alternates: {
     canonical: "https://baybimai.org/audit",
     languages: {
-      "zh-CN": "https://baybimai.org/audit",
-      en: "https://baybimai.org/en/audit",
+      "zh-CN": "https://baybimai.org/zh/audit",
+      en: "https://baybimai.org/audit",
       "x-default": "https://baybimai.org/audit",
     },
   },
 };
 
-export default function AuditPage() {
+export default function AuditPageEn() {
   return (
     <ServiceDetailView
-      lang="zh"
+      lang="en"
       service="audit"
-      cta={<ContactForm lang="zh" />}
+      cta={<ContactForm lang="en" />}
     />
   );
 }

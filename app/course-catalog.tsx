@@ -51,7 +51,7 @@ const catalog: Record<Lang, {
             summary: "7 天建立界面、建模、视图、出图与协同的完整起点；每一步都对应真实工作场景。",
             meta: "$59 · 一次性购买 · 永久访问",
             state: "available",
-            syllabusHref: "/course/revit-fast-start",
+            syllabusHref: "/zh/course/revit-fast-start",
           },
         ],
       },
@@ -112,7 +112,7 @@ const catalog: Record<Lang, {
             summary: "Build your first complete workflow in seven days: interface, modeling, views, sheets, and coordination — grounded in real project situations.",
             meta: "$59 · one-time purchase · lifetime access",
             state: "available",
-            syllabusHref: "/en/course/revit-fast-start",
+            syllabusHref: "/course/revit-fast-start",
           },
         ],
       },
@@ -160,8 +160,8 @@ const catalog: Record<Lang, {
 
 export default function CourseCatalog({ lang }: { lang: Lang }) {
   const copy = catalog[lang];
-  const homeHref = lang === "zh" ? "/" : "/en";
-  const newsHref = lang === "zh" ? "/news" : "/en/news";
+  const homeHref = lang === "zh" ? "/zh" : "/";
+  const newsHref = lang === "zh" ? "/zh/news" : "/news";
 
   return (
     <>

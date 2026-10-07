@@ -3,25 +3,25 @@ import ServiceDetailView from "../service-detail-view";
 import ContactForm from "../contact-form";
 
 export const metadata: Metadata = {
-  title: "企业 BIM 培训 | BAYBIMAI",
+  title: "Enterprise BIM Training | BAYBIMAI",
   description:
-    "围绕团队现状、项目类型和交付目标定制课程，让培训直接服务于正在发生的项目。",
+    "Curriculum built around your team's current tools, project types, and delivery goals — training that serves the work already underway.",
   alternates: {
     canonical: "https://baybimai.org/training",
     languages: {
-      "zh-CN": "https://baybimai.org/training",
-      en: "https://baybimai.org/en/training",
+      "zh-CN": "https://baybimai.org/zh/training",
+      en: "https://baybimai.org/training",
       "x-default": "https://baybimai.org/training",
     },
   },
 };
 
-export default function TrainingPage() {
+export default function TrainingPageEn() {
   return (
     <ServiceDetailView
-      lang="zh"
+      lang="en"
       service="training"
-      cta={<ContactForm lang="zh" />}
+      cta={<ContactForm lang="en" />}
     />
   );
 }

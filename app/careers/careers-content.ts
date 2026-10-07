@@ -389,7 +389,7 @@ export const companiesByLang: Record<CareersLang, CompanyProfile[]> = {
 export const careersContent = {
   zh: {
     locale: "zh-CN",
-    switchPath: "/en/careers",
+    switchPath: "/careers",
     switchLabel: "EN",
     hero: {
       eyebrow: "BAY AREA AEC CAREER ATLAS · 2026.07.27",
@@ -505,7 +505,7 @@ export const careersContent = {
   },
   en: {
     locale: "en-US",
-    switchPath: "/careers",
+    switchPath: "/zh/careers",
     switchLabel: "中文",
     hero: {
       eyebrow: "BAY AREA AEC CAREER ATLAS · 2026.07.27",

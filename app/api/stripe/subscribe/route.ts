@@ -7,11 +7,11 @@ async function readBody(request: Request): Promise<{ lang: CheckoutLanguage; pla
   try {
     const body = (await request.json()) as { lang?: unknown; plan?: unknown };
     return {
-      lang: body.lang === "en" ? "en" : "zh",
+      lang: body.lang === "zh" ? "zh" : "en",
       plan: body.plan === "yearly" ? "yearly" : "monthly",
     };
   } catch {
-    return { lang: "zh", plan: "monthly" };
+    return { lang: "en", plan: "monthly" };
   }
 }
 
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const stripe = getStripe();
     const { monthlyPriceId, yearlyPriceId, siteUrl } = getNewsSubscriptionConfig();
     const priceId = plan === "yearly" ? yearlyPriceId : monthlyPriceId;
-    const pagePath = lang === "en" ? "/en" : "";
+    const pagePath = lang === "zh" ? "/zh" : "";
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",

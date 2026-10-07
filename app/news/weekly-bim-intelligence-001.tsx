@@ -63,7 +63,7 @@ export const weeklyMetadata: Metadata = {
   description:
     "China urban renewal, Singapore CORENET X, AI’s new baseline, coordinate-system risk, and the shift from BIM modeling to higher-value digital delivery.",
   alternates: {
-    canonical: `/en/news/${WEEKLY_SLUG}`,
+    canonical: `/news/${WEEKLY_SLUG}`,
   },
   openGraph: {
     type: "article",
@@ -88,7 +88,7 @@ export default function WeeklyBimIntelligence001() {
         <ReadingTools lang="en" speechText={speechText}>
           <article id="article-body" className={styles.article}>
             <header className={styles.articleHeader}>
-              <a className={styles.backLink} href="/en/news">
+              <a className={styles.backLink} href="/news">
                 <span aria-hidden="true">←</span>
                 Back to News
               </a>

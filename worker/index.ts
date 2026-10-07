@@ -34,6 +34,14 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // English moved from /en to the site root (Chinese now lives under /zh).
+    // Permanently redirect old /en links so bookmarks and search results keep
+    // working: /en -> /, /en/course -> /course, query string preserved.
+    if (url.pathname === "/en" || url.pathname.startsWith("/en/")) {
+      url.pathname = url.pathname.slice(3) || "/";
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {

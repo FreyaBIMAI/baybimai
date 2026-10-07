@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-// app/layout.tsx sets a single shared <html lang="zh-CN">; this route-local
+// app/layout.tsx sets a single shared <html lang="en">; this route-local
 // override corrects it for assistive tech and browser translate prompts
 // without restructuring the whole app into per-locale root layouts.
 export default function SetHtmlLang({ lang }: { lang: string }) {

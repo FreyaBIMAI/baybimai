@@ -398,7 +398,7 @@ export const radarContent = {
         "“最新项目进展”仅收录可追溯到公共机构、行业组织、论文作者或主办方的资料。BAYBIMAI 的“看点”和“路径判断”属于编辑分析。",
       ],
       switchLabel: "Read in English",
-      switchPath: "/en/radar",
+      switchPath: "/radar",
     },
   },
   en: {
@@ -746,7 +746,7 @@ export const radarContent = {
         "“Latest progress” is limited to material traceable to a public authority, industry body, paper author, or organizer. BAYBIMAI’s watch notes and path signals are editorial analysis.",
       ],
       switchLabel: "阅读中文版",
-      switchPath: "/radar",
+      switchPath: "/zh/radar",
     },
   },
 } as const;

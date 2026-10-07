@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import CourseCatalog from "../course-catalog";
 
 export const metadata: Metadata = {
-  title: "BIM 课程路径：入门、进阶与拓展 | BAYBIMAI",
+  title: "BIM Learning Path: Foundation, Advanced & Expansion | BAYBIMAI",
   description:
-    "从 7 天 Revit 闪电入门，到 Revit 族、BIM 项目 PPT Presentation 与 Dynamo 入门的分阶段课程路径。",
+    "A staged BIM curriculum: 7-Day Revit Fast-Start, Revit Families, BIM Project Presentation, and Dynamo Fundamentals.",
   alternates: {
     canonical: "https://baybimai.org/course",
     languages: {
-      "zh-CN": "https://baybimai.org/course",
-      en: "https://baybimai.org/en/course",
+      "zh-CN": "https://baybimai.org/zh/course",
+      en: "https://baybimai.org/course",
       "x-default": "https://baybimai.org/course",
     },
   },
 };
 
-export default function CoursePage() {
-  return <CourseCatalog lang="zh" />;
+export default function CoursePageEn() {
+  return <CourseCatalog lang="en" />;
 }

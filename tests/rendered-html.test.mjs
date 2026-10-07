@@ -10,14 +10,14 @@ async function source(pathname) {
 
 test("ships Chinese and English news routes", async () => {
   await Promise.all([
+    access(new URL("app/zh/news/page.tsx", root)),
+    access(new URL("app/zh/news/construction-ai-agents-2026/page.tsx", root)),
+    access(new URL("app/zh/news/subscribe/page.tsx", root)),
     access(new URL("app/news/page.tsx", root)),
-    access(new URL("app/news/construction-ai-agents-2026/page.tsx", root)),
-    access(new URL("app/news/subscribe/page.tsx", root)),
-    access(new URL("app/en/news/page.tsx", root)),
     access(
-      new URL("app/en/news/construction-ai-agents-2026/page.tsx", root),
+      new URL("app/news/construction-ai-agents-2026/page.tsx", root),
     ),
-    access(new URL("app/en/news/subscribe/page.tsx", root)),
+    access(new URL("app/news/subscribe/page.tsx", root)),
   ]);
 
   const [chrome, dictionaries] = await Promise.all([
@@ -25,7 +25,7 @@ test("ships Chinese and English news routes", async () => {
     source("app/dictionaries.ts"),
   ]);
   assert.match(chrome, /\/news/);
-  assert.match(chrome, /\/en\/news/);
+  assert.match(chrome, /\/zh\/news/);
   assert.match(chrome, /nav-link-hotspot/);
   assert.doesNotMatch(chrome, /nav-link-radar/);
   assert.match(chrome, /nav-popover-radar-group/);
@@ -149,23 +149,23 @@ test("HOTSPOT has subscription, daily refresh, and a reader-feedback loop", asyn
 
 test("protects bilingual Careers routes and removes them from public navigation", async () => {
   await Promise.all([
+    access(new URL("app/zh/careers/page.tsx", root)),
     access(new URL("app/careers/page.tsx", root)),
-    access(new URL("app/en/careers/page.tsx", root)),
   ]);
 
   const [chrome, dictionaries, newsShell, zhPage, enPage, ownerAccess] = await Promise.all([
     source("app/site-chrome.tsx"),
     source("app/dictionaries.ts"),
     source("app/news/news-shell.tsx"),
+    source("app/zh/careers/page.tsx"),
     source("app/careers/page.tsx"),
-    source("app/en/careers/page.tsx"),
     source("app/owner-access.ts"),
   ]);
 
   assert.doesNotMatch(chrome, /className="nav-link nav-link-careers"/);
   assert.match(dictionaries, /careersLabel: "Careers"/);
-  assert.match(zhPage, /requireOwner\("\/careers"\)/);
-  assert.match(enPage, /requireOwner\("\/en\/careers"\)/);
+  assert.match(zhPage, /requireOwner\("\/zh\/careers"\)/);
+  assert.match(enPage, /requireOwner\("\/careers"\)/);
   assert.match(zhPage, /index: false, follow: false/);
   assert.match(enPage, /index: false, follow: false/);
   assert.match(ownerAccess, /OWNER_EMAIL/);
@@ -208,8 +208,8 @@ test("careers page includes accessible controls and interview preparation resour
 
 test("ships bilingual Radar routes in primary and news navigation", async () => {
   await Promise.all([
+    access(new URL("app/zh/radar/page.tsx", root)),
     access(new URL("app/radar/page.tsx", root)),
-    access(new URL("app/en/radar/page.tsx", root)),
   ]);
 
   const [chrome, dictionaries, newsShell] = await Promise.all([
@@ -219,7 +219,7 @@ test("ships bilingual Radar routes in primary and news navigation", async () => 
   ]);
 
   assert.match(chrome, /\/radar/);
-  assert.match(chrome, /\/en\/radar/);
+  assert.match(chrome, /\/zh\/radar/);
   assert.match(dictionaries, /hotspotLabel: "HOTSPOT"/);
   assert.match(dictionaries, /radarLabel: "RADAR"/);
   assert.match(newsShell, /SiteNav/);
@@ -284,21 +284,21 @@ test("radar ships optimized local portraits for all builder profiles", async () 
 
 test("protects bilingual Founder Daily routes and removes them from public navigation", async () => {
   await Promise.all([
+    access(new URL("app/zh/daily/page.tsx", root)),
     access(new URL("app/daily/page.tsx", root)),
-    access(new URL("app/en/daily/page.tsx", root)),
   ]);
 
   const [chrome, dictionaries, zhPage, enPage] = await Promise.all([
     source("app/site-chrome.tsx"),
     source("app/dictionaries.ts"),
+    source("app/zh/daily/page.tsx"),
     source("app/daily/page.tsx"),
-    source("app/en/daily/page.tsx"),
   ]);
 
   assert.doesNotMatch(chrome, /className="nav-link nav-link-daily"/);
   assert.match(dictionaries, /dailyLabel: "Founder Daily"/);
-  assert.match(zhPage, /requireOwner\("\/daily"\)/);
-  assert.match(enPage, /requireOwner\("\/en\/daily"\)/);
+  assert.match(zhPage, /requireOwner\("\/zh\/daily"\)/);
+  assert.match(enPage, /requireOwner\("\/daily"\)/);
   assert.match(zhPage, /index: false, follow: false/);
   assert.match(enPage, /index: false, follow: false/);
 });

@@ -7,11 +7,15 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Careers | BAYBIMAI",
   description:
-    "湾区 AEC 公司规模榜单、官方招聘入口，以及 BIM、VDC、数字交付岗位的 HR 与技术面试准备资源。",
+    "Compare major Bay Area AEC firms, open official career pages, and prepare for BIM, VDC, and digital-delivery interviews.",
   robots: { index: false, follow: false, nocache: true },
 };
 
-export default async function Page() {
+export default async function EnglishCareersPage() {
   await requireOwner("/careers");
-  return <CareersPage lang="zh" />;
+  return (
+    <>
+      <CareersPage lang="en" />
+    </>
+  );
 }

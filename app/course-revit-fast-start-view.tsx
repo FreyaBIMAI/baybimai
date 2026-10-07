@@ -9,9 +9,9 @@ import styles from "./course-syllabus.module.css";
 
 export default function CourseRevitFastStartView({ lang }: { lang: Lang }) {
   const copy = revitFastStartSyllabus[lang];
-  const courseHref = lang === "zh" ? "/course" : "/en/course";
+  const courseHref = lang === "zh" ? "/zh/course" : "/course";
   const languageHref =
-    lang === "zh" ? "/en/course/revit-fast-start" : "/course/revit-fast-start";
+    lang === "zh" ? "/course/revit-fast-start" : "/zh/course/revit-fast-start";
   const skipLabel = lang === "zh" ? "跳到主要内容" : "Skip to main content";
 
   return (
