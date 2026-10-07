@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import NewsIndex from "./news-index";
 
 export const metadata: Metadata = {
-  title: "BIM 新闻与施工科技深度报告 | BAYBIMAI",
+  title: "BIM News & Construction Technology Reports | BAYBIMAI",
   description:
-    "BAYBIMAI 追踪真正影响 BIM、VDC、造价、项目控制与职业发展的施工科技变化。",
+    "BAYBIMAI tracks construction technology shifts that matter to BIM, VDC, estimating, project controls, and careers.",
   alternates: {
     canonical: "/news",
     languages: {
-      "zh-CN": "/news",
-      en: "/en/news",
+      "zh-CN": "/zh/news",
+      en: "/news",
     },
   },
 };
 
-export default function NewsPage() {
-  return <NewsIndex lang="zh" />;
+export default function EnglishNewsPage() {
+  return <NewsIndex lang="en" />;
 }

@@ -6,7 +6,7 @@ import styles from "./news.module.css";
 const copy = {
   zh: {
     backLabel: "返回新闻首页",
-    backHref: "/news",
+    backHref: "/zh/news",
     eyebrow: "BAYBIMAI NEWS · 会员",
     title: "订阅每日 BIM 深度报告",
     intro:
@@ -27,7 +27,7 @@ const copy = {
   },
   en: {
     backLabel: "Back to News",
-    backHref: "/en/news",
+    backHref: "/news",
     eyebrow: "BAYBIMAI NEWS · MEMBERSHIP",
     title: "Subscribe to the daily BIM intelligence report",
     intro:

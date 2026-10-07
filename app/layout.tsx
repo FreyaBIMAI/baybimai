@@ -3,9 +3,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://baybimai.org"),
-  title: "BAYBIMAI — 把 BIM 学到真正能用",
+  title: "BAYBIMAI — Learn BIM, Put It to Real Work",
   description:
-    "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 咨询服务。",
+    "Hands-on Revit courses for individuals, tailored enterprise BIM training, and independent BIM audits.",
   icons: {
     // Versioned query string: Cloudflare's edge cache serves /favicon.svg by
     // URL, so bumping this value is what actually invalidates the icon for
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "BAYBIMAI",
-    description: "课程包 · 企业培训 · BIM 咨询",
+    description: "Courses · Enterprise Training · BIM Consulting",
     url: "https://baybimai.org",
     siteName: "BAYBIMAI",
     images: [{ url: "/og-v2.png", width: 1200, height: 630 }],
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "BAYBIMAI",
-    description: "把 BIM 学到真正能用。",
+    description: "Learn BIM, put it to real work.",
     images: ["/og-v2.png"],
   },
 };
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

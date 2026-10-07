@@ -1,25 +1,37 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export default function CheckoutSuccessPage() {
+export const metadata: Metadata = {
+  title: "Payment Received — BAYBIMAI",
+  description: "Your Revit Fast-Start Course payment has been received.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export default function EnglishCheckoutSuccessPage() {
   return (
-    <main className="checkout-result">
-      <section className="checkout-result-card">
-        <p className="eyebrow checkout-eyebrow">
-          <span />
-          PAYMENT RECEIVED
-        </p>
-        <div className="success-mark" aria-hidden="true">
-          ✓
-        </div>
-        <h1>谢谢，付款信息已收到。</h1>
-        <p>
-          Stripe 正在确认这笔付款。确认完成后，我们会通过你的付款邮箱发送
-          开通说明。
-        </p>
-        <Link className="return-link" href="/">
-          返回 BAYBIMAI 首页
-        </Link>
-      </section>
-    </main>
+    <>
+      <main className="checkout-result">
+        <section className="checkout-result-card">
+          <p className="eyebrow checkout-eyebrow">
+            <span />
+            PAYMENT RECEIVED
+          </p>
+          <div className="success-mark" aria-hidden="true">
+            ✓
+          </div>
+          <h1>Thank you. We’ve received your payment.</h1>
+          <p>
+            Stripe is confirming the payment. Once complete, we’ll send access
+            instructions to your payment email.
+          </p>
+          <Link className="return-link" href="/">
+            Return to BAYBIMAI
+          </Link>
+        </section>
+      </main>
+    </>
   );
 }

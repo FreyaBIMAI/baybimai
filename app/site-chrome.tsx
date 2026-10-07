@@ -12,65 +12,65 @@ export function SiteNav({
   languageHref?: string;
 }) {
   const dict = dictionaries[lang];
-  const homePath = lang === "zh" ? "" : "/en";
+  const homePath = lang === "zh" ? "/zh" : "/";
   const homeLinks = lang === "zh"
     ? [
-        { href: `${homePath}/#contact`, label: "联系我们" },
-        { href: `${homePath}/#home-course`, label: "课程与订阅" },
-        { href: `${homePath}/#home-audit`, label: "BIM 咨询和企业培训" },
-        { href: `${homePath}/#events`, label: "01 活动" },
-        { href: `${homePath}/#regions`, label: "02 区域进展" },
-        { href: `${homePath}/#standards`, label: "03 规则手册" },
-        { href: `${homePath}/#research`, label: "04 论文" },
-        { href: `${homePath}/#people`, label: "05 人物路径" },
+        { href: `${homePath}#contact`, label: "联系我们" },
+        { href: `${homePath}#home-course`, label: "课程与订阅" },
+        { href: `${homePath}#home-audit`, label: "BIM 咨询和企业培训" },
+        { href: `${homePath}#events`, label: "01 活动" },
+        { href: `${homePath}#regions`, label: "02 区域进展" },
+        { href: `${homePath}#standards`, label: "03 规则手册" },
+        { href: `${homePath}#research`, label: "04 论文" },
+        { href: `${homePath}#people`, label: "05 人物路径" },
       ]
     : [
-        { href: `${homePath}/#contact`, label: "Contact Us" },
-        { href: `${homePath}/#home-course`, label: "Courses & Subscription" },
-        { href: `${homePath}/#home-audit`, label: "BIM Consulting & Enterprise Training" },
-        { href: `${homePath}/#events`, label: "01 Events" },
-        { href: `${homePath}/#regions`, label: "02 Regional progress" },
-        { href: `${homePath}/#standards`, label: "03 Rulebooks" },
-        { href: `${homePath}/#research`, label: "04 Research" },
-        { href: `${homePath}/#people`, label: "05 Builder paths" },
+        { href: `${homePath}#contact`, label: "Contact Us" },
+        { href: `${homePath}#home-course`, label: "Courses & Subscription" },
+        { href: `${homePath}#home-audit`, label: "BIM Consulting & Enterprise Training" },
+        { href: `${homePath}#events`, label: "01 Events" },
+        { href: `${homePath}#regions`, label: "02 Regional progress" },
+        { href: `${homePath}#standards`, label: "03 Rulebooks" },
+        { href: `${homePath}#research`, label: "04 Research" },
+        { href: `${homePath}#people`, label: "05 Builder paths" },
       ];
   const courseLinks = lang === "zh"
     ? [
-        { href: "/course#foundation", label: "入门" },
-        { href: "/course#advanced", label: "进阶" },
-        { href: "/course#expansion", label: "拓展" },
+        { href: "/zh/course#foundation", label: "入门" },
+        { href: "/zh/course#advanced", label: "进阶" },
+        { href: "/zh/course#expansion", label: "拓展" },
       ]
     : [
-        { href: "/en/course#foundation", label: "Foundation" },
-        { href: "/en/course#advanced", label: "Advanced" },
-        { href: "/en/course#expansion", label: "Expansion" },
+        { href: "/course#foundation", label: "Foundation" },
+        { href: "/course#advanced", label: "Advanced" },
+        { href: "/course#expansion", label: "Expansion" },
       ];
   const languageHref =
     languageHrefOverride ?? (active === "course"
       ? lang === "zh"
-        ? "/en/course"
-        : "/course"
+        ? "/course"
+        : "/zh/course"
       : active === "news"
       ? lang === "zh"
-        ? "/en/news"
-        : "/news"
+        ? "/news"
+        : "/zh/news"
       : active === "careers"
         ? lang === "zh"
-          ? "/en/careers"
-          : "/careers"
+          ? "/careers"
+          : "/zh/careers"
         : active === "radar"
           ? lang === "zh"
-            ? "/en/radar"
-            : "/radar"
+            ? "/radar"
+            : "/zh/radar"
           : active === "daily"
             ? lang === "zh"
-              ? "/en/daily"
-              : "/daily"
+              ? "/daily"
+              : "/zh/daily"
             : undefined);
 
   return (
     <nav className="nav" aria-label={dict.nav.ariaLabel}>
-      <Link className="brand" href={lang === "zh" ? "/" : "/en"} aria-label={dict.nav.brandAria}>
+      <Link className="brand" href={lang === "zh" ? "/zh" : "/"} aria-label={dict.nav.brandAria}>
         BAY<span>BIM</span>AI
       </Link>
       <div className="nav-meta">
@@ -123,7 +123,7 @@ export function SiteNav({
         <span className="nav-separator" aria-hidden="true">｜</span>
         <Link
           className="nav-link nav-link-hotspot"
-          href={lang === "zh" ? "/news" : "/en/news"}
+          href={lang === "zh" ? "/zh/news" : "/news"}
           aria-current={active === "news" ? "page" : undefined}
         >
           {dict.nav.hotspotLabel}
@@ -139,7 +139,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
 
   return (
     <footer>
-      <Link className="brand" href={lang === "zh" ? "/" : "/en"} aria-label={dict.footer.brandAria}>
+      <Link className="brand" href={lang === "zh" ? "/zh" : "/"} aria-label={dict.footer.brandAria}>
         BAY<span>BIM</span>AI
       </Link>
       <p>{dict.footer.tagline}</p>

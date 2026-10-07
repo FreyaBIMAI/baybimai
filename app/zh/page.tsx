@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import HomeView from "./home-view";
+import HomeView from "../home-view";
 
 export const metadata: Metadata = {
-  title: "BAYBIMAI — Learn BIM, Put It to Real Work",
+  title: "BAYBIMAI — 把 BIM 学到真正能用",
   description:
-    "Hands-on Revit courses for individuals, tailored enterprise BIM training, and independent BIM audits.",
+    "面向个人的 BIM 实战课程包，面向企业的定制培训与 BIM 咨询服务。",
   alternates: {
-    canonical: "https://baybimai.org/",
+    canonical: "https://baybimai.org/zh",
     languages: {
       "zh-CN": "https://baybimai.org/zh",
       en: "https://baybimai.org/",
@@ -15,25 +15,21 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "BAYBIMAI",
-    description: "Courses · Enterprise Training · BIM Consulting",
-    url: "https://baybimai.org/",
+    description: "课程包 · 企业培训 · BIM 咨询",
+    url: "https://baybimai.org/zh",
     siteName: "BAYBIMAI",
     images: [{ url: "/og-v2.png", width: 1200, height: 630 }],
     type: "website",
-    locale: "en_US",
+    locale: "zh_CN",
   },
   twitter: {
     card: "summary_large_image",
     title: "BAYBIMAI",
-    description: "Learn BIM, put it to real work.",
+    description: "把 BIM 学到真正能用。",
     images: ["/og-v2.png"],
   },
 };
 
-export default function EnglishPage() {
-  return (
-    <>
-      <HomeView lang="en" />
-    </>
-  );
+export default function Page() {
+  return <HomeView lang="zh" />;
 }

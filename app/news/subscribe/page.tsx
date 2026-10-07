@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import SubscribeView from "../subscribe-view";
+import SubscribeView from "../../news/subscribe-view";
 
 export const metadata: Metadata = {
-  title: "订阅每日 BIM 深度报告 | BAYBIMAI",
-  description: "每日更新的 BIM 头条与关键信号总结。月度会员 $5.9，年度会员 $59。",
+  title: "Subscribe to Daily BIM Intelligence | BAYBIMAI",
+  description: "A daily BIM headline and signal roundup. $5.9 monthly or $59 yearly.",
   alternates: {
     canonical: "/news/subscribe",
     languages: {
-      "zh-CN": "/news/subscribe",
-      en: "/en/news/subscribe",
+      "zh-CN": "/zh/news/subscribe",
+      en: "/news/subscribe",
     },
   },
 };
 
-export default function NewsSubscribePage() {
-  return <SubscribeView lang="zh" />;
+export default function EnglishNewsSubscribePage() {
+  return <SubscribeView lang="en" />;
 }

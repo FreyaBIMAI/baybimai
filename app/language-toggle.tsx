@@ -9,7 +9,7 @@ export default function LanguageToggle({
   href?: string;
 }) {
   const dict = dictionaries[lang];
-  const target = href ?? (lang === "zh" ? "/en" : "/");
+  const target = href ?? (lang === "zh" ? "/" : "/zh");
 
   return (
     <Link

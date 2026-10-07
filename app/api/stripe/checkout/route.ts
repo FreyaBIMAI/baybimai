@@ -5,9 +5,9 @@ type CheckoutLanguage = "zh" | "en";
 async function readLanguage(request: Request): Promise<CheckoutLanguage> {
   try {
     const body = (await request.json()) as { lang?: unknown };
-    return body.lang === "en" ? "en" : "zh";
+    return body.lang === "zh" ? "zh" : "en";
   } catch {
-    return "zh";
+    return "en";
   }
 }
 
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   try {
     const stripe = getStripe();
     const { priceId, productId, siteUrl } = getStripeConfig();
-    const pagePath = lang === "en" ? "/en" : "";
+    const pagePath = lang === "zh" ? "/zh" : "";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
